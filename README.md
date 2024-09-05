@@ -1,2 +1,2 @@
 # Sweet_Shop
-Dự án môn SWP391 lớp AI nhóm 6
+Dự án môn lớp AI nhóm 6
