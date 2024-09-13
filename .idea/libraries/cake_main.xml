@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="cake-main">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/cake-main.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
