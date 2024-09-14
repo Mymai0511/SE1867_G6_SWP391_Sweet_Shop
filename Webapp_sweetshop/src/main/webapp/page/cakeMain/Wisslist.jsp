@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: Hưng
   Date: 9/14/2024
-  Time: 2:05 PM
+  Time: 2:06 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -22,16 +22,16 @@
           rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/flaticon.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/barfiller.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/barfiller.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/style.css" type="text/css">
 </head>
 
 <body>
@@ -54,7 +54,7 @@
         </div>
     </div>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src="./img/logo.png" alt=""></a>
+        <a href="#"><img src="./img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__option">
@@ -127,7 +127,7 @@
                     <ul>
                         <li><a href="./index.html">Home</a></li>
                         <li><a href="./about.html">About</a></li>
-                        <li><a href="./shop.html">Shop</a></li>
+                        <li class="active"><a href="./shop.html">Shop</a></li>
                         <li><a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="./shop-details.html">Shop Details</a></li>
@@ -139,7 +139,7 @@
                             </ul>
                         </li>
                         <li><a href="./blog.html">Blog</a></li>
-                        <li class="active"><a href="./contact.html">Contact</a></li>
+                        <li><a href="./contact.html">Contact</a></li>
                     </ul>
                 </nav>
             </div>
@@ -148,123 +148,113 @@
 </header>
 <!-- Header Section End -->
 
-<!-- Contact Section Begin -->
-<section class="contact spad">
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
     <div class="container">
-        <div class="map">
-            <div class="container">
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-4 col-md-7">
-                        <div class="map__inner">
-                            <h6>COlorado</h6>
-                            <ul>
-                                <li>1000 Lakepoint Dr, Frisco, CO 80443, USA</li>
-                                <li>Sweetcake@support.com</li>
-                                <li>+1 800-786-1000</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="map__iframe">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d10784.188505644011!2d19.053119335158936!3d47.48899529453826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbd!4v1543907528304" height="300" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
-            </div>
-        </div>
-        <div class="contact__address">
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="contact__address__item">
-                        <h6>san bernardino</h6>
-                        <ul>
-                            <li>
-                                <span class="icon_pin_alt"></span>
-                                <p>795 W 5th St, San Bernardino, CA 92410, USA</p>
-                            </li>
-                            <li><span class="icon_headphones"></span>
-                                <p>+1 800-786-1000</p>
-                            </li>
-                            <li><span class="icon_mail_alt"></span>
-                                <p>Sweetcake@support.com</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="contact__address__item">
-                        <h6>Los angeles</h6>
-                        <ul>
-                            <li>
-                                <span class="icon_pin_alt"></span>
-                                <p>639 S Spring St, Los Angeles, CA 90014, USA</p>
-                            </li>
-                            <li><span class="icon_headphones"></span>
-                                <p>+1 213-612-3000</p>
-                            </li>
-                            <li><span class="icon_mail_alt"></span>
-                                <p>Sweetcake@support.com</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="contact__address__item">
-                        <h6>san bernardino</h6>
-                        <ul>
-                            <li>
-                                <span class="icon_pin_alt"></span>
-                                <p>1000 Lakepoint Dr, Frisco, CO 80443, USA</p>
-                            </li>
-                            <li><span class="icon_headphones"></span>
-                                <p>+1 800-786-1000</p>
-                            </li>
-                            <li><span class="icon_mail_alt"></span>
-                                <p>Sweetcake@support.com</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="row">
-            <div class="col-lg-4">
-                <div class="contact__text">
-                    <h3>Contact With us</h3>
-                    <ul>
-                        <li>Representatives or Advisors are available:</li>
-                        <li>Mon-Fri: 5:00am to 9:00pm</li>
-                        <li>Sat-Sun: 6:00am to 9:00pm</li>
-                    </ul>
-                    <img src="./img/cake-piece.png" alt="">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__text">
+                    <h2>Wishlist</h2>
                 </div>
             </div>
-            <div class="col-lg-8">
-                <div class="contact__form">
-                    <form action="#">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <input type="text" placeholder="Name">
-                            </div>
-                            <div class="col-lg-6">
-                                <input type="text" placeholder="Email">
-                            </div>
-                            <div class="col-lg-12">
-                                <textarea placeholder="Message"></textarea>
-                                <button type="submit" class="site-btn">Send Us</button>
-                            </div>
-                        </div>
-                    </form>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="breadcrumb__links">
+                    <a href="./index.html">Home</a>
+                    <span>Wishlist</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Wishlist Section Begin -->
+<section class="wishlist spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wishlist__cart__table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Unit Price</th>
+                            <th>Stock</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="product__cart__item">
+                                <div class="product__cart__item__pic">
+                                    <img src="./img/shop/cart/cart-1.jpg" alt="">
+                                </div>
+                                <div class="product__cart__item__text">
+                                    <h6>Vanilla Salted Caramel</h6>
+                                </div>
+                            </td>
+                            <td class="cart__price">$ 15.00</td>
+                            <td class="cart__stock">In stock</td>
+                            <td class="cart__btn"><a href="#" class="primary-btn">Add to cart</a></td>
+                            <td class="cart__close"><span class="icon_close"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="product__cart__item">
+                                <div class="product__cart__item__pic">
+                                    <img src="./img/shop/cart/cart-2.jpg" alt="">
+                                </div>
+                                <div class="product__cart__item__text">
+                                    <h6>German Chocolate</h6>
+                                </div>
+                            </td>
+                            <td class="cart__price">$ 32.50</td>
+                            <td class="cart__stock">In stock</td>
+                            <td class="cart__btn"><a href="#" class="primary-btn">Add to cart</a></td>
+                            <td class="cart__close"><span class="icon_close"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="product__cart__item">
+                                <div class="product__cart__item__pic">
+                                    <img src="./img/shop/cart/cart-3.jpg" alt="">
+                                </div>
+                                <div class="product__cart__item__text">
+                                    <h6>SWEET AUTUMN LEAVES</h6>
+                                </div>
+                            </td>
+                            <td class="cart__price">$ 23.50</td>
+                            <td class="cart__stock">In stock</td>
+                            <td class="cart__btn"><a href="#" class="primary-btn">Add to cart</a></td>
+                            <td class="cart__close"><span class="icon_close"></span></td>
+                        </tr>
+                        <tr>
+                            <td class="product__cart__item">
+                                <div class="product__cart__item__pic">
+                                    <img src="./img/shop/cart/cart-4.jpg" alt="">
+                                </div>
+                                <div class="product__cart__item__text">
+                                    <h6>Gluten Free Mini Dozen</h6>
+                                </div>
+                            </td>
+                            <td class="cart__price">$ 32.50</td>
+                            <td class="cart__stock">In stock</td>
+                            <td class="cart__btn"><a href="#" class="primary-btn">Add to cart</a></td>
+                            <td class="cart__close"><span class="icon_close"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Contact Section End -->
+<!-- Wishlist Section End -->
 
 <!-- Footer Section Begin -->
 <footer class="footer set-bg" data-setbg="img/footer-bg.jpg">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="footer__widget">
                     <h6>WORKING HOURS</h6>
                     <ul>
@@ -274,7 +264,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
                         <a href="#"><img src="./img/footer-logo.png" alt=""></a>
@@ -289,7 +279,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="footer__newslatter">
                     <h6>Subscribe</h6>
                     <p>Get latest updates and offers.</p>
@@ -337,14 +327,14 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
-<script src="../assets/js/jquery-3.3.1.min.js"></script>
-<script src="../assets/js/bootstrap.min.js"></script>
-<script src="../assets/js/jquery.nice-select.min.js"></script>
-<script src="../assets/js/jquery.barfiller.js"></script>
-<script src="../assets/js/jquery.magnific-popup.min.js"></script>
-<script src="../assets/js/jquery.slicknav.js"></script>
-<script src="../assets/js/owl.carousel.min.js"></script>
-<script src="../assets/js/jquery.nicescroll.min.js"></script>
-<script src="../assets/js/main.js"></script>
+<script src="../../assets/js/jquery-3.3.1.min.js"></script>
+<script src="../../assets/js/bootstrap.min.js"></script>
+<script src="../../assets/js/jquery.nice-select.min.js"></script>
+<script src="../../assets/js/jquery.barfiller.js"></script>
+<script src="../../assets/js/jquery.magnific-popup.min.js"></script>
+<script src="../../assets/js/jquery.slicknav.js"></script>
+<script src="../../assets/js/owl.carousel.min.js"></script>
+<script src="../../assets/js/jquery.nicescroll.min.js"></script>
+<script src="../../assets/js/main.js"></script>
 </body>
 </html>

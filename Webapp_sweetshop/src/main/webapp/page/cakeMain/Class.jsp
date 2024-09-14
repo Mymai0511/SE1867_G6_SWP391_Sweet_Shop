@@ -22,16 +22,16 @@
           rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/flaticon.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/barfiller.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/nice-select.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="../assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/barfiller.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="../../assets/css/style.css" type="text/css">
 </head>
 
 <body>
@@ -358,14 +358,14 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
-<script src="../assets/js/jquery-3.3.1.min.js"></script>
-<script src="../assets/js/bootstrap.min.js"></script>
-<script src="../assets/js/jquery.nice-select.min.js"></script>
-<script src="../assets/js/jquery.barfiller.js"></script>
-<script src="../assets/js/jquery.magnific-popup.min.js"></script>
-<script src="../assets/js/jquery.slicknav.js"></script>
-<script src="../assets/js/owl.carousel.min.js"></script>
-<script src="../assets/js/jquery.nicescroll.min.js"></script>
-<script src="../assets/js/main.js"></script>
+<script src="../../assets/js/jquery-3.3.1.min.js"></script>
+<script src="../../assets/js/bootstrap.min.js"></script>
+<script src="../../assets/js/jquery.nice-select.min.js"></script>
+<script src="../../assets/js/jquery.barfiller.js"></script>
+<script src="../../assets/js/jquery.magnific-popup.min.js"></script>
+<script src="../../assets/js/jquery.slicknav.js"></script>
+<script src="../../assets/js/owl.carousel.min.js"></script>
+<script src="../../assets/js/jquery.nicescroll.min.js"></script>
+<script src="../../assets/js/main.js"></script>
 </body>
 </html>
