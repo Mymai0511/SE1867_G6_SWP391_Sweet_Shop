@@ -12,6 +12,6 @@ import java.io.IOException;
 public class HomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("cakeMain/home.jsp").forward(request,response);
+        request.getRequestDispatcher("page/cakeMain/Index.jsp").forward(request,response);
     }
 }
