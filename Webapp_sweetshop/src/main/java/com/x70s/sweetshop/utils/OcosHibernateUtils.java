@@ -83,4 +83,7 @@ public class OcosHibernateUtils {
         }
     }
 
+    public static void main(String[] args) {
+        OcosHibernateUtils.getSessionFactory();
+    }
 }
