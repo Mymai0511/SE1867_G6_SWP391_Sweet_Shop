@@ -12,5 +12,6 @@
 
         <mapping class="com.x70s.sweetshop.entity.AppUser"/>
         <mapping class="com.x70s.sweetshop.entity.Authority"/>
+        <mapping class="com.x70s.sweetshop.entity.Product"/>
     </session-factory>
 </hibernate-configuration>

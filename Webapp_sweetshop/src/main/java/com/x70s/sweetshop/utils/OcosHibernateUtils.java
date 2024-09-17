@@ -27,9 +27,9 @@ public class OcosHibernateUtils {
         // Tạo và lưu Authority
         List<Authority> authorities = List.of(
                 new Authority("ROLE_ADMIN", "Administrator"),
-                new Authority("ROLE_USER", "App User"),
+                new Authority("ROLE_CUSTOMER", "App User"),
                 new Authority("ROLE_SHIPPER", "Shipper"),
-                new Authority("ROLE_Staff", "Staff")
+                new Authority("ROLE_STAFF", "Staff")
         );
         authorityDao.saveAll(authorities);
 
@@ -59,12 +59,36 @@ public class OcosHibernateUtils {
                 .build());
 
         appUsers.add(AppUser.builder()
-                .username("user")
+                .username("customer")
                 .password("123456789") // Nên mã hóa mật khẩu trong thực tế
-                .email("user@x70s.com")
+                .email("customer@x70s.com")
                 .phone("+0123456789")
                 .authority(savedAuthorities.stream()
-                        .filter(a -> a.getCode().equals("ROLE_ADMIN"))
+                        .filter(a -> a.getCode().equals("ROLE_CUSTOMER"))
+                        .findFirst()
+                        .orElse(null)) // Gán một Authority
+                .build());
+
+        appUsers.add(AppUser.builder()
+                .username("staff")
+                .password("123456789") // Nên mã hóa mật khẩu trong thực tế
+                .email("staff@x70s.com")
+                .phone("+0123456789")
+                .authority(savedAuthorities.stream()
+                        .filter(a -> a.getCode().equals("ROLE_STAFF"))
+                        .findFirst()
+                        .orElse(null)) // Gán một Authority
+                .build());
+
+        appUserDao.saveAll(appUsers);
+
+        appUsers.add(AppUser.builder()
+                .username("shipper")
+                .password("123456789") // Nên mã hóa mật khẩu trong thực tế
+                .email("shipper@x70s.com")
+                .phone("+0123456789")
+                .authority(savedAuthorities.stream()
+                        .filter(a -> a.getCode().equals("ROLE_SHIPPER"))
                         .findFirst()
                         .orElse(null)) // Gán một Authority
                 .build());
