@@ -22,4 +22,8 @@ public class ProductService implements IProduct {
         List<Product> productList = productRepository.findAll();
         return productList.stream().map(ProductMapper.INSTANCE::toProductDTO).collect(Collectors.toList());
     }
+
+    public Product getProductById(String productId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
