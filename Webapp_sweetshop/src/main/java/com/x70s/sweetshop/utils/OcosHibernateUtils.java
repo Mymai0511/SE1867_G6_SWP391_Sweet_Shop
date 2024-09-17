@@ -63,27 +63,14 @@ public class OcosHibernateUtils {
                 .password("123456789") // Nên mã hóa mật khẩu trong thực tế
                 .email("user@x70s.com")
                 .phone("+0123456789")
-                .authorities(List.of(
-                        savedAuthorities.stream().filter(a -> a.getCode().equals("ROLE_USER")).findFirst().orElse(null)
-                ))
+                .authority(savedAuthorities.stream()
+                        .filter(a -> a.getCode().equals("ROLE_ADMIN"))
+                        .findFirst()
+                        .orElse(null)) // Gán một Authority
                 .build());
 
         appUserDao.saveAll(appUsers);
 
-        // Tạo và lưu Student
-        List<Student> students = List.of(
-                Student.builder()
-                        .name("John Doe")
-                        .semester(1)
-                        .courses(courses.stream().filter(c -> c.getCode().equals("MATH101") || c.getCode().equals("PHYS101")).collect(Collectors.toList()))
-                        .build(),
-                Student.builder()
-                        .name("Jane Smith")
-                        .semester(2)
-                        .courses(courses.stream().filter(c -> c.getCode().equals("PHYS101") || c.getCode().equals("CHEM101")).collect(Collectors.toList()))
-                        .build()
-        );
-        studentDao.saveAll(students);
     }
 
     private static SessionFactory buildSessionFactory() {
