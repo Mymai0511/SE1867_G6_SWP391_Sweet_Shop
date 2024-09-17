@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.sql.Date;
 
 @Entity
 @Table(name = "app_user")
@@ -19,6 +19,9 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "fullname", nullable = false)
+    private String fullname;
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -30,6 +33,27 @@ public class AppUser {
 
     @Column(name = "phone")
     private String phone;
+
+    @Column(name = "gender")
+    private boolean gender;
+
+    @Column(name = "dateOfBirth")
+    private Date dateOfBirth;
+
+    @Column(name = "avatar")
+    private String avatar;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "createdAt")
+    private Date createdAt;
+
+    @Column(name = "updatedAt")
+    private Date updatedAt;
+
+    @Column(name = "status")
+    private boolean status;
 
     @ManyToOne
     @JoinColumn(name = "authority_id")
