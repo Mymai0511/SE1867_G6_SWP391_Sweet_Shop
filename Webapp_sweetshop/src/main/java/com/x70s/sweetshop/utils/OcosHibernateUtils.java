@@ -75,12 +75,15 @@ public class OcosHibernateUtils {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            URL url = OcosHibernateUtils.class.getClassLoader().getResource("config/sms-hibernate.cfg.xml");
+            URL url = OcosHibernateUtils.class.getClassLoader().getResource("config/sshop-hibernate.cfg.xml");
             return new Configuration().configure(url).buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
+    }
+    public static void main(String[] args) {
+        OcosHibernateUtils.getSessionFactory();
     }
 
 }
