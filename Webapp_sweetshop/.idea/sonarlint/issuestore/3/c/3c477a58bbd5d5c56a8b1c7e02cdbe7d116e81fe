@@ -1,0 +1,7 @@
+
+P
+java:S1118":Add a private constructor to hide the implicit public one.(ÛùË
+V	java:S125,"<This block of commented-out lines of code should be removed.(¼è÷ïøÿÿÿÿ
+@
+java:S1181]"%Catch Exception instead of Throwable.(À˜§üÿÿÿÿ
+E	java:S106^"+Replace this use of System.err by a logger.(Ô˜Òòıÿÿÿÿ
