@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -272,134 +274,24 @@
 <section class="product spad">
     <div class="container">
         <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/shop/product-1.jpg">
-                        <div class="product__label">
-                            <span>Cupcake</span>
+            <c:forEach var="p" items="${productList}">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="product__item">
+                        <div class="product__item__pic set-bg" data-setbg="assets/image/product/${media.getTop1MediaByProductID(p.id).image}">
+                            <div class="product__label">
+                                <span>${category.getCategoryByID(p.categoryID).getName()}</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Dozen Cupcakes</a></h6>
-                        <div class="product__item__price">$32.00</div>
-                        <div class="cart_add">
-                            <a href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/shop/product-2.jpg">
-                        <div class="product__label">
-                            <span>Cupcake</span>
-                        </div>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Cookies and Cream</a></h6>
-                        <div class="product__item__price">$30.00</div>
-                        <div class="cart_add">
-                            <a href="#">Add to cart</a>
+                        <div class="product__item__text">
+                            <h6><a href="#">${p.name}</a></h6>
+                            <div class="product__item__price">${productDetail.getMinPriceByProductId(p.id)}vnd - ${productDetail.getMaxPriceByProductId(p.id)}vnd </div>
+                            <div class="cart_add">
+                                <a href="#">Add to cart</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/shop/product-3.jpg">
-                        <div class="product__label">
-                            <span>Cupcake</span>
-                        </div>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Gluten Free Mini Dozen</a></h6>
-                        <div class="product__item__price">$31.00</div>
-                        <div class="cart_add">
-                            <a href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/shop/product-4.jpg">
-                        <div class="product__label">
-                            <span>Cupcake</span>
-                        </div>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Cookie Dough</a></h6>
-                        <div class="product__item__price">$25.00</div>
-                        <div class="cart_add">
-                            <a href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/shop/product-5.jpg">
-                        <div class="product__label">
-                            <span>Cupcake</span>
-                        </div>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Vanilla Salted Caramel</a></h6>
-                        <div class="product__item__price">$05.00</div>
-                        <div class="cart_add">
-                            <a href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/shop/product-6.jpg">
-                        <div class="product__label">
-                            <span>Cupcake</span>
-                        </div>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">German Chocolate</a></h6>
-                        <div class="product__item__price">$14.00</div>
-                        <div class="cart_add">
-                            <a href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/shop/product-7.jpg">
-                        <div class="product__label">
-                            <span>Cupcake</span>
-                        </div>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Dulce De Leche</a></h6>
-                        <div class="product__item__price">$32.00</div>
-                        <div class="cart_add">
-                            <a href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="img/shop/product-8.jpg">
-                        <div class="product__label">
-                            <span>Cupcake</span>
-                        </div>
-                    </div>
-                    <div class="product__item__text">
-                        <h6><a href="#">Mississippi Mud</a></h6>
-                        <div class="product__item__price">$08.00</div>
-                        <div class="cart_add">
-                            <a href="#">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </c:forEach>
         </div>
     </div>
 </section>
