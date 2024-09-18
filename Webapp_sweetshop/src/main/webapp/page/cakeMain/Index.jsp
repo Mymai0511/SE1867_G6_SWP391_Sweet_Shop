@@ -284,7 +284,7 @@
                         </div>
                         <div class="product__item__text">
                             <h6><a href="#">${p.name}</a></h6>
-                            <div class="product__item__price">$32.00</div>
+                            <div class="product__item__price">${productDetail.getMinPriceByProductId(p.id)}vnd - ${productDetail.getMaxPriceByProductId(p.id)}vnd </div>
                             <div class="cart_add">
                                 <a href="#">Add to cart</a>
                             </div>
