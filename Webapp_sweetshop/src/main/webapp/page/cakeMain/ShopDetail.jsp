@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Hưng
@@ -32,6 +33,135 @@
     <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../../assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../../assets/css/style.css" type="text/css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Container for the image gallery */
+        .container {
+            position: relative;
+        }
+
+        /* Hide the images by default */
+        .mySlides {
+            display: none;
+        }
+
+        /* Add a pointer when hovering over the thumbnail images */
+        .cursor {
+            cursor: pointer;
+        }
+
+        /* Next & previous buttons */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 40%;
+            width: auto;
+            padding: 16px;
+            margin-top: -50px;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .numbertext {
+            color: #f2f2f2;
+            font-size: 12px;
+            padding: 8px 12px;
+            position: absolute;
+            top: 0;
+        }
+
+        /* Caption for image */
+        .caption-container {
+            text-align: center;
+            background-color: #222;
+            padding: 2px 16px;
+            color: white;
+        }
+
+        .row {
+            display: flex;
+            overflow-x: auto; /* Enable horizontal scrolling if thumbnails exceed container width */
+        }
+
+        .column {
+            flex: 0 0 auto;
+            width: 16.66%;
+        }
+
+        /* Add a transparency effect for thumnail images */
+        .demo {
+            opacity: 0.6;
+        }
+
+        .active, .demo:hover {
+            opacity: 1;
+        }
+
+        .thumbnail-row {
+            margin-top: 10px;
+            display: flex;
+            overflow-x: auto;
+            width: 100%;
+        }
+        .column {
+            flex: 0 0 auto;
+            margin-right: 5px; /* Adjust margin as needed */
+        }
+    </style>
+
+    <script>
+        let slideIndex = 1;
+
+        // Show the first slide initially
+        document.addEventListener("DOMContentLoaded", function() {
+            showSlides(slideIndex);
+        });
+
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            let dots = document.getElementsByClassName("demo");
+            let captionText = document.getElementById("caption");
+            if (n > slides.length) { slideIndex = 1; }
+            if (n < 1) { slideIndex = slides.length; }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            captionText.innerHTML = dots[slideIndex - 1].alt;
+        }
+    </script>
 </head>
 
 <body>
@@ -45,16 +175,16 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__cart">
         <div class="offcanvas__cart__links">
-            <a href="#" class="search-switch"><img src="./img/icon/search.png" alt=""></a>
-            <a href="#"><img src="./img/icon/heart.png" alt=""></a>
+            <a href="#" class="search-switch"><img src="assets/img/icon/search.png" alt=""></a>
+            <a href="#"><img src="assets/img/icon/heart.png" alt=""></a>
         </div>
         <div class="offcanvas__cart__item">
-            <a href="#"><img src="./img/icon/cart.png" alt=""> <span>0</span></a>
+            <a href="#"><img src="assets/img/icon/cart.png" alt=""> <span>0</span></a>
             <div class="cart__price">Cart: <span>$0.00</span></div>
         </div>
     </div>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src="./img/logo.png" alt=""></a>
+        <a href="./index.html"><img src="assets/img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__option">
@@ -102,15 +232,15 @@
                             </ul>
                         </div>
                         <div class="header__logo">
-                            <a href="./index.html"><img src="./img/logo.png" alt=""></a>
+                            <a href="./index.html"><img src="assets/img/logo.png" alt=""></a>
                         </div>
                         <div class="header__top__right">
                             <div class="header__top__right__links">
-                                <a href="#" class="search-switch"><img src="./img/icon/search.png" alt=""></a>
-                                <a href="#"><img src="./img/icon/heart.png" alt=""></a>
+                                <a href="#" class="search-switch"><img src="assets/img/icon/search.png" alt=""></a>
+                                <a href="#"><img src="assets/img/icon/heart.png" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
-                                <a href="#"><img src="./img/icon/cart.png" alt=""> <span>0</span></a>
+                                <a href="#"><img src="assets/img/icon/cart.png" alt=""> <span>0</span></a>
                                 <div class="cart__price">Cart: <span>$0.00</span></div>
                             </div>
                         </div>
@@ -159,8 +289,8 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
-                    <a href="./index.html">Home</a>
-                    <a href="./shop.html">Shop</a>
+                    <a href="./home">Home</a>
+                    <a href="#">Shop</a>
                     <span>Sweet autumn leaves</span>
                 </div>
             </div>
@@ -174,34 +304,30 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <div class="product__details__img">
-                    <div class="product__details__big__img">
-                        <img class="big_img" src="img/shop/details/product-big-1.jpg" alt="">
-                    </div>
-                    <div class="product__details__thumb">
-                        <div class="pt__item active">
-                            <img data-imgbigurl="img/shop/details/product-big-2.jpg"
-                                 src="img/shop/details/product-big-2.jpg" alt="">
+                <!-- Container for the image gallery -->
+                <div class="container">
+                    <!-- Full-width images with number text -->
+                    <c:forEach items="${mediaList}" var="img" >
+                        <div class="mySlides">
+                            <img src="assets/image/product/${img.image}" style="width:100%">
                         </div>
-                        <div class="pt__item">
-                            <img data-imgbigurl="img/shop/details/product-big-1.jpg"
-                                 src="img/shop/details/product-big-1.jpg" alt="">
-                        </div>
-                        <div class="pt__item">
-                            <img data-imgbigurl="img/shop/details/product-big-4.jpg"
-                                 src="img/shop/details/product-big-4.jpg" alt="">
-                        </div>
-                        <div class="pt__item">
-                            <img data-imgbigurl="img/shop/details/product-big-3.jpg"
-                                 src="img/shop/details/product-big-3.jpg" alt="">
-                        </div>
-                        <div class="pt__item">
-                            <img data-imgbigurl="img/shop/details/product-big-5.jpg"
-                                 src="img/shop/details/product-big-5.jpg" alt="">
-                        </div>
+                    </c:forEach>
+                    <!-- Next and previous buttons -->
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+                    <!-- Thumbnail images -->
+                    <div class="thumbnail-row">
+                        <c:forEach items="${mediaList}" var="img" >
+                            <div class="column">
+                                <img class="demo cursor" src="assets/image/product/${img.image}" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
+                            </div>
+                        </c:forEach>
                     </div>
                 </div>
             </div>
+
+
             <div class="col-lg-6">
                 <div class="product__details__text">
                     <div class="product__label">Cupcake</div>
@@ -410,7 +536,7 @@
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="./img/footer-logo.png" alt=""></a>
+                        <a href="#"><img src="assets/img/footer-logo.png" alt=""></a>
                     </div>
                     <p>Lorem ipsum dolor amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore dolore magna aliqua.</p>

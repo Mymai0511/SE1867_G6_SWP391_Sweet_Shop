@@ -12,7 +12,7 @@ public class ProductDetailProcess extends DAO {
 
     private ProductDetailProcess() {};
 
-    private final List<ProductDetail> productDetail = new ArrayList<>();
+    private final List<ProductDetail> productDetailList = new ArrayList<>();
 
     /**
      * get max value of price of a product
@@ -59,6 +59,34 @@ public class ProductDetailProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(ProductDetailProcess.INSTANCE.getMaxPriceByProductId("1") + ", " + ProductDetailProcess.INSTANCE.getMinPriceByProductId("1"));
+        for (ProductDetail productDetail : ProductDetailProcess.INSTANCE.getProductDetailByProductID("1")) {
+            System.out.println(productDetail.toString());
+        }
+    }
+
+    /**
+     * get all product detail by id product
+     *
+     * @param idProduct id product
+     * @return list product detail
+     */
+    public List<ProductDetail> getProductDetailByProductID(String idProduct) {
+        String sql = "SELECT * FROM [productDetail] WHERE productID = ?";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, idProduct);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProductDetail productDetail = new ProductDetail();
+                productDetail.setId(rs.getInt("id"));
+                productDetail.setSize(rs.getString("size"));
+                productDetail.setPrice(rs.getFloat("price"));
+                productDetail.setProductID(rs.getInt("productID"));
+                productDetailList.add(productDetail);
+            }
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
+        return productDetailList;
     }
 }

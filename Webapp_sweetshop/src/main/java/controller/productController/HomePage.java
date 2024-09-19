@@ -18,12 +18,10 @@ import java.util.List;
 
 public class HomePage extends HttpServlet {
     private List<Product> productList = new ArrayList<>();
-    private List<Media> mediaList = new ArrayList<>();
 
     @Override
     public void init() {
         productList = ProductProcess.INSTANCE.read();
-        mediaList = MediaProcess.INSTANCE.read();
     }
 
     @Override
@@ -33,7 +31,6 @@ public class HomePage extends HttpServlet {
         request.setAttribute("category", CategoryProcess.INSTANCE);
         request.setAttribute("media", MediaProcess.INSTANCE);
         request.setAttribute("productList", productList);
-        request.setAttribute("mediaList", mediaList);
         request.getRequestDispatcher("page/cakeMain/Index.jsp").forward(request, response);
     }
 

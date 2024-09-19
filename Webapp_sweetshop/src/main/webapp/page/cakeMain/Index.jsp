@@ -103,7 +103,7 @@
                             </ul>
                         </div>
                         <div class="header__logo">
-                            <a href="./index.html"><img src="./assets/img/logo.png" alt=""></a>
+                            <a href="#"><img src="./assets/img/logo.png" alt=""></a>
                         </div>
                         <div class="header__top__right">
                             <div class="header__top__right__links">
@@ -164,7 +164,7 @@
                 </div>
             </div>
         </div>
-        <div class="hero__item set-bg" data-setbg="img/hero/hero-1.jpg">
+        <div class="hero__item set-bg" data-setbg="assets/img/hero/hero-1.jpg">
             <div class="container">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
@@ -229,28 +229,29 @@
     <div class="container">
         <div class="row">
             <c:forEach var="p" items="${productList}">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="assets/image/product/${media.getTop1MediaByProductID(p.id).image}">
-                            <div class="product__label">
-                                <span>${category.getCategoryByID(p.categoryID).getName()}</span>
+                <a href="/viewdetail?id=${p.id}" style="cursor: pointer;">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="assets/image/product/${media.getTop1MediaByProductID(p.id).image}">
+                                <div class="product__label">
+                                    <span>${category.getCategoryByID(p.categoryID).getName()}</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">${p.name}</a></h6>
-                            <div class="product__item__price">${productDetail.getMinPriceByProductId(p.id)}vnd - ${productDetail.getMaxPriceByProductId(p.id)}vnd </div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
+                            <div class="product__item__text">
+                                <h6><a href="#">${p.name}</a></h6>
+                                <div class="product__item__price">${productDetail.getMinPriceByProductId(p.id)}vnd - ${productDetail.getMaxPriceByProductId(p.id)}vnd </div>
+                                <div class="cart_add">
+                                    <a href="#">View detail</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </c:forEach>
         </div>
     </div>
 </section>
 <!-- Product Section End -->
-
 
 <!-- Team Section Begin -->
 <section class="team spad">
@@ -270,7 +271,7 @@
         </div>
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="team__item set-bg" data-setbg="img/team/team-1.jpg">
+                <div class="team__item set-bg" data-setbg="assets/img/team/team-1.jpg">
                     <div class="team__item__text">
                         <h6>Randy Butler</h6>
                         <span>Decorater</span>
@@ -284,7 +285,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="team__item set-bg" data-setbg="img/team/team-2.jpg">
+                <div class="team__item set-bg" data-setbg="assets/img/team/team-2.jpg">
                     <div class="team__item__text">
                         <h6>Randy Butler</h6>
                         <span>Decorater</span>
@@ -298,7 +299,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="team__item set-bg" data-setbg="img/team/team-3.jpg">
+                <div class="team__item set-bg" data-setbg="assets/img/team/team-3.jpg">
                     <div class="team__item__text">
                         <h6>Randy Butler</h6>
                         <span>Decorater</span>
@@ -312,7 +313,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="team__item set-bg" data-setbg="img/team/team-4.jpg">
+                <div class="team__item set-bg" data-setbg="assets/img/team/team-4.jpg">
                     <div class="team__item__text">
                         <h6>Randy Butler</h6>
                         <span>Decorater</span>
@@ -354,13 +355,7 @@
                                 <span>New york</span>
                             </div>
                         </div>
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star-half_alt"></span>
-                        </div>
+
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                             ut labore et dolore magna aliqua viverra lacus vel facilisis.</p>
                     </div>
@@ -376,12 +371,37 @@
                                 <span>New york</span>
                             </div>
                         </div>
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star-half_alt"></span>
+
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua viverra lacus vel facilisis.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="testimonial__item">
+                        <div class="testimonial__author">
+                            <div class="testimonial__author__pic">
+                                <img src="./assets/img/testimonial/ta-1.jpg" alt="">
+                            </div>
+                            <div class="testimonial__author__text">
+                                <h5>Ophelia Nunez</h5>
+                                <span>London</span>
+                            </div>
+                        </div>
+
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua viverra lacus vel facilisis.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="testimonial__item">
+                        <div class="testimonial__author">
+                            <div class="testimonial__author__pic">
+                                <img src="./assets/img/testimonial/ta-2.jpg" alt="">
+                            </div>
+                            <div class="testimonial__author__text">
+                                <h5>Kerry D.Silva</h5>
+                                <span>New york</span>
+                            </div>
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                             ut labore et dolore magna aliqua viverra lacus vel facilisis.</p>
@@ -398,13 +418,6 @@
                                 <span>London</span>
                             </div>
                         </div>
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star-half_alt"></span>
-                        </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                             ut labore et dolore magna aliqua viverra lacus vel facilisis.</p>
                     </div>
@@ -419,57 +432,6 @@
                                 <h5>Kerry D.Silva</h5>
                                 <span>New york</span>
                             </div>
-                        </div>
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star-half_alt"></span>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua viverra lacus vel facilisis.</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="testimonial__item">
-                        <div class="testimonial__author">
-                            <div class="testimonial__author__pic">
-                                <img src="./assets/img/testimonial/ta-1.jpg" alt="">
-                            </div>
-                            <div class="testimonial__author__text">
-                                <h5>Ophelia Nunez</h5>
-                                <span>London</span>
-                            </div>
-                        </div>
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star-half_alt"></span>
-                        </div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                            ut labore et dolore magna aliqua viverra lacus vel facilisis.</p>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="testimonial__item">
-                        <div class="testimonial__author">
-                            <div class="testimonial__author__pic">
-                                <img src="./assets/img/testimonial/ta-2.jpg" alt="">
-                            </div>
-                            <div class="testimonial__author__text">
-                                <h5>Kerry D.Silva</h5>
-                                <span>New york</span>
-                            </div>
-                        </div>
-                        <div class="rating">
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star"></span>
-                            <span class="icon_star-half_alt"></span>
                         </div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                             ut labore et dolore magna aliqua viverra lacus vel facilisis.</p>
