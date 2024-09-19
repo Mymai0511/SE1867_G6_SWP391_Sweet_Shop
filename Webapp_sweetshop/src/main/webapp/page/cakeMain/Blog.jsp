@@ -1,40 +1,35 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Hưng
-  Date: 9/14/2024
-  Time: 2:04 PM
-  To change this template use File | Settings | File Templates.
---%>
+<!DOCTYPE html>
+<html lang="zxx">
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Cake Template">
-        <meta name="keywords" content="Cake, unica, creative, html">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Cake | Template</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Cake Template">
+    <meta name="keywords" content="Cake, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cake | Template</title>
 
-        <!-- Google Font -->
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
-              rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
-              rel="stylesheet">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
-        <!-- Css Styles -->
-        <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/flaticon.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/barfiller.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/magnific-popup.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/font-awesome.min.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/elegant-icons.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/nice-select.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/slicknav.min.css" type="text/css">
-        <link rel="stylesheet" href="../../assets/css/style.css" type="text/css">
-    </head>
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="css/flaticon.css" type="text/css">
+    <link rel="stylesheet" href="css/barfiller.css" type="text/css">
+    <link rel="stylesheet" href="css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
+</head>
 
-    <body>
+<body>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -45,16 +40,16 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__cart">
             <div class="offcanvas__cart__links">
-                <a href="#" class="search-switch"><img src="./img/icon/search.png" alt=""></a>
-                <a href="#"><img src="./img/icon/heart.png" alt=""></a>
+                <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+                <a href="#"><img src="img/icon/heart.png" alt=""></a>
             </div>
             <div class="offcanvas__cart__item">
-                <a href="#"><img src="./img/icon/cart.png" alt=""> <span>0</span></a>
+                <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
                 <div class="cart__price">Cart: <span>$0.00</span></div>
             </div>
         </div>
         <div class="offcanvas__logo">
-            <a href="./index.html"><img src="./img/logo.png" alt=""></a>
+            <a href="./index.html"><img src="img/logo.png" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__option">
@@ -102,15 +97,15 @@
                                 </ul>
                             </div>
                             <div class="header__logo">
-                                <a href="./index.html"><img src="./img/logo.png" alt=""></a>
+                                <a href="./index.html"><img src="img/logo.png" alt=""></a>
                             </div>
                             <div class="header__top__right">
                                 <div class="header__top__right__links">
-                                    <a href="#" class="search-switch"><img src="./img/icon/search.png" alt=""></a>
-                                    <a href="#"><img src="./img/icon/heart.png" alt=""></a>
+                                    <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
+                                    <a href="#"><img src="img/icon/heart.png" alt=""></a>
                                 </div>
                                 <div class="header__top__right__cart">
-                                    <a href="#"><img src="./img/icon/cart.png" alt=""> <span>0</span></a>
+                                    <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
                                     <div class="cart__price">Cart: <span>$0.00</span></div>
                                 </div>
                             </div>
@@ -135,7 +130,7 @@
                                     <li><a href="./checkout.html">Check Out</a></li>
                                     <li><a href="./wisslist.html">Wisslist</a></li>
                                     <li><a href="./Class.html">Class</a></li>
-                                    <li><a href="./blog-details.html">Blog Details</a></li>
+                                    <li><a href="blog-details.jsp">Blog Details</a></li>
                                 </ul>
                             </li>
                             <li class="active"><a href="./blog.html">Blog</a></li>
@@ -188,7 +183,7 @@
                             <h2>Delivering Kisses And Miracles</h2>
                             <p>Herbs are fun and easy to grow. When harvested they make even the simplest meal seem like
                                 a gourmet delight. By using herbs in your cooking you can easily change the flavors of
-                                your recipes in many different ways, according to which herbs you add...</p>
+                            your recipes in many different ways, according to which herbs you add...</p>
                             <a href="#">READ MORE</a>
                         </div>
                     </div>
@@ -207,7 +202,7 @@
                             <h2>Make Grilling A Healthy Experience</h2>
                             <p>Herbs are fun and easy to grow. When harvested they make even the simplest meal seem like
                                 a gourmet delight. By using herbs in your cooking you can easily change the flavors of
-                                your recipes in many different ways, according to which herbs you add...</p>
+                            your recipes in many different ways, according to which herbs you add...</p>
                             <a href="#">READ MORE</a>
                         </div>
                     </div>
@@ -226,7 +221,7 @@
                             <h2>Bbq Myths Getting You Down</h2>
                             <p>Herbs are fun and easy to grow. When harvested they make even the simplest meal seem like
                                 a gourmet delight. By using herbs in your cooking you can easily change the flavors of
-                                your recipes in many different ways, according to which herbs you add...</p>
+                            your recipes in many different ways, according to which herbs you add...</p>
                             <a href="#">READ MORE</a>
                         </div>
                     </div>
@@ -245,7 +240,7 @@
                             <h2>Keep That Cooking Area Clean</h2>
                             <p>Herbs are fun and easy to grow. When harvested they make even the simplest meal seem like
                                 a gourmet delight. By using herbs in your cooking you can easily change the flavors of
-                                your recipes in many different ways, according to which herbs you add...</p>
+                            your recipes in many different ways, according to which herbs you add...</p>
                             <a href="#">READ MORE</a>
                         </div>
                     </div>
@@ -279,7 +274,7 @@
                             <div class="blog__sidebar__recent">
                                 <a href="#" class="blog__sidebar__recent__item">
                                     <div class="blog__sidebar__recent__item__pic">
-                                        <img src="./img/blog/br-1.jpg" alt="">
+                                        <img src="img/blog/br-1.jpg" alt="">
                                     </div>
                                     <div class="blog__sidebar__recent__item__text">
                                         <h4>Secret To Cooking Vegetables</h4>
@@ -288,7 +283,7 @@
                                 </a>
                                 <a href="#" class="blog__sidebar__recent__item">
                                     <div class="blog__sidebar__recent__item__pic">
-                                        <img src="./img/blog/br-2.jpg" alt="">
+                                        <img src="img/blog/br-2.jpg" alt="">
                                     </div>
                                     <div class="blog__sidebar__recent__item__text">
                                         <h4>Bbq Myths Getting You Down</h4>
@@ -297,7 +292,7 @@
                                 </a>
                                 <a href="#" class="blog__sidebar__recent__item">
                                     <div class="blog__sidebar__recent__item__pic">
-                                        <img src="./img/blog/br-3.jpg" alt="">
+                                        <img src="img/blog/br-3.jpg" alt="">
                                     </div>
                                     <div class="blog__sidebar__recent__item__text">
                                         <h4>Save Money The Crock Pot Way</h4>
@@ -306,7 +301,7 @@
                                 </a>
                                 <a href="#" class="blog__sidebar__recent__item">
                                     <div class="blog__sidebar__recent__item__pic">
-                                        <img src="./img/blog/br-4.jpg" alt="">
+                                        <img src="img/blog/br-4.jpg" alt="">
                                     </div>
                                     <div class="blog__sidebar__recent__item__text">
                                         <h4>Grilling Tips For The Dog Days Of Summer</h4>
@@ -315,7 +310,7 @@
                                 </a>
                                 <a href="#" class="blog__sidebar__recent__item">
                                     <div class="blog__sidebar__recent__item__pic">
-                                        <img src="./img/blog/br-5.jpg" alt="">
+                                        <img src="img/blog/br-5.jpg" alt="">
                                     </div>
                                     <div class="blog__sidebar__recent__item__text">
                                         <h4>Barbeque Techniques Two Methods To Consider</h4>
@@ -373,10 +368,10 @@
                 <div class="col-lg-4 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__logo">
-                            <a href="#"><img src="./img/footer-logo.png" alt=""></a>
+                            <a href="#"><img src="img/footer-logo.png" alt=""></a>
                         </div>
                         <p>Lorem ipsum dolor amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore dolore magna aliqua.</p>
+                        labore dolore magna aliqua.</p>
                         <div class="footer__social">
                             <a href="#"><i class="fa fa-facebook"></i></a>
                             <a href="#"><i class="fa fa-twitter"></i></a>
@@ -402,45 +397,46 @@
                 <div class="row">
                     <div class="col-lg-7">
                         <p class="copyright__text text-white"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </p>
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="copyright__widget">
-                            <ul>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Terms & Conditions</a></li>
-                                <li><a href="#">Site Map</a></li>
-                            </ul>
-                        </div>
+                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                          <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                      </p>
+                  </div>
+                  <div class="col-lg-5">
+                    <div class="copyright__widget">
+                        <ul>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                            <li><a href="#">Site Map</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>
-    <!-- Footer Section End -->
-
-    <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
     </div>
-    <!-- Search End -->
+</footer>
+<!-- Footer Section End -->
 
-    <!-- Js Plugins -->
-    <script src="../../assets/js/jquery-3.3.1.min.js"></script>
-    <script src="../../assets/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/jquery.nice-select.min.js"></script>
-    <script src="../../assets/js/jquery.barfiller.js"></script>
-    <script src="../../assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="../../assets/js/jquery.slicknav.js"></script>
-    <script src="../../assets/js/owl.carousel.min.js"></script>
-    <script src="../../assets/js/jquery.nicescroll.min.js"></script>
-    <script src="../../assets/js/main.js"></script>
-    </body>
+<!-- Search Begin -->
+<div class="search-model">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="search-close-switch">+</div>
+        <form class="search-model-form">
+            <input type="text" id="search-input" placeholder="Search here.....">
+        </form>
+    </div>
+</div>
+<!-- Search End -->
+
+<!-- Js Plugins -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/jquery.barfiller.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/jquery.slicknav.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.nicescroll.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+
 </html>
