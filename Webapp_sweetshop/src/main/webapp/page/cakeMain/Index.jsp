@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../../assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../../assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -45,16 +46,16 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__cart">
         <div class="offcanvas__cart__links">
-            <a href="#" class="search-switch"><img src="./img/icon/search.png" alt=""></a>
-            <a href="#"><img src="./img/icon/heart.png" alt=""></a>
+            <a href="#" class="search-switch"><img src="./assets/img/icon/search.png" alt=""></a>
+            <a href="#"><img src="./assets/img/icon/heart.png" alt=""></a>
         </div>
         <div class="offcanvas__cart__item">
-            <a href="#"><img src="./img/icon/cart.png" alt=""> <span>0</span></a>
+            <a href="#"><img src="./assets/img/icon/cart.png" alt=""> <span>0</span></a>
             <div class="cart__price">Cart: <span>$0.00</span></div>
         </div>
     </div>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src="./img/logo.png" alt=""></a>
+        <a href="./index.html"><img src="./assets/img/logo.png" alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__option">
@@ -102,15 +103,15 @@
                             </ul>
                         </div>
                         <div class="header__logo">
-                            <a href="./index.html"><img src="./img/logo.png" alt=""></a>
+                            <a href="./index.html"><img src="./assets/img/logo.png" alt=""></a>
                         </div>
                         <div class="header__top__right">
                             <div class="header__top__right__links">
-                                <a href="#" class="search-switch"><img src="./img/icon/search.png" alt=""></a>
-                                <a href="#"><img src="./img/icon/heart.png" alt=""></a>
+                                <a href="#" class="search-switch"><img src="./assets/img/icon/search.png" alt=""></a>
+                                <a href="#"><img src="./assets/img/icon/heart.png" alt=""></a>
                             </div>
                             <div class="header__top__right__cart">
-                                <a href="#"><img src="./img/icon/cart.png" alt=""> <span>0</span></a>
+                                <a href="#"><img src="./assets/img/icon/cart.png" alt=""> <span>0</span></a>
                                 <div class="cart__price">Cart: <span>$0.00</span></div>
                             </div>
                         </div>
@@ -151,7 +152,7 @@
 <!-- Hero Section Begin -->
 <section class="hero">
     <div class="hero__slider owl-carousel">
-        <div class="hero__item set-bg" data-setbg="img/hero/hero-1.jpg">
+        <div class="hero__item set-bg" data-setbg="assets/img/hero/hero-1.jpg">
             <div class="container">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
@@ -223,53 +224,6 @@
 </section>
 <!-- About Section End -->
 
-<!-- Categories Section Begin -->
-<div class="categories">
-    <div class="container">
-        <div class="row">
-            <div class="categories__slider owl-carousel">
-                <div class="categories__item">
-                    <div class="categories__item__icon">
-                        <span class="flaticon-029-cupcake-3"></span>
-                        <h5>Cupcake</h5>
-                    </div>
-                </div>
-                <div class="categories__item">
-                    <div class="categories__item__icon">
-                        <span class="flaticon-034-chocolate-roll"></span>
-                        <h5>Butter</h5>
-                    </div>
-                </div>
-                <div class="categories__item">
-                    <div class="categories__item__icon">
-                        <span class="flaticon-005-pancake"></span>
-                        <h5>Red Velvet</h5>
-                    </div>
-                </div>
-                <div class="categories__item">
-                    <div class="categories__item__icon">
-                        <span class="flaticon-030-cupcake-2"></span>
-                        <h5>Biscuit</h5>
-                    </div>
-                </div>
-                <div class="categories__item">
-                    <div class="categories__item__icon">
-                        <span class="flaticon-006-macarons"></span>
-                        <h5>Donut</h5>
-                    </div>
-                </div>
-                <div class="categories__item">
-                    <div class="categories__item__icon">
-                        <span class="flaticon-006-macarons"></span>
-                        <h5>Cupcake</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Categories Section End -->
-
 <!-- Product Section Begin -->
 <section class="product spad">
     <div class="container">
@@ -297,37 +251,6 @@
 </section>
 <!-- Product Section End -->
 
-<!-- Class Section Begin -->
-<section class="class spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="class__form">
-                    <div class="section-title">
-                        <span>Class cakes</span>
-                        <h2>Made from your <br />own hands</h2>
-                    </div>
-                    <form action="#">
-                        <input type="text" placeholder="Name">
-                        <input type="text" placeholder="Phone">
-                        <select>
-                            <option value="">Studying Class</option>
-                            <option value="">Writting Class</option>
-                            <option value="">Reading Class</option>
-                        </select>
-                        <input type="text" placeholder="Type your requirements">
-                        <button type="submit" class="site-btn">registration</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="class__video set-bg" data-setbg="img/class-video.jpg">
-            <a href="https://www.youtube.com/watch?v=8PJ3_p7VqHw&list=RD8PJ3_p7VqHw&start_radio=1"
-               class="play-btn video-popup"><i class="fa fa-play"></i></a>
-        </div>
-    </div>
-</section>
-<!-- Class Section End -->
 
 <!-- Team Section Begin -->
 <section class="team spad">
@@ -424,7 +347,7 @@
                     <div class="testimonial__item">
                         <div class="testimonial__author">
                             <div class="testimonial__author__pic">
-                                <img src="./img/testimonial/ta-1.jpg" alt="">
+                                <img src="./assets/img/testimonial/ta-1.jpg" alt="">
                             </div>
                             <div class="testimonial__author__text">
                                 <h5>Kerry D.Silva</h5>
@@ -446,7 +369,7 @@
                     <div class="testimonial__item">
                         <div class="testimonial__author">
                             <div class="testimonial__author__pic">
-                                <img src="./img/testimonial/ta-2.jpg" alt="">
+                                <img src="./assets/img/testimonial/ta-2.jpg" alt="">
                             </div>
                             <div class="testimonial__author__text">
                                 <h5>Kerry D.Silva</h5>
@@ -468,7 +391,7 @@
                     <div class="testimonial__item">
                         <div class="testimonial__author">
                             <div class="testimonial__author__pic">
-                                <img src="./img/testimonial/ta-1.jpg" alt="">
+                                <img src="./assets/img/testimonial/ta-1.jpg" alt="">
                             </div>
                             <div class="testimonial__author__text">
                                 <h5>Ophelia Nunez</h5>
@@ -490,7 +413,7 @@
                     <div class="testimonial__item">
                         <div class="testimonial__author">
                             <div class="testimonial__author__pic">
-                                <img src="./img/testimonial/ta-2.jpg" alt="">
+                                <img src="./assets/img/testimonial/ta-2.jpg" alt="">
                             </div>
                             <div class="testimonial__author__text">
                                 <h5>Kerry D.Silva</h5>
@@ -512,7 +435,7 @@
                     <div class="testimonial__item">
                         <div class="testimonial__author">
                             <div class="testimonial__author__pic">
-                                <img src="./img/testimonial/ta-1.jpg" alt="">
+                                <img src="./assets/img/testimonial/ta-1.jpg" alt="">
                             </div>
                             <div class="testimonial__author__text">
                                 <h5>Ophelia Nunez</h5>
@@ -534,7 +457,7 @@
                     <div class="testimonial__item">
                         <div class="testimonial__author">
                             <div class="testimonial__author__pic">
-                                <img src="./img/testimonial/ta-2.jpg" alt="">
+                                <img src="./assets/img/testimonial/ta-2.jpg" alt="">
                             </div>
                             <div class="testimonial__author__text">
                                 <h5>Kerry D.Silva</h5>
@@ -575,32 +498,32 @@
                 <div class="row">
                     <div class="col-lg-4 col-md-4 col-sm-4 col-6">
                         <div class="instagram__pic">
-                            <img src="./img/instagram/instagram-1.jpg" alt="">
+                            <img src="./assets/img/instagram/instagram-1.jpg" alt="">
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-6">
                         <div class="instagram__pic middle__pic">
-                            <img src="./img/instagram/instagram-2.jpg" alt="">
+                            <img src="./assets/img/instagram/instagram-2.jpg" alt="">
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-6">
                         <div class="instagram__pic">
-                            <img src="./img/instagram/instagram-3.jpg" alt="">
+                            <img src="./assets/img/instagram/instagram-3.jpg" alt="">
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-6">
                         <div class="instagram__pic">
-                            <img src="./img/instagram/instagram-4.jpg" alt="">
+                            <img src="./assets/img/instagram/instagram-4.jpg" alt="">
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-6">
                         <div class="instagram__pic middle__pic">
-                            <img src="./img/instagram/instagram-5.jpg" alt="">
+                            <img src="./assets/img/instagram/instagram-5.jpg" alt="">
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-4 col-6">
                         <div class="instagram__pic">
-                            <img src="./img/instagram/instagram-3.jpg" alt="">
+                            <img src="./assets/img/instagram/instagram-3.jpg" alt="">
                         </div>
                     </div>
                 </div>
@@ -633,7 +556,7 @@
 <!-- Map End -->
 
 <!-- Footer Section Begin -->
-<footer class="footer set-bg" data-setbg="img/footer-bg.jpg">
+<footer class="footer set-bg" data-setbg="assets/img/footer-bg.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6">
@@ -649,16 +572,10 @@
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="./img/footer-logo.png" alt=""></a>
+                        <a href="#"><img src="./assets/img/footer-logo.png" alt=""></a>
                     </div>
                     <p>Lorem ipsum dolor amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore dolore magna aliqua.</p>
-                    <div class="footer__social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-youtube-play"></i></a>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6">
@@ -678,7 +595,7 @@
             <div class="row">
                 <div class="col-lg-7">
                     <p class="copyright__text text-white"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Team 6 - HE1867
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
                 </div>
