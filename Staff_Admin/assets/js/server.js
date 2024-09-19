@@ -33,3 +33,29 @@ app.post('/customer/save', (req, res) => {
     );
   }
 });
+// API để lấy dữ liệu khách hàng dựa trên ID
+app.get('/customer/:id', (req, res) => {
+    const customerId = req.params.id;
+    db.query('SELECT * FROM user WHERE id = ?', [customerId], (err, result) => {
+      if (err) throw err;
+      res.render('user-add.html', { customer: result[0] });
+    });
+  });
+  
+  // API để lấy danh sách khách hàng
+app.get('/customers', (req, res) => {
+    db.query('SELECT * FROM user', (err, results) => {
+      if (err) throw err;
+      res.json(results);
+    });
+  });
+
+  // API để xóa khách hàng dựa trên ID
+app.delete('/customer/delete/:id', (req, res) => {
+    const customerId = req.params.id;
+    db.query('DELETE FROM user WHERE id = ?', [customerId], (err, result) => {
+      if (err) throw err;
+      res.sendStatus(200);
+    });
+  });
+  

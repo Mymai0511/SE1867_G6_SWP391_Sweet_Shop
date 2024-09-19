@@ -370,41 +370,19 @@
                   <table id="user-list-table" class="table table-striped dataTable mt-4" role="grid"
                      aria-describedby="user-list-page-info">
                      <thead>
-                        <tr class="ligth">
-                           <th>Profile</th>
-                           <th>Name</th>
-                           <th>Contact</th>
-                           <th>Email</th>
-                           <th>Country</th>
-                           <th>Status</th>
-                           <th>Company</th>
-                           <th>Join Date</th>
-                           <th style="min-width: 100px">Action</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        <tr>
-                           <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                 src="../assets/images/user/01.jpg" alt="profile"></td>
-                           <td>Anna Sthesia</td>
-                           <td>(760) 756 7568</td>
-                           <td>annasthesia@gmail.com</td>
-                           <td>USA</td>
-                           <td><span class="badge bg-primary">Active</span></td>
-                           <td>Acme Corporation</td>
-                           <td>2019/12/01</td>
-                           <td>
-                              <div class="flex align-items-center list-user-action">
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Add" href="../app/user-add.html"><i class="ri-user-add-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Edit" href="../app/user-profile-edit.html"><i class="ri-pencil-line mr-0"></i></a>
-                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                    data-original-title="Delete" href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                              </div>
-                           </td>
-                        </tr>
-                     </tbody>
+                        <table id="customerTable" class="table">
+                            <thead>
+                              <tr>
+                                <th>Tên</th>
+                                <th>Email</th>
+                                <th>Điện thoại</th>
+                                <th>Hành động</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <!-- Dữ liệu khách hàng sẽ được nạp từ backend -->
+                            </tbody>
+                          </table>
                   </table>
                </div>
                <div class="row justify-content-between mt-3">
@@ -731,4 +709,32 @@
     
     <script src="../assets/vendor/moment.min.js"></script>
   </body>
+  <script>
+    $(document).ready(function() {
+      $('#customerTable').DataTable({
+        "ajax": "/customers", // API để lấy dữ liệu khách hàng
+        "columns": [
+          { "data": "fName" },
+          { "data": "email" },
+          { "data": "phone" },
+          {
+            "data": null,
+            "render": function (data, type, row) {
+              return `<a href="/customer/${row.id}" class="btn btn-primary">Sửa</a> | 
+                      <a href="#" class="btn btn-danger delete-btn" data-id="${row.id}">Xóa</a>`;
+            }
+          }
+        ]
+      });
+  
+      // Xử lý xóa khách hàng
+      $('#customerTable').on('click', '.delete-btn', function() {
+        const customerId = $(this).data('id');
+        if (confirm('Bạn có chắc chắn muốn xóa khách hàng này không?')) {
+          fetch(`/customer/delete/${customerId}`, { method: 'DELETE' })
+            .then(() => location.reload());
+        }
+      });
+    });
+  </script>  
 </html>
