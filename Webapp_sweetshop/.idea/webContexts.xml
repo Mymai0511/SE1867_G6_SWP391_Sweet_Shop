@@ -5,6 +5,7 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/page/admin/staff-add-new.jsp" value="file://$PROJECT_DIR$/src/main/webapp/page/admin" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/page/admin/staff-list.jsp" value="file://$PROJECT_DIR$/src/main/webapp/page/admin" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/page/cakeMain/Index.jsp" value="file://$PROJECT_DIR$/src/main/webapp/page/cakeMain" />
       </map>
     </option>
   </component>

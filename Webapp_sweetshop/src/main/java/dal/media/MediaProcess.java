@@ -42,6 +42,12 @@ public class MediaProcess extends DAO {
         return mediaList;
     }
 
+    /**
+     * get first image from an list image of product
+     *
+     * @param productID id product
+     * @return first object media
+     */
     public Media getTop1MediaByProductID(String productID) {
         String sql = "select top 1 *  from [media] where productID = ?";
         Media media = new Media();
@@ -61,7 +67,29 @@ public class MediaProcess extends DAO {
         return media;
     }
 
+    public List<Media> getAllMediaByProductID(String productID) {
+        String sql = "select * from [media] where productID = ?";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1,productID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Media media = new Media();
+                media.setId(rs.getInt("id"));
+                media.setImage(rs.getString("image"));
+                media.setPostID(rs.getInt("postID"));
+                media.setProductID(rs.getInt("productID"));
+                mediaList.add(media);
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+        return mediaList;
+    }
+
     public static void main(String[] args) {
-            System.out.println(MediaProcess.INSTANCE.getTop1MediaByProductID("1").getImage());
+        for (Media media : new MediaProcess().getAllMediaByProductID("1")) {
+            System.out.println(media.toString());
+        }
     }
 }
