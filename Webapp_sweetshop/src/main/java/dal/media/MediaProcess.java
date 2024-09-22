@@ -12,8 +12,6 @@ public class MediaProcess extends DAO {
 
     private MediaProcess() {};
 
-    private final List<Media> mediaList = new ArrayList<Media>();
-
     public void add(Media media) {}
 
     public void remove(Media media) {}
@@ -24,7 +22,8 @@ public class MediaProcess extends DAO {
      * @return list media
      */
     public List<Media> read() {
-        String sql = "select * from [media]";
+        List<Media> mediaList = new ArrayList<Media>();
+        String sql = "select * from `media`";
         try{
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -49,9 +48,10 @@ public class MediaProcess extends DAO {
      * @return first object media
      */
     public Media getTop1MediaByProductID(String productID) {
-        String sql = "select top 1 *  from [media] where productID = ?";
-        Media media = new Media();
+        String sql = "select top 1 *  from `media` where productID = ?";
+        Media media = null;
         try {
+            media = new Media();
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1,productID);
             ResultSet rs = ps.executeQuery();
@@ -68,7 +68,8 @@ public class MediaProcess extends DAO {
     }
 
     public List<Media> getAllMediaByProductID(String productID) {
-        String sql = "select * from [media] where productID = ?";
+        String sql = "select * from `media` where productID = ?";
+        List<Media> mediaList = new ArrayList<Media>();
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1,productID);

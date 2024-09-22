@@ -10,12 +10,7 @@ import java.util.List;
 public class ProductDetailProcess extends DAO {
     public static ProductDetailProcess INSTANCE = new ProductDetailProcess();
 
-    private ProductDetailProcess() {
-    }
-
-    ;
-
-    private final List<ProductDetail> productDetailList = new ArrayList<>();
+    private ProductDetailProcess() {};
 
     /**
      * get max value of price of a product
@@ -33,7 +28,7 @@ public class ProductDetailProcess extends DAO {
             while (rs.next()) {
                 maxPrice = rs.getFloat(1);
             }
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             status = e.getMessage();
         }
         return maxPrice;
@@ -55,15 +50,14 @@ public class ProductDetailProcess extends DAO {
             while (rs.next()) {
                 minPrice = rs.getFloat(1);
             }
-        } catch (SQLException e) {
+        }catch (SQLException e) {
             status = e.getMessage();
         }
         return minPrice;
     }
 
     public static void main(String[] args) {
-        System.out.println(ProductDetailProcess.INSTANCE.getMinPriceByProductId("1") + ", " +
-                ProductDetailProcess.INSTANCE.getMaxPriceByProductId("1"));
+        System.out.println(ProductDetailProcess.INSTANCE.getMinPriceByProductId("1") + ", " + ProductDetailProcess.INSTANCE.getMaxPriceByProductId("1"));
     }
 
     /**
@@ -73,6 +67,7 @@ public class ProductDetailProcess extends DAO {
      * @return list product detail
      */
     public List<ProductDetail> getProductDetailByProductID(String idProduct) {
+        List<ProductDetail> productDetailList = new ArrayList<>();
         String sql = "SELECT * FROM `productDetail` WHERE productID = ?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
