@@ -185,31 +185,31 @@ INSERT INTO [authority] ([code], [name]) VALUES
 (4, 'Admin');
 
 INSERT INTO [user] ([username], [password], [fName], [gender], [email], [phone], [dob], [avatar], [address], [status], [createdAt], [updatedAt], [role]) VALUES
-('customer', '12345', 'John Doe', 1, 'john@example.com', '0123456789', '1990-01-01', 'john_avatar.png', '123 Main St', 1, '2024-09-01', '2024-09-10', 1),
-('staff', '12345', 'Jane Smith', 0, 'jane@example.com', '0123456798', '1992-02-02', 'jane_avatar.png', '456 Park Ave', 1, '2024-09-02', '2024-09-11', 2),
-('shipper', '12345', 'Alice Jones', 0, 'alice@example.com', '0123456797', '1993-03-03', 'alice_avatar.png', '789 Oak St', 1, '2024-09-03', '2024-09-12', 3),
-('admin', '12345', 'Bob Brown', 1, 'bob@example.com', '0123456796', '1994-04-04', 'bob_avatar.png', '321 Pine St', 1, '2024-09-04', '2024-09-13', 4),
-('charlie_black', 'password654', 'Charlie Black', 1, 'charlie@example.com', '0123456795', '1995-05-05', 'charlie_avatar.png', '654 Cedar St', 1, '2024-09-05', '2024-09-14', 1),
-('david_green', 'password987', 'David Green', 1, 'david@example.com', '0123456794', '1996-06-06', 'david_avatar.png', '987 Birch St', 1, '2024-09-06', '2024-09-15', 2),
-('emily_white', 'password111', 'Emily White', 0, 'emily@example.com', '0123456793', '1997-07-07', 'emily_avatar.png', '111 Elm St', 1, '2024-09-07', '2024-09-16', 3),
-('frank_silver', 'password222', 'Frank Silver', 1, 'frank@example.com', '0123456792', '1998-08-08', 'frank_avatar.png', '222 Maple St', 1, '2024-09-08', '2024-09-17', 4),
-('george_gold', 'password333', 'George Gold', 1, 'george@example.com', '0123456791', '1999-09-09', 'george_avatar.png', '333 Willow St', 1, '2024-09-09', '2024-09-18', 1),
-('hannah_blue', 'password444', 'Hannah Blue', 0, 'hannah@example.com', '0123456790', '2000-10-10', 'hannah_avatar.png', '444 Ash St', 1, '2024-09-10', '2024-09-19', 2),
-('sam_adams', 'password555', 'Sam Adams', 1, 'sam@example.com', '0123456701', '1991-01-01', 'sam_avatar.png', '101 Liberty St', 1, '2024-09-01', '2024-09-10', 1),
-('mia_clark', 'password666', 'Mia Clark', 0, 'mia@example.com', '0123456702', '1990-02-01', 'mia_avatar.png', '202 Freedom Ave', 1, '2024-09-02', '2024-09-11', 2),
-('liam_taylor', 'password777', 'Liam Taylor', 1, 'liam@example.com', '0123456703', '1992-03-01', 'liam_avatar.png', '303 Unity Rd', 1, '2024-09-03', '2024-09-12', 3),
-('sophia_hill', 'password888', 'Sophia Hill', 0, 'sophia@example.com', '0123456704', '1991-04-01', 'sophia_avatar.png', '404 Harmony St', 1, '2024-09-04', '2024-09-13', 4),
-('noah_jones', 'password999', 'Noah Jones', 1, 'noah@example.com', '0123456705', '1993-05-01', 'noah_avatar.png', '505 Victory Ln', 1, '2024-09-05', '2024-09-14', 1),
-('olivia_johnson', 'password101', 'Olivia Johnson', 0, 'olivia@example.com', '0123456706', '1990-06-01', 'olivia_avatar.png', '606 Equality Ave', 1, '2024-09-06', '2024-09-15', 2),
-('logan_brown', 'password102', 'Logan Brown', 1, 'logan@example.com', '0123456707', '1994-07-01', 'logan_avatar.png', '707 Justice St', 1, '2024-09-07', '2024-09-16', 3),
-('emma_thomas', 'password103', 'Emma Thomas', 0, 'emma@example.com', '0123456708', '1992-08-01', 'emma_avatar.png', '808 Prosperity Blvd', 1, '2024-09-08', '2024-09-17', 4),
-('jacob_garcia', 'password104', 'Jacob Garcia', 1, 'jacob@example.com', '0123456709', '1991-09-01', 'jacob_avatar.png', '909 Serenity Ln', 1, '2024-09-09', '2024-09-18', 1),
-('amelia_martin', 'password105', 'Amelia Martin', 0, 'amelia@example.com', '0123456710', '1990-10-01', 'amelia_avatar.png', '1010 Paradise St', 1, '2024-09-10', '2024-09-19', 2),
-('ethan_lee', 'password106', 'Ethan Lee', 1, 'ethan@example.com', '0123456711', '1993-11-01', 'ethan_avatar.png', '1111 Liberty Rd', 1, '2024-09-11', '2024-09-20', 3),
-('ava_clarkson', 'password107', 'Ava Clarkson', 0, 'ava@example.com', '0123456712', '1992-12-01', 'ava_avatar.png', '1212 Freedom Ln', 1, '2024-09-12', '2024-09-21', 4),
-('mason_wright', 'password108', 'Mason Wright', 1, 'mason@example.com', '0123456713', '1991-11-01', 'mason_avatar.png', '1313 Unity Ave', 1, '2024-09-13', '2024-09-22', 1),
-('isabella_hall', 'password109', 'Isabella Hall', 0, 'isabella@example.com', '0123456714', '1990-01-01', 'isabella_avatar.png', '1414 Victory Blvd', 1, '2024-09-14', '2024-09-23', 2),
-('james_turner', 'password110', 'James Turner', 1, 'james@example.com', '0123456715', '1994-02-01', 'james_avatar.png', '1515 Equality St', 1, '2024-09-15', '2024-09-24', 3);
+('customer', '12345', 'John Doe', 1, 'john@example.com', '0123456789', '1990-01-01', '01.jpg', '123 Main St', 1, '2024-09-01', '2024-09-10', 1),
+('staff', '12345', 'Jane Smith', 0, 'jane@example.com', '0123456798', '1992-02-02', '02.jpg', '456 Park Ave', 1, '2024-09-02', '2024-09-11', 2),
+('shipper', '12345', 'Alice Jones', 0, 'alice@example.com', '0123456797', '1993-03-03', '03.jpg', '789 Oak St', 1, '2024-09-03', '2024-09-12', 3),
+('admin', '12345', 'Bob Brown', 1, 'bob@example.com', '0123456796', '1994-04-04', '04.jpg', '321 Pine St', 1, '2024-09-04', '2024-09-13', 4),
+('charlie_black', 'password654', 'Charlie Black', 1, 'charlie@example.com', '0123456795', '1995-05-05', '05.jpg', '654 Cedar St', 1, '2024-09-05', '2024-09-14', 1),
+('david_green', 'password987', 'David Green', 1, 'david@example.com', '0123456794', '1996-06-06', '07.jpg', '987 Birch St', 1, '2024-09-06', '2024-09-15', 2),
+('emily_white', 'password111', 'Emily White', 0, 'emily@example.com', '0123456793', '1997-07-07', '08.jpg', '111 Elm St', 1, '2024-09-07', '2024-09-16', 3),
+('frank_silver', 'password222', 'Frank Silver', 1, 'frank@example.com', '0123456792', '1998-08-08', '09.jpg', '222 Maple St', 1, '2024-09-08', '2024-09-17', 4),
+('george_gold', 'password333', 'George Gold', 1, 'george@example.com', '0123456791', '1999-09-09', '10.jpg', '333 Willow St', 1, '2024-09-09', '2024-09-18', 1),
+('hannah_blue', 'password444', 'Hannah Blue', 0, 'hannah@example.com', '0123456790', '2000-10-10', '11.jpg', '444 Ash St', 1, '2024-09-10', '2024-09-19', 2),
+('sam_adams', 'password555', 'Sam Adams', 1, 'sam@example.com', '0123456701', '1991-01-01', '12.jpg', '101 Liberty St', 1, '2024-09-01', '2024-09-10', 1),
+('mia_clark', 'password666', 'Mia Clark', 0, 'mia@example.com', '0123456702', '1990-02-01', '01.jpg', '202 Freedom Ave', 1, '2024-09-02', '2024-09-11', 2),
+('liam_taylor', 'password777', 'Liam Taylor', 1, 'liam@example.com', '0123456703', '1992-03-01', '02.jpg', '303 Unity Rd', 1, '2024-09-03', '2024-09-12', 3),
+('sophia_hill', 'password888', 'Sophia Hill', 0, 'sophia@example.com', '0123456704', '1991-04-01', '03.jpg', '404 Harmony St', 1, '2024-09-04', '2024-09-13', 4),
+('noah_jones', 'password999', 'Noah Jones', 1, 'noah@example.com', '0123456705', '1993-05-01', '04.jpg', '505 Victory Ln', 1, '2024-09-05', '2024-09-14', 1),
+('olivia_johnson', 'password101', 'Olivia Johnson', 0, 'olivia@example.com', '0123456706', '1990-06-01', '05.jpg', '606 Equality Ave', 1, '2024-09-06', '2024-09-15', 2),
+('logan_brown', 'password102', 'Logan Brown', 1, 'logan@example.com', '0123456707', '1994-07-01', '06.jpg', '707 Justice St', 1, '2024-09-07', '2024-09-16', 3),
+('emma_thomas', 'password103', 'Emma Thomas', 0, 'emma@example.com', '0123456708', '1992-08-01', '07.jpg', '808 Prosperity Blvd', 1, '2024-09-08', '2024-09-17', 4),
+('jacob_garcia', 'password104', 'Jacob Garcia', 1, 'jacob@example.com', '0123456709', '1991-09-01', '08.jpg', '909 Serenity Ln', 1, '2024-09-09', '2024-09-18', 1),
+('amelia_martin', 'password105', 'Amelia Martin', 0, 'amelia@example.com', '0123456710', '1990-10-01', '09.jpg', '1010 Paradise St', 1, '2024-09-10', '2024-09-19', 2),
+('ethan_lee', 'password106', 'Ethan Lee', 1, 'ethan@example.com', '0123456711', '1993-11-01', '10.jpg', '1111 Liberty Rd', 1, '2024-09-11', '2024-09-20', 3),
+('ava_clarkson', 'password107', 'Ava Clarkson', 0, 'ava@example.com', '0123456712', '1992-12-01', '11.jpg', '1212 Freedom Ln', 1, '2024-09-12', '2024-09-21', 4),
+('mason_wright', 'password108', 'Mason Wright', 1, 'mason@example.com', '0123456713', '1991-11-01', '12.jpg', '1313 Unity Ave', 1, '2024-09-13', '2024-09-22', 1),
+('isabella_hall', 'password109', 'Isabella Hall', 0, 'isabella@example.com', '0123456714', '1990-01-01', '01.jpg', '1414 Victory Blvd', 1, '2024-09-14', '2024-09-23', 2),
+('james_turner', 'password110', 'James Turner', 1, 'james@example.com', '0123456715', '1994-02-01', '01.jpg', '1515 Equality St', 1, '2024-09-15', '2024-09-24', 3);
 
 
 INSERT INTO [category] ([name], [status], [createdAt], [updatedAt]) VALUES
@@ -330,3 +330,5 @@ INSERT INTO [media] ([image], [postID], [productID]) VALUES
 
 
 ----------------------------------------------------------------
+
+SELECT * FROM [user] WHERE [role] IN (2, 3) AND [status] = 1;
