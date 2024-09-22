@@ -10,7 +10,10 @@ import java.util.List;
 public class ProductDetailProcess extends DAO {
     public static ProductDetailProcess INSTANCE = new ProductDetailProcess();
 
-    private ProductDetailProcess() {};
+    private ProductDetailProcess() {
+    }
+
+    ;
 
     private final List<ProductDetail> productDetailList = new ArrayList<>();
 
@@ -22,7 +25,7 @@ public class ProductDetailProcess extends DAO {
      */
     public float getMaxPriceByProductId(String productId) {
         float maxPrice = 0;
-        String sql = "SELECT MAX(price) FROM [productDetail] WHERE productID = ?";
+        String sql = "SELECT MAX(price) FROM `productDetail` WHERE productID = ?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1, productId);
@@ -30,7 +33,7 @@ public class ProductDetailProcess extends DAO {
             while (rs.next()) {
                 maxPrice = rs.getFloat(1);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             status = e.getMessage();
         }
         return maxPrice;
@@ -44,7 +47,7 @@ public class ProductDetailProcess extends DAO {
      */
     public float getMinPriceByProductId(String productId) {
         float minPrice = 0;
-        String sql = "SELECT MIN(price) FROM [productDetail] WHERE productID = ?";
+        String sql = "SELECT MIN(price) FROM `productDetail` WHERE productID = ?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1, productId);
@@ -52,16 +55,15 @@ public class ProductDetailProcess extends DAO {
             while (rs.next()) {
                 minPrice = rs.getFloat(1);
             }
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             status = e.getMessage();
         }
         return minPrice;
     }
 
     public static void main(String[] args) {
-        for (ProductDetail productDetail : ProductDetailProcess.INSTANCE.getProductDetailByProductID("1")) {
-            System.out.println(productDetail.toString());
-        }
+        System.out.println(ProductDetailProcess.INSTANCE.getMinPriceByProductId("1") + ", " +
+                ProductDetailProcess.INSTANCE.getMaxPriceByProductId("1"));
     }
 
     /**
@@ -71,7 +73,7 @@ public class ProductDetailProcess extends DAO {
      * @return list product detail
      */
     public List<ProductDetail> getProductDetailByProductID(String idProduct) {
-        String sql = "SELECT * FROM [productDetail] WHERE productID = ?";
+        String sql = "SELECT * FROM `productDetail` WHERE productID = ?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1, idProduct);

@@ -16,7 +16,7 @@ public class CategoryProcess extends DAO {
 
     public Category getCategoryByID(String id) {
         Category category = new Category();
-        String sql = "SELECT * FROM [category] WHERE id = ?";
+        String sql = "SELECT * FROM `category` WHERE id = ?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1, id);
@@ -33,6 +33,6 @@ public class CategoryProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(CategoryProcess.INSTANCE.getCategoryByID("1").getName());
+        System.out.println(CategoryProcess.INSTANCE.getCategoryByID("1").toString());
     }
 }

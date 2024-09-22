@@ -20,7 +20,7 @@ public class ProductProcess extends DAO {
      * @return list product
      */
     public List<Product> read() {
-        String sql = "select * from [product]";
+        String sql = "select * from `product`";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
