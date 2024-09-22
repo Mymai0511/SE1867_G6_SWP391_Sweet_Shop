@@ -30,16 +30,16 @@ public class ProductDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         idProduct = request.getParameter("id");
-        if (idProduct == null) {
-            response.sendRedirect(request.getContextPath() + "/home");
-        } else {
+//        if (idProduct == null) {
+//            response.sendRedirect(request.getContextPath() + "/home");
+//        } else {
             productDetailList = ProductDetailProcess.INSTANCE.getProductDetailByProductID(idProduct);
             mediaList = MediaProcess.INSTANCE.getAllMediaByProductID(idProduct);
             request.setAttribute("mediaList", mediaList);
             request.setAttribute("productDetail", ProductDetailProcess.INSTANCE);
             request.setAttribute("productDetailList", productDetailList);
             request.getRequestDispatcher("page/cakeMain/ShopDetail.jsp").forward(request, response);
-        }
+  //      }
     }
 
     @Override
