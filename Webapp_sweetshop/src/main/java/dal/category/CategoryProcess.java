@@ -32,6 +32,6 @@ public class CategoryProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(CategoryProcess.INSTANCE.getCategoryByID("1").getName());
+        System.out.println(CategoryProcess.INSTANCE.getCategoryByID("2").getName());
     }
 }
