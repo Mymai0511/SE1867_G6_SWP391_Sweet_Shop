@@ -39,40 +39,31 @@
             box-sizing: border-box;
         }
 
-        /* Container for the image gallery */
         .container {
             position: relative;
         }
 
-        /* Hide the images by default */
         .mySlides {
             display: none;
         }
 
-        /* Add a pointer when hovering over the thumbnail images */
         .cursor {
             cursor: pointer;
         }
 
-        /* Next & previous buttons */
         .prev, .next {
             cursor: pointer;
             position: absolute;
             top: 40%;
-            width: auto;
             padding: 16px;
-            margin-top: -50px;
             color: white;
             font-weight: bold;
             font-size: 20px;
-            border-radius: 0 3px 3px 0;
             user-select: none;
-            -webkit-user-select: none;
         }
 
         .next {
             right: 0;
-            border-radius: 3px 0 0 3px;
         }
 
         .prev:hover, .next:hover {
@@ -87,25 +78,17 @@
             top: 0;
         }
 
-        /* Caption for image */
-        .caption-container {
-            text-align: center;
-            background-color: #222;
-            padding: 2px 16px;
-            color: white;
-        }
-
-        .row {
+        .thumbnail-row {
             display: flex;
-            overflow-x: auto; /* Enable horizontal scrolling if thumbnails exceed container width */
+            overflow-x: auto; /* Tạo thanh trượt ngang */
+            white-space: nowrap; /* Các hình thu nhỏ không xuống dòng */
         }
 
         .column {
-            flex: 0 0 auto;
+            flex: 0 0 auto; /* Đảm bảo cột không co lại */
             width: 16.66%;
         }
 
-        /* Add a transparency effect for thumnail images */
         .demo {
             opacity: 0.6;
         }
@@ -113,33 +96,18 @@
         .active, .demo:hover {
             opacity: 1;
         }
-
-        .thumbnail-row {
-            margin-top: 10px;
-            display: flex;
-            overflow-x: auto;
-            width: 100%;
-        }
-        .column {
-            flex: 0 0 auto;
-            margin-right: 5px; /* Adjust margin as needed */
-        }
     </style>
 
     <script>
         let slideIndex = 1;
+        window.onload = function() {
+            currentSlide(1); // Tự động hiển thị ảnh đầu tiên
+        };
 
-        // Show the first slide initially
-        document.addEventListener("DOMContentLoaded", function() {
-            showSlides(slideIndex);
-        });
-
-        // Next/previous controls
         function plusSlides(n) {
             showSlides(slideIndex += n);
         }
 
-        // Thumbnail image controls
         function currentSlide(n) {
             showSlides(slideIndex = n);
         }
@@ -149,19 +117,29 @@
             let slides = document.getElementsByClassName("mySlides");
             let dots = document.getElementsByClassName("demo");
             let captionText = document.getElementById("caption");
-            if (n > slides.length) { slideIndex = 1; }
-            if (n < 1) { slideIndex = slides.length; }
+            if (n > slides.length) { slideIndex = 1 }
+            if (n < 1) { slideIndex = slides.length }
             for (i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
             }
             for (i = 0; i < dots.length; i++) {
                 dots[i].className = dots[i].className.replace(" active", "");
             }
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-            captionText.innerHTML = dots[slideIndex - 1].alt;
+            slides[slideIndex-1].style.display = "block";
+            dots[slideIndex-1].className += " active";
+            if (captionText) {
+                captionText.innerHTML = dots[slideIndex-1].alt;
+            }
         }
+
+        document.getElementById('myInput').addEventListener('input', function() {
+            const minValue = parseInt(this.min);
+            if (this.value < minValue) {
+                this.value = minValue;
+            }
+        });
     </script>
+
 </head>
 
 <body>
@@ -307,7 +285,7 @@
                 <!-- Container for the image gallery -->
                 <div class="container">
                     <!-- Full-width images with number text -->
-                    <c:forEach items="${mediaList}" var="img" >
+                    <c:forEach items="${mediaList}" var="img">
                         <div class="mySlides">
                             <img src="assets/image/product/${img.image}" style="width:100%">
                         </div>
@@ -318,8 +296,8 @@
 
                     <!-- Thumbnail images -->
                     <div class="thumbnail-row">
-                        <c:forEach items="${mediaList}" var="img" >
-                            <div class="column">
+                        <c:forEach items="${mediaList}" var="img">
+                            <div class="column" style="display: flex; justify-content: center; align-items: center; padding: 10px">
                                 <img class="demo cursor" src="assets/image/product/${img.image}" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
                             </div>
                         </c:forEach>
@@ -327,23 +305,22 @@
                 </div>
             </div>
 
-
             <div class="col-lg-6">
                 <div class="product__details__text">
-                    <div class="product__label">Cupcake</div>
-                    <h4>SWEET AUTUMN LEAVES</h4>
-                    <h5>$26.41</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, eiusmod tempor incididunt ut labore
-                        et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida</p>
+                    <div class="product__label">${category.name}</div>
+                    <h4>${product.name}</h4>
+                    <h5 id="price">$26.41</h5> <!-- The price will be updated here -->
+                    <p>${product.description}</p>
+                    <c:forEach var="pd" items="${productDetailList}">
+                        <button type="button" name="btnSize" value="${pd}">${pd.size}</button>
+                    </c:forEach>
                     <ul>
-                        <li>SKU: <span>17</span></li>
-                        <li>Category: <span>Biscuit cake</span></li>
-                        <li>Tags: <span>Gadgets, minimalisstic</span></li>
+                        <li>Category: <span>${category.name}</span></li>
                     </ul>
                     <div class="product__details__option">
                         <div class="quantity">
                             <div class="pro-qty">
-                                <input type="text" value="2">
+                                <input type="number" id="myInput" value="1" min="1" />
                             </div>
                         </div>
                         <a href="#" class="primary-btn">Add to cart</a>
@@ -596,6 +573,11 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
+<script>
+    const button = document.querySelector('button[name="btnSize"]');
+    console.log(button.value); // Output: [object Object]
+
+</script>
 <script src="../../assets/js/jquery-3.3.1.min.js"></script>
 <script src="../../assets/js/bootstrap.min.js"></script>
 <script src="../../assets/js/jquery.nice-select.min.js"></script>

@@ -12,8 +12,6 @@ public class ProductDetailProcess extends DAO {
 
     private ProductDetailProcess() {};
 
-    private final List<ProductDetail> productDetailList = new ArrayList<>();
-
     /**
      * get max value of price of a product
      *
@@ -71,6 +69,7 @@ public class ProductDetailProcess extends DAO {
      * @return list product detail
      */
     public List<ProductDetail> getProductDetailByProductID(String idProduct) {
+        List<ProductDetail> productDetailList = new ArrayList<>();
         String sql = "SELECT * FROM [productDetail] WHERE productID = ?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);

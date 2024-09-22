@@ -12,8 +12,6 @@ public class ProductProcess extends DAO {
 
     private ProductProcess() {}
 
-    private final List<Product> productList = new ArrayList<>();
-
     /**
      * get all product from database
      *
@@ -21,6 +19,7 @@ public class ProductProcess extends DAO {
      */
     public List<Product> read() {
         String sql = "select * from [product]";
+        List<Product> productList = new ArrayList<>();
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -42,9 +41,36 @@ public class ProductProcess extends DAO {
         return productList;
     }
 
-    public static void main(String[] args) {
-        for (Product product : ProductProcess.INSTANCE.read()) {
-            System.out.println(product.getCategoryID());
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public Product getProductById(String id) {
+        String sql = "select * from [product] where id = ?";
+        Product product = null;
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                product = new Product();
+                product.setId(Integer.parseInt(rs.getString("id")));
+                product.setName(rs.getString("name"));
+                product.setIngredient(rs.getString("ingredient"));
+                product.setDescription(rs.getString("description"));
+                product.setStatus(rs.getInt("status"));
+                product.setCreatedAt(rs.getDate("createdAt"));
+                product.setUpdatedAt(rs.getDate("updatedAt"));
+                product.setCategoryID(rs.getInt("categoryID"));
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
         }
+        return product;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(ProductProcess.INSTANCE.getProductById("1"));
     }
 }
