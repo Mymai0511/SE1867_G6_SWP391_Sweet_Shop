@@ -4,13 +4,9 @@ import dal.category.CategoryProcess;
 import dal.media.MediaProcess;
 import dal.product.ProductProcess;
 import dal.productDetail.ProductDetailProcess;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import model.Media;
 import model.Product;
-
+import dal.productDetail.DBContext;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
