@@ -12,14 +12,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "GetStaffController", value = {"/getstaff"})
-public class GetStaffController extends HttpServlet {
+@WebServlet(name = "GetStaffDisableController", value = {"/staffdisable"})
+public class GetStaffDisableController extends HttpServlet {
     private List<Staff> staffList = new ArrayList<>();
 
 
     @Override
     public void init() {
-        staffList = StaffProcess.Instance.read();
+        staffList = StaffProcess.Instance.gettStaffDisable();
     }
 
     @Override

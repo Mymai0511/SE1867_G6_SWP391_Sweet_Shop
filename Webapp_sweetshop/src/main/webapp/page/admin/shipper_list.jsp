@@ -13,7 +13,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Staff List</title>
+    <title>Shipper List</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="../../assets/image/favicon.ico" />
@@ -48,7 +48,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div class="header-title">
-                            <h4 class="card-title">Staff List</h4>
+                            <h4 class="card-title">Shipper List</h4>
                         </div>
                     </div>
                     <div class="card-body">
@@ -56,23 +56,23 @@
                             <div class="row justify-content-between">
                                 <div class="col-sm-6 col-md-6">
                                     <div id="user_list_datatable_info" class="dataTables_filter">
-                                        <form class="mr-3 position-relative" action="/getstaffsearch" method="post">
+                                        <form class="mr-3 position-relative">
                                             <div class="form-group mb-0">
-                                                <input type="search" name="search" class="form-control" id="exampleInputSearch" placeholder="Search"
+                                                <input type="search" class="form-control" id="exampleInputSearch" placeholder="Search"
                                                        aria-controls="user-list-table">
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <div class="d-flex flex-wrap align-items-center">
-                                        <div class="btn-group btn-group-toggle btn-group-edges mr-2 btn-group1">
-                                            <a class="button btn button-icon bg-primary" target="_blank" href="/getstaff">All</a>
-                                            <a class="button btn button-icon bg-primary" target="_blank" href="/staffactive">Active</a>
-                                            <a class="button btn button-icon bg-primary" target="_blank" href="/staffdisable">Disable</a>
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                                        <div class="btn-group btn-group-toggle btn-group-edges mr-2 btn-group2">
+                                            <a class="button btn button-icon bg-primary" target="_blank" href="#">Active</a>
+                                            <a class="button btn button-icon bg-primary" target="_blank" href="#">Disable</a>
                                         </div>
+
                                         <div class="pl-3 btn-new border-left">
-                                            <a href="#" class="btn btn-primary" data-target="#new-project-modal" data-toggle="modal">New Project</a>
+                                            <a href="#" class="btn btn-primary" data-target="#new-project-modal" data-toggle="modal">New Shipper</a>
                                         </div>
                                     </div>
                                     <!-- <div class="user-list-files d-flex">
@@ -94,27 +94,27 @@
                                 <tr class="ligth">
                                     <th>#</th>
                                     <th>Profile</th>
-                                    <th onclick="sortTable(2)">Name</th>
-                                    <th onclick="sortTable(3)">Gender</th>
-                                    <th onclick="sortTable(4)">Date of Birth</th>
-                                    <th onclick="sortTable(5)">Status</th>
+                                    <th>Name</th>
+                                    <th>Contact</th>
+                                    <th>Date of Birth</th>
+                                    <th>Status</th>
                                     <th style="min-width: 100px">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
+                                <c:forEach var="shipper" items="${requestScope.shippers}" varStatus="loopStatus">
                                     <tr>
                                         <td>${loopStatus.count}</td>
                                         <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                                                     src="../../assets/image/user/${staff.avatar}"
+                                                                     src="../../assets/image/user/${shipper.avatar}"
                                                                      alt="profile"></td>
 <%--                                        <td>${staff.fName}</td>--%>
-                                        <td>${staff.fullName}</td>
-                                        <td>${staff.isGender() ? "Male" : "Female"}</td>
-                                        <td>${staff.dob}</td>
+                                        <td>${shipper.fullName}</td>
+                                        <td>${shipper.phone}</td>
+                                        <td>${shipper.dob}</td>
                                         <td>
-                                <span class="badge ${staff.status == 1 ? 'bg-primary' : 'bg-danger'}">
-                                        ${staff.status == 1 ? 'Active' : 'Disable'}
+                                <span class="badge ${shipper.status == 1 ? 'bg-primary' : 'bg-danger'}">
+                                        ${shipper.status == 1 ? 'Active' : 'Disable'}
                                 </span>
                                         </td>
                                         <td>
@@ -181,93 +181,6 @@
     </div>
 </footer>
 <!-- footer end -->
-<script>
-    var dir = "asc"; // Hướng sắp xếp mặc định
-
-    function sortTable(n) {
-        var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
-        table = document.getElementById("user-list-table");
-        switching = true;
-
-        while (switching) {
-            switching = false;
-            rows = table.rows;
-
-            for (i = 1; i < (rows.length - 1); i++) {
-                shouldSwitch = false;
-                x = rows[i].getElementsByTagName("TD")[n];
-                y = rows[i + 1].getElementsByTagName("TD")[n];
-
-                // So sánh dựa trên cột
-                if (n === 2) { // Name
-                    if (dir === "asc") {
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else {
-                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                } else if (n === 3) { // Gender
-                    if (dir === "asc") {
-                        if (x.innerHTML > y.innerHTML) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else {
-                        if (x.innerHTML < y.innerHTML) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                } else if (n === 4) { // Date of Birth
-                    var dateX = new Date(x.innerHTML);
-                    var dateY = new Date(y.innerHTML);
-                    if (dir === "asc") {
-                        if (dateX > dateY) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else {
-                        if (dateX < dateY) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                } else if (n === 5) { // Status
-                    if (dir === "asc") {
-                        if (x.innerHTML > y.innerHTML) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else {
-                        if (x.innerHTML < y.innerHTML) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (shouldSwitch) {
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-                switchcount++;
-            } else {
-                if (switchcount === 0 && dir === "asc") {
-                    dir = "desc"; // Đổi hướng sắp xếp
-                } else {
-                    dir = "asc";
-                }
-            }
-        }
-    }
-</script>
-
-
 
 <!-- Backend Bundle JavaScript -->
 <script src="../../assets/js/backend-bundle.min.js"></script>

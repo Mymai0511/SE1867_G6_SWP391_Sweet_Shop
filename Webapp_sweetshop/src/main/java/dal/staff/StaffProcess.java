@@ -14,12 +14,14 @@ public class StaffProcess extends DAO {
 
     public final List<Staff> staffList = new ArrayList<>();
 
+    // lấy cac user có role = 2 -staff
     public List<Staff> read() {
-        String sql = "SELECT * FROM user WHERE role IN (2) ;";
+        List<Staff> staffs = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role IN (2);";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
-            staffList.clear();
+            staffs.clear();
             while (rs.next()) {
                 Staff staff = new Staff();
                 staff.setId(rs.getInt("id"));
@@ -36,13 +38,112 @@ public class StaffProcess extends DAO {
                 staff.setCreatedAt(rs.getDate("createdAt"));
                 staff.setUpdatedAt(rs.getDate("updatedAt"));
                 staff.setRole(rs.getInt("role"));
-                staffList.add(staff);
+                staffs.add(staff);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return staffList;
+        return staffs;
     }
+
+    // lấy cac user có role = 2 -staff and active
+    public List<Staff> gettStaffActive() {
+        List<Staff> activeStaff = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role = 2 AND status = 1;";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            activeStaff.clear();
+            while (rs.next()) {
+                Staff staff = new Staff();
+                staff.setId(rs.getInt("id"));
+                staff.setUsername(rs.getString("username"));
+                staff.setPassword(rs.getString("password"));
+                staff.setFullName(rs.getString("fName"));
+                staff.setGender(rs.getBoolean("gender"));
+                staff.setEmail(rs.getString("email"));
+                staff.setPhone(rs.getString("phone"));
+                staff.setDob(rs.getDate("dob"));
+                staff.setAvatar(rs.getString("avatar"));
+                staff.setAddress(rs.getString("address"));
+                staff.setStatus(rs.getInt("status"));
+                staff.setCreatedAt(rs.getDate("createdAt"));
+                staff.setUpdatedAt(rs.getDate("updatedAt"));
+                staff.setRole(rs.getInt("role"));
+                activeStaff.add(staff);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return activeStaff;
+    }
+
+    // lấy cac user có role = 2 -staff and disable
+    public List<Staff> gettStaffDisable() {
+        List<Staff> disableStaff = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role = 2 AND status = 0;";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            disableStaff.clear();
+            while (rs.next()) {
+                Staff staff = new Staff();
+                staff.setId(rs.getInt("id"));
+                staff.setUsername(rs.getString("username"));
+                staff.setPassword(rs.getString("password"));
+                staff.setFullName(rs.getString("fName"));
+                staff.setGender(rs.getBoolean("gender"));
+                staff.setEmail(rs.getString("email"));
+                staff.setPhone(rs.getString("phone"));
+                staff.setDob(rs.getDate("dob"));
+                staff.setAvatar(rs.getString("avatar"));
+                staff.setAddress(rs.getString("address"));
+                staff.setStatus(rs.getInt("status"));
+                staff.setCreatedAt(rs.getDate("createdAt"));
+                staff.setUpdatedAt(rs.getDate("updatedAt"));
+                staff.setRole(rs.getInt("role"));
+                disableStaff.add(staff);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return disableStaff;
+    }
+
+    // Tìm staff theo tên
+    public List<Staff> searchStaff(String keyword) {
+        List<Staff> staffs = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role = 2 AND username LIKE ? ORDER BY username ASC;";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, "%" + keyword + "%"); // Thêm dấu % để tìm kiếm chứa từ khóa
+            ResultSet rs = ps.executeQuery();
+            staffs.clear();
+            while (rs.next()) {
+                Staff staff = new Staff();
+                staff.setId(rs.getInt("id"));
+                staff.setUsername(rs.getString("username"));
+                staff.setPassword(rs.getString("password"));
+                staff.setFullName(rs.getString("fName"));
+                staff.setGender(rs.getBoolean("gender"));
+                staff.setEmail(rs.getString("email"));
+                staff.setPhone(rs.getString("phone"));
+                staff.setDob(rs.getDate("dob"));
+                staff.setAvatar(rs.getString("avatar"));
+                staff.setAddress(rs.getString("address"));
+                staff.setStatus(rs.getInt("status"));
+                staff.setCreatedAt(rs.getDate("createdAt"));
+                staff.setUpdatedAt(rs.getDate("updatedAt"));
+                staff.setRole(rs.getInt("role"));
+                staffs.add(staff);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return staffs;
+    }
+
+
 
     public void add(Staff staff) {
         String sql = "INSERT INTO staff " +
@@ -110,7 +211,7 @@ public class StaffProcess extends DAO {
 
     public static void main(String[] args) {
         // Gọi hàm read để lấy danh sách nhân viên
-        List<Staff> staffList = StaffProcess.Instance.read();
+        List<Staff> staffList = StaffProcess.Instance.searchStaff("a");
 
         // In ra thông tin của từng nhân viên trong danh sách
         for (Staff staff : staffList) {
