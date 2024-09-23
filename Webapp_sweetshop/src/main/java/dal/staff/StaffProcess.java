@@ -15,7 +15,7 @@ public class StaffProcess extends DAO {
     public final List<Staff> staffList = new ArrayList<>();
 
     public List<Staff> read() {
-        String sql = "SELECT * FROM [user] WHERE [role] IN (2) AND [status] = 1;";
+        String sql = "SELECT * FROM user WHERE role IN (2) ;";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -45,20 +45,20 @@ public class StaffProcess extends DAO {
     }
 
     public void add(Staff staff) {
-        String sql = "INSERT INTO [staff] " +
-                "([username], " +
-                "[password], " +
-                "[fName], " +
-                "[gender], " +
-                "[email], " +
-                "[phone], " +
-                "[dob], " +
-                "[avatar], " +
-                "[address], " +
-                "[status], " +
-                "[createdAt], " +
-                "[updatedAt], " +
-                "[role]) " +
+        String sql = "INSERT INTO staff " +
+                "(username, " +
+                "password, " +
+                "fName, " +
+                "gender, " +
+                "email, " +
+                "phone, " +
+                "dob, " +
+                "avatar, " +
+                "address, " +
+                "status, " +
+                "createdAt, " +
+                "updatedAt, " +
+                "role) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);

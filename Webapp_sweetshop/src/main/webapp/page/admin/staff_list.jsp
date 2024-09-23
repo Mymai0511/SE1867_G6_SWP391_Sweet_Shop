@@ -65,17 +65,37 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <div class="user-list-files d-flex">
-                                        <a class="bg-primary" href="javascript:void(0);">
-                                            Print
-                                        </a>
-                                        <a class="bg-primary" href="javascript:void(0);">
-                                            Excel
-                                        </a>
-                                        <a class="bg-primary" href="javascript:void(0);">
-                                            Pdf
-                                        </a>
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between">
+                                        <div class="dropdown status-dropdown mr-3">
+                                            <div class="dropdown-toggle" id="dropdownMenuButton03" data-toggle="dropdown">
+                                                <div class="btn bg-body"><span class="h6">Status :</span> In Progress<i class="ri-arrow-down-s-line ml-2 mr-0"></i></div>
+                                            </div>
+                                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton03">
+                                                <a class="dropdown-item" href="#"><i class="ri-mic-line mr-2"></i>In Progress</a>
+                                                <a class="dropdown-item" href="#"><i class="ri-attachment-line mr-2"></i>Priority</a>
+                                                <a class="dropdown-item" href="#"><i class="ri-file-copy-line mr-2"></i>Category</a>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group btn-group-toggle btn-group-edges mr-2 btn-group2">
+                                            <a class="button btn button-icon bg-primary" target="_blank" href="#">Active</a>
+                                            <a class="button btn button-icon bg-primary" target="_blank" href="#">Disable</a>
+                                        </div>
+
+                                        <div class="pl-3 btn-new border-left">
+                                            <a href="#" class="btn btn-primary" data-target="#new-project-modal" data-toggle="modal">New Project</a>
+                                        </div>
                                     </div>
+                                    <!-- <div class="user-list-files d-flex">
+                                       <a class="bg-primary" href="javascript:void();">
+                                          Print
+                                       </a>
+                                       <a class="bg-primary" href="javascript:void();">
+                                          Excel
+                                       </a>
+                                       <a class="bg-primary" href="javascript:void();">
+                                          Pdf
+                                       </a>
+                                    </div> -->
                                 </div>
                             </div>
                             <table id="user-list-table" class="table table-striped dataTable mt-4" role="grid"
