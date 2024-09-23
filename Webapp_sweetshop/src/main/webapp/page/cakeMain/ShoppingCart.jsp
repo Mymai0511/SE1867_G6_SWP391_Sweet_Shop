@@ -196,7 +196,7 @@
                                         </td>
                                         <td class="cart__price">${item.totalPrice}</td>
                                         <td>
-                                            <a href="CartController?action=delete&productId=${item.productId}">
+                                            <a href="cartcontroller?action=delete&productId=${item.productId}">
                                                 <span class="icon_close" style="background-color: red; border-radius: 15px;"></span>
                                             </a>
                                         </td>
