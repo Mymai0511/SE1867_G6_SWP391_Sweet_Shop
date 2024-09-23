@@ -5,9 +5,8 @@
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/page/admin/staff-add-new.jsp" value="file://$PROJECT_DIR$/src/main/webapp/page/admin" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/page/admin/staff-list.jsp" value="file://$PROJECT_DIR$/src/main/webapp/page/admin" />
-        <entry key="file://$PROJECT_DIR$/src/main/webapp/page/admin/staff_list.jsp" value="file://$PROJECT_DIR$/src/main/webapp/page/admin" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/page/cakeMain/Index.jsp" value="file://$PROJECT_DIR$/src/main/webapp/page/cakeMain" />
-        <entry key="file://$PROJECT_DIR$/src/main/webapp/page/common/modal-list.html" value="file://$PROJECT_DIR$/src/main/webapp/page/common" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/page/cakeMain/ShopDetail.jsp" value="file://$PROJECT_DIR$/src/main/webapp/page/cakeMain" />
       </map>
     </option>
   </component>

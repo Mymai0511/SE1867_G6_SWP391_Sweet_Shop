@@ -12,16 +12,15 @@ public class CategoryProcess extends DAO {
 
     private CategoryProcess() {}
 
-    private final List<Category> categories = new ArrayList<>();
-
     public Category getCategoryByID(String id) {
-        Category category = new Category();
-        String sql = "SELECT * FROM [category] WHERE id = ?";
+        Category category = null;
+        String sql = "SELECT * FROM `category` WHERE id = ?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                category = new Category();
                 category.setId(rs.getInt("id"));
                 category.setName(rs.getString("name"));
                 category.setStatus(rs.getInt("status"));
