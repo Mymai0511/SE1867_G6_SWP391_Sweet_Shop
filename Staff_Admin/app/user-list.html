@@ -386,11 +386,43 @@
                 <th>Role</th>
                 <th>Actions</th>
                               </tr>
-                              <script src="dbcontext.java"></script>
-                            </thead>
-                            <tbody>
-                              <!-- Dữ liệu khách hàng sẽ được nạp từ backend -->
-                            </tbody>
+                              <script>
+                                $(document).ready(function() {
+                                  // Gọi API để lấy dữ liệu khách hàng
+                                  $.ajax({
+                                    url: '/api/customers',  // Đường dẫn API cần được thay thế đúng
+                                    method: 'GET',
+                                    success: function(data) {
+                                      // Nạp dữ liệu vào bảng
+                                      let customerTable = $('#userTable tbody');
+                                      customerTable.empty(); // Xóa dữ liệu bảng hiện tại
+                                      data.forEach(customer => {
+                                        let row = `
+                                          <tr>
+                                            <td>${customer.id}</td>
+                                            <td>${customer.username}</td>
+                                            <td>${customer.fullName}</td>
+                                            <td>${customer.gender}</td>
+                                            <td>${customer.email}</td>
+                                            <td>${customer.phone}</td>
+                                            <td>${customer.dob}</td>
+                                            <td><img src="${customer.avatar}" alt="Avatar" class="img-thumbnail" width="50"></td>
+                                            <td>${customer.address}</td>
+                                            <td>${customer.status}</td>
+                                            <td>${customer.role}</td>
+                                            <td>
+                                              <a href="/edit/${customer.id}" class="btn btn-primary">Sửa</a> |
+                                              <button class="btn btn-danger delete-btn" data-id="${customer.id}">Xóa</button>
+                                            </td>
+                                          </tr>
+                                        `;
+                                        customerTable.append(row);
+                                      });
+                                    }
+                                  });
+                                });
+                              </script>
+                              
                           </table>
                   </table>
                </div>

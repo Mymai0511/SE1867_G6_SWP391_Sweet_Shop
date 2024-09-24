@@ -38,3 +38,14 @@ private List<Product> productList = new ArrayList<>();
 
     }
 }
+public class CustomerList {
+    private CustomerDAO customerDAO;
+
+    public CustomerList() {
+        customerDAO = new CustomerDAO();
+    }
+
+    public List<Customer> getCustomerList() {
+        return customerDAO.getAllCustomers();
+    }
+}

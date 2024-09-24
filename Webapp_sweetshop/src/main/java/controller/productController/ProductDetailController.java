@@ -9,35 +9,36 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Category;
-import model.Media;
-import model.Product;
-import model.ProductDetail;
+import model.*;
 import until.Unique;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-@WebServlet (name = "viewDetail", value = "/viewdetail")
+@WebServlet(name = "viewDetail", value = "/viewdetail")
 public class ProductDetailController extends HttpServlet {
-
-    @Override
-    public void init() throws ServletException {
-
-    }
+    String idProduct = null;
+    Product product = null;
+    Category category = null;
+    User user = null;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idProduct = request.getParameter("id");
+        idProduct = request.getParameter("id");
         if (idProduct == null) {
             response.sendRedirect(request.getContextPath() + "/home");
         } else {
-            Product product = ProductProcess.INSTANCE.getProductById(idProduct);
-            Category category = CategoryProcess.INSTANCE.getCategoryByID(product.getCategoryID() + "");
+            product = ProductProcess.INSTANCE.getProductById(idProduct);
+            category = CategoryProcess.INSTANCE.getCategoryByID(product.getCategoryID() + "");
             List<ProductDetail> productDetailList = ProductDetailProcess.INSTANCE.getProductDetailByProductID(idProduct);
             List<Media> mediaList = MediaProcess.INSTANCE.getAllMediaByProductID(idProduct);
+            user = (User) request.getSession().getAttribute("user") == null
+                    ? null
+                    : (User) request.getSession().getAttribute("user");
 
+            request.setAttribute("user", user);
             request.setAttribute("size", uniqueSize(productDetailList));
             request.setAttribute("category", category);
             request.setAttribute("product", product);
@@ -51,9 +52,13 @@ public class ProductDetailController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        System.out.println(idProduct);
+        System.out.println(product.toString());
+        System.out.println(category.toString());
+        String pd = request.getParameter("btnSize");
     }
 
-    private List<String> uniqueSize (List<ProductDetail> list) {
+    private List<String> uniqueSize(List<ProductDetail> list) {
         List<String> stringList = new ArrayList<>();
         for (ProductDetail productDetail : list) {
             stringList.add(productDetail.getSize() + "");
