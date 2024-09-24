@@ -19,7 +19,7 @@ public class GetStaffController extends HttpServlet {
 
     @Override
     public void init() {
-        staffList = StaffProcess.Instance.read();
+        staffList = StaffProcess.Instance().read();
     }
 
     @Override

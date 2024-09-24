@@ -18,7 +18,7 @@ public class GetStaffSearchController extends HttpServlet {
 
     @Override
     public void init() {
-        staffList = StaffProcess.Instance.read(); // Load danh sách staff ban đầu
+        staffList = StaffProcess.Instance().read(); // Load danh sách staff ban đầu
     }
 
     @Override
@@ -32,7 +32,7 @@ public class GetStaffSearchController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String searchKeyword = request.getParameter("search"); // Lấy từ khóa tìm kiếm từ request
-        List<Staff> searchedStaffs = StaffProcess.Instance.searchStaff(searchKeyword); // Gọi phương thức tìm kiếm
+        List<Staff> searchedStaffs = StaffProcess.Instance().searchStaff(searchKeyword); // Gọi phương thức tìm kiếm
 
         request.setAttribute("staffs", searchedStaffs); // Đưa danh sách staff đã tìm kiếm vào request
         request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response); // Chuyển hướng về trang danh sách staff

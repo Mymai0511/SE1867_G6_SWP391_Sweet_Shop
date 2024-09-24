@@ -8,7 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StaffProcess extends DAO {
-    public static StaffProcess Instance = new StaffProcess();
+    private static StaffProcess instance;
+
+    public static StaffProcess Instance() {
+        if (instance == null) {
+            instance = new StaffProcess();
+        }
+        return instance;
+    }
+
 
     private StaffProcess() {}
 
@@ -143,10 +151,9 @@ public class StaffProcess extends DAO {
         return staffs;
     }
 
-
-
-    public void add(Staff staff) {
-        String sql = "INSERT INTO staff " +
+    // add a new staff member (User) to the database
+    public boolean add(Staff staff) {
+         String sql = "INSERT INTO user " +
                 "(username, " +
                 "password, " +
                 "fName, " +
@@ -161,6 +168,7 @@ public class StaffProcess extends DAO {
                 "updatedAt, " +
                 "role) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1, staff.getUsername());
@@ -173,12 +181,13 @@ public class StaffProcess extends DAO {
             ps.setString(8, staff.getAvatar());
             ps.setString(9, staff.getAddress());
             ps.setInt(10, staff.getStatus());
-            ps.setDate(11, new java.sql.Date(staff.getCreatedAt().getTime()));
-            ps.setDate(12, new java.sql.Date(staff.getUpdatedAt().getTime()));
+            ps.setDate(11, staff.getCreatedAt());
+            ps.setDate(12, staff.getUpdatedAt());
             ps.setInt(13, staff.getRole());
-            ps.executeUpdate();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -210,8 +219,30 @@ public class StaffProcess extends DAO {
 //    }
 
     public static void main(String[] args) {
+        // Tạo một đối tượng Staff mới
+        Staff newStaff = new Staff();
+        newStaff.setUsername("my");
+        newStaff.setPassword("password123");
+        newStaff.setFullName("John Doe");
+        newStaff.setGender(true); // true = Nam, false = Nữ
+        newStaff.setEmail("john@example.com");
+        newStaff.setPhone("0123456789");
+        newStaff.setDob(Date.valueOf("1990-01-01"));
+        newStaff.setAvatar("avatar.jpg");
+        newStaff.setAddress("123 Main Street");
+        newStaff.setStatus(1); // 1 = active, 0 = disabled
+        newStaff.setRole(2); // role = 2 cho nhân viên
+
+        // Gọi phương thức add của StaffProcess để thêm Staff
+        boolean result = StaffProcess.Instance().add(newStaff);
+
+        if (result) {
+            System.out.println("Thêm nhân viên thành công!");
+        } else {
+            System.out.println("Thêm nhân viên thất bại.");
+        }
         // Gọi hàm read để lấy danh sách nhân viên
-        List<Staff> staffList = StaffProcess.Instance.searchStaff("a");
+        List<Staff> staffList = StaffProcess.Instance().read();
 
         // In ra thông tin của từng nhân viên trong danh sách
         for (Staff staff : staffList) {

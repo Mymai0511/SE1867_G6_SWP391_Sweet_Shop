@@ -106,7 +106,7 @@
                                     <tr>
                                         <td>${loopStatus.count}</td>
                                         <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                                                     src="../../assets/image/user/${staff.avatar}"
+                                                                     src="${staff.avatar}"
                                                                      alt="profile"></td>
 <%--                                        <td>${staff.fName}</td>--%>
                                         <td>${staff.fullName}</td>
