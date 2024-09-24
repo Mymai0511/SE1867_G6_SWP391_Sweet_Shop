@@ -42,13 +42,13 @@ public class MediaProcess extends DAO {
     }
 
     /**
-     * get first image from an list image of product
+     * get first image from a list image of product
      *
      * @param productID id product
      * @return first object media
      */
     public Media getTop1MediaByProductID(String productID) {
-        String sql = "select top 1 *  from `media` where productID = ?";
+        String sql = "SELECT * FROM media WHERE productID = ? LIMIT 1;";
         Media media = null;
         try {
             media = new Media();
@@ -89,8 +89,6 @@ public class MediaProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        for (Media media : new MediaProcess().getAllMediaByProductID("1")) {
-            System.out.println(media.toString());
-        }
+        System.out.println(MediaProcess.INSTANCE.getTop1MediaByProductID("1"));
     }
 }
