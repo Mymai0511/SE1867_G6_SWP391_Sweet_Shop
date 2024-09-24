@@ -57,7 +57,9 @@ public class ProductDetailProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(ProductDetailProcess.INSTANCE.getMinPriceByProductId("1") + ", " + ProductDetailProcess.INSTANCE.getMaxPriceByProductId("1"));
+        for (ProductDetail pd : ProductDetailProcess.INSTANCE.getProductDetailByProductID("1")) {
+            System.out.println(pd.toString());
+        }
     }
 
     /**

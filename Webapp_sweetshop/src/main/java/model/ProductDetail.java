@@ -6,10 +6,19 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class ProductDetail {
     private int id;
     private float price;
     private String size;
     private int productID;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id:" + id +
+                ", price:" + price +
+                ", size:" + size +
+                ", productID:" + productID
+                + "}";
+    }
 }

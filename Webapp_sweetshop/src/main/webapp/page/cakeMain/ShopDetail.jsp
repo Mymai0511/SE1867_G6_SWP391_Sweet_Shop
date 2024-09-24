@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Hưng
@@ -6,6 +5,8 @@
   Time: 2:06 PM
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -33,6 +34,7 @@
     <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../../assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../../assets/css/style.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
         * {
@@ -100,7 +102,7 @@
 
     <script>
         let slideIndex = 1;
-        window.onload = function() {
+        window.onload = function () {
             currentSlide(1); // Tự động hiển thị ảnh đầu tiên
         };
 
@@ -117,22 +119,26 @@
             let slides = document.getElementsByClassName("mySlides");
             let dots = document.getElementsByClassName("demo");
             let captionText = document.getElementById("caption");
-            if (n > slides.length) { slideIndex = 1 }
-            if (n < 1) { slideIndex = slides.length }
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
             for (i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
             }
             for (i = 0; i < dots.length; i++) {
                 dots[i].className = dots[i].className.replace(" active", "");
             }
-            slides[slideIndex-1].style.display = "block";
-            dots[slideIndex-1].className += " active";
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
             if (captionText) {
-                captionText.innerHTML = dots[slideIndex-1].alt;
+                captionText.innerHTML = dots[slideIndex - 1].alt;
             }
         }
 
-        document.getElementById('myInput').addEventListener('input', function() {
+        document.getElementById('myInput').addEventListener('input', function () {
             const minValue = parseInt(this.min);
             if (this.value < minValue) {
                 this.value = minValue;
@@ -297,8 +303,10 @@
                     <!-- Thumbnail images -->
                     <div class="thumbnail-row">
                         <c:forEach items="${mediaList}" var="img">
-                            <div class="column" style="display: flex; justify-content: center; align-items: center; padding: 10px">
-                                <img class="demo cursor" src="assets/image/product/${img.image}" style="width:100%" onclick="currentSlide(1)" alt="The Woods">
+                            <div class="column"
+                                 style="display: flex; justify-content: center; align-items: center; padding: 10px">
+                                <img class="demo cursor" src="assets/image/product/${img.image}" style="width:100%"
+                                     onclick="currentSlide(1)" alt="The Woods">
                             </div>
                         </c:forEach>
                     </div>
@@ -306,198 +314,51 @@
             </div>
 
             <div class="col-lg-6">
-                <div class="product__details__text">
+                <form action="viewdetail" method="post" class="product__details__text">
                     <div class="product__label">${category.name}</div>
                     <h4>${product.name}</h4>
-                    <h5 id="price">$26.41</h5> <!-- The price will be updated here -->
-                    <p>${product.description}</p>
+                    <h5 id="price">0 vnd</h5>
+                    <h5 style="border-bottom: 0px; padding-bottom: 0px;">
+                        Size:
+                    </h5>
                     <c:forEach var="pd" items="${productDetailList}">
-                        <button type="button" name="btnSize" value="${pd}">${pd.size}</button>
+                        <button type="button"
+                                name="btnSize"
+                                id="size"
+                                class="btn btn-outline-info mb-3"
+                                value='${pd.id}", "${pd.price}", "${pd.size}", "${pd.productID}'
+                                onclick="changeSize(${pd.price})">
+                                ${pd.size}
+                        </button>
                     </c:forEach>
-                    <ul>
-                        <li>Category: <span>${category.name}</span></li>
-                    </ul>
-                    <div class="product__details__option">
-                        <div class="quantity">
+
+                    <div class="product__details__option row">
+                        <div class="quantity col-12 mb-3">
+                            <h5 style="border-bottom: 0px; padding-bottom: 0px;">Quantity:</h5>
                             <div class="pro-qty">
-                                <input type="number" id="myInput" value="1" min="1" />
+                                <input type="number" name="quantity" id="myInput" value="1" min="1"/>
                             </div>
                         </div>
-                        <a href="#" class="primary-btn">Add to cart</a>
-                        <a href="#" class="heart__btn"><span class="icon_heart_alt"></span></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="product__details__tab">
-            <div class="col-lg-12">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Additional information</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Previews(1)</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-lg-8">
-                                <p>This delectable Strawberry Pie is an extraordinary treat filled with sweet and
-                                    tasty chunks of delicious strawberries. Made with the freshest ingredients, one
-                                    bite will send you to summertime. Each gift arrives in an elegant gift box and
-                                    arrives with a greeting card of your choice that you can personalize online!</p>
-                            </div>
+                        <div class="col-12">
+                            <h5 style="border-bottom: 0px; padding-bottom: 0px;">Description:</h5>
+                            <p>${product.description}</p>
                         </div>
+                        <button type="submit" name="btnBuy" class="primary-btn col-4" style="margin-left: 12px">
+                            Buy now
+                        </button>
+                        <c:if test="${user != null}">
+                            <button type="submit" name="btnAdd" class="primary-btn col-4">Add to cart</button>
+                        </c:if>
                     </div>
-                    <div class="tab-pane" id="tabs-2" role="tabpanel">
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-lg-8">
-                                <p>This delectable Strawberry Pie is an extraordinary treat filled with sweet and
-                                    tasty chunks of delicious strawberries. Made with the freshest ingredients, one
-                                    bite will send you to summertime. Each gift arrives in an elegant gift box and
-                                    arrives with a greeting card of your choice that you can personalize online!2
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane" id="tabs-3" role="tabpanel">
-                        <div class="row d-flex justify-content-center">
-                            <div class="col-lg-8">
-                                <p>This delectable Strawberry Pie is an extraordinary treat filled with sweet and
-                                    tasty chunks of delicious strawberries. Made with the freshest ingredients, one
-                                    bite will send you to summertime. Each gift arrives in an elegant gift box and
-                                    arrives with a greeting card of your choice that you can personalize online!3
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </section>
 <!-- Shop Details Section End -->
 
-<!-- Related Products Section Begin -->
-<section class="related-products spad">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <div class="section-title">
-                    <h2>Related Products</h2>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="related__products__slider owl-carousel">
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-1.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Dozen Cupcakes</a></h6>
-                            <div class="product__item__price">$32.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-2.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Cookies and Cream</a></h6>
-                            <div class="product__item__price">$30.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-3.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Gluten Free Mini Dozen</a></h6>
-                            <div class="product__item__price">$31.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-4.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Cookie Dough</a></h6>
-                            <div class="product__item__price">$25.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-5.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">Vanilla Salted Caramel</a></h6>
-                            <div class="product__item__price">$05.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/shop/product-6.jpg">
-                            <div class="product__label">
-                                <span>Cupcake</span>
-                            </div>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="#">German Chocolate</a></h6>
-                            <div class="product__item__price">$14.00</div>
-                            <div class="cart_add">
-                                <a href="#">Add to cart</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Related Products Section End -->
-
 <!-- Footer Section Begin -->
-<footer class="footer set-bg" data-setbg="img/footer-bg.jpg">
+<footer class="footer set-bg" data-setbg="assets/img/footer-bg.jpg">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-6">
@@ -513,16 +374,10 @@
             <div class="col-lg-4 col-md-6 col-sm-6">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="assets/img/footer-logo.png" alt=""></a>
+                        <a href="#"><img src="./assets/img/footer-logo.png" alt=""></a>
                     </div>
                     <p>Lorem ipsum dolor amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
                         labore dolore magna aliqua.</p>
-                    <div class="footer__social">
-                        <a href="#"><i class="fa fa-facebook"></i></a>
-                        <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-instagram"></i></a>
-                        <a href="#"><i class="fa fa-youtube-play"></i></a>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 col-sm-6">
@@ -542,7 +397,7 @@
             <div class="row">
                 <div class="col-lg-7">
                     <p class="copyright__text text-white"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Team 6 - HE1867
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
                 </div>
@@ -573,11 +428,6 @@
 <!-- Search End -->
 
 <!-- Js Plugins -->
-<script>
-    const button = document.querySelector('button[name="btnSize"]');
-    console.log(button.value); // Output: [object Object]
-
-</script>
 <script src="../../assets/js/jquery-3.3.1.min.js"></script>
 <script src="../../assets/js/bootstrap.min.js"></script>
 <script src="../../assets/js/jquery.nice-select.min.js"></script>
@@ -587,5 +437,48 @@
 <script src="../../assets/js/owl.carousel.min.js"></script>
 <script src="../../assets/js/jquery.nicescroll.min.js"></script>
 <script src="../../assets/js/main.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const firstButton = document.querySelector("button[name='btnSize']");
+        if (firstButton) {
+            const price = extractPriceFromValue(firstButton.value);
+            changeSize(price, firstButton); // Gọi hàm và truyền cả button
+        }
+    });
+
+    // Hàm lấy giá trị price từ thuộc tính value
+    function extractPriceFromValue(value) {
+        const parts = value.split(",");
+        let price = parts[1].trim().replace('"', '');
+        return parseFloat(price);
+    }
+
+    // Hàm cập nhật giá và thay đổi class của nút bấm
+    function changeSize(price, button) {
+        // Thay đổi nội dung giá sản phẩm
+        let priceChange = document.getElementById("price");
+        priceChange.innerHTML = price + " vnd";
+
+        // Lấy tất cả các nút để đổi class
+        const buttons = document.querySelectorAll("button[name='btnSize']");
+        buttons.forEach(btn => {
+            btn.classList.remove('btn-info'); // Xóa class 'btn-info'
+            btn.classList.add('btn-outline-info'); // Đảm bảo là 'btn-outline-info'
+        });
+
+        // Thêm class 'btn-info' cho nút đã bấm
+        button.classList.remove('btn-outline-info');  // Xóa class 'btn-outline-info'
+        button.classList.add('btn-info');  // Thêm class 'btn-info'
+    }
+
+    // Xử lý sự kiện click của từng nút
+    const buttons = document.querySelectorAll("button[name='btnSize']");
+    buttons.forEach(button => {
+        button.addEventListener("click", function () {
+            const price = extractPriceFromValue(this.value);
+            changeSize(price, this); // Gọi hàm changeSize với giá trị và chính nút đã bấm
+        });
+    });
+</script>
 </body>
 </html>
