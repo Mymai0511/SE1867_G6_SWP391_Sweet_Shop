@@ -84,6 +84,46 @@ public class UserProcess extends DAO {
         }
     }
 
+    /**
+     * Create new user and return id after add
+     *
+     * @param User information user
+     * @return new id of user after add and null if add not success
+     */
+    public String addAndReturnId(User User) {
+        String sql = "{CALL insertUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String id = null;
+        try{
+            CallableStatement cs = this.connection.prepareCall(sql);
+            cs.setString(1, User.getUsername());
+            cs.setString(2, User.getPassword());
+            cs.setString(3, User.getFullName());
+            cs.setBoolean(4, User.isGender());
+            cs.setString(5, User.getEmail());
+            cs.setString(6, User.getPhone());
+            cs.setDate(7, User.getDob());
+            cs.setString(8, User.getAvatar());
+            cs.setString(9, User.getAddress());
+            cs.setInt(10, User.getStatus());
+            cs.setDate(11, new java.sql.Date(User.getCreatedAt().getTime()));
+            cs.setDate(12, new java.sql.Date(User.getUpdatedAt().getTime()));
+            cs.setInt(13, User.getRole());
+            boolean hasResult = cs.execute();
+            if (hasResult) {
+                ResultSet rs = cs.getResultSet();
+                if (rs.next()) {
+                    id = rs.getString("newUserID");
+                }
+                rs.close();
+            }
+            cs.close();
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+        return id;
+    }
+
+
 //    public void update(User user) {
 //        String sql = "UPDATE [post] " +
 //                "SET title = ?, " +

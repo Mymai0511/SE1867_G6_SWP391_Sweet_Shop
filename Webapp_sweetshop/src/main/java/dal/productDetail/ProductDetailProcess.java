@@ -57,7 +57,8 @@ public class ProductDetailProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        for (ProductDetail pd : ProductDetailProcess.INSTANCE.getProductDetailByProductID("1")) {
+        String[] id = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        for (ProductDetail pd : ProductDetailProcess.INSTANCE.getPDByListPDId(id)) {
             System.out.println(pd.toString());
         }
     }
@@ -85,6 +86,29 @@ public class ProductDetailProcess extends DAO {
             }
         } catch (SQLException e) {
             this.status = e.getMessage();
+        }
+        return productDetailList;
+    }
+
+    public List<ProductDetail> getPDByListPDId(String[] listId) {
+        List<ProductDetail> productDetailList = new ArrayList<>();
+        for (String id : listId) {
+           String sql = "SELECT * FROM `productDetail` WHERE id = ?";
+            try {
+                PreparedStatement ps = this.connection.prepareStatement(sql);
+                ps.setString(1, id);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    ProductDetail productDetail = new ProductDetail();
+                    productDetail.setId(rs.getInt("id"));
+                    productDetail.setSize(rs.getString("size"));
+                    productDetail.setPrice(rs.getFloat("price"));
+                    productDetail.setProductID(rs.getInt("productID"));
+                    productDetailList.add(productDetail);
+                }
+            } catch (SQLException e) {
+                this.status = e.getMessage();
+            }
         }
         return productDetailList;
     }

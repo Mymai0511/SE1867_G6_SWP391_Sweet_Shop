@@ -42,9 +42,10 @@ public class ProductProcess extends DAO {
     }
 
     /**
+     * get product by id product
      *
-     * @param id
-     * @return
+     * @param id id product
+     * @return object product or null if not found
      */
     public Product getProductById(String id) {
         String sql = "select * from `product` where id = ?";
