@@ -9,21 +9,29 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import until.UploadFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.util.List;
 
 @WebServlet(name = "AddNewStaffController", value = {"/addstaff"})
 
-//xác định kích thước tệp tối đa và các thông số khác liên quan đến tải lên.
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-        maxFileSize = 1024 * 1024 * 10,      // 10MB
-        maxRequestSize = 1024 * 1024 * 50    // 50MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
 public class AddNewStaffController extends HttpServlet {
+
+    private StaffProcess staffProcess;
+
+    @Override
+    public void init() {
+        staffProcess = new StaffProcess(); // Load danh sách staff ban đầu
+    }
 
     //xác định thư mục nơi sẽ lưu trữ ảnh đại diện
     private static final String UPLOAD_DIRECTORY = "assets/image/avatar";
@@ -38,6 +46,9 @@ public class AddNewStaffController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            // upload file
+            UploadFile uploadFile = new UploadFile();
+            List<String> imgProduct = uploadFile.fileUpload(request, response);
             // Process normal fields
             String username = request.getParameter("uname").trim();
             String password = request.getParameter("pass").trim();
@@ -92,9 +103,6 @@ public class AddNewStaffController extends HttpServlet {
             filePart.write(uploadPath + File.separator + fileName);
 
             // Tiếp tục xử lý các giá trị khác và thêm nhân viên vào cơ sở dữ liệu...
-
-
-            // Process other values
             boolean gender = "Male".equalsIgnoreCase(genderParam);
             int status = "Active".equalsIgnoreCase(statusParam) ? 1 : 0;
             Date dob = Date.valueOf(dobParam);
@@ -120,13 +128,13 @@ public class AddNewStaffController extends HttpServlet {
             newStaff.setUpdatedAt(currentDate);
 
             // thêm nhân viên vào cơ sở dữ liệu
-            boolean addSuccess = StaffProcess.Instance().add(newStaff);
+            boolean addSuccess = staffProcess.add(newStaff);
 
-//            if (addSuccess) {
-//                request.setAttribute("message", "Staff added successfully!");
-//            } else {
-//                request.setAttribute("message", "Failed to add staff.");
-//            }
+            if (addSuccess) {
+                request.setAttribute("message", "Staff added successfully!");
+            } else {
+                request.setAttribute("message", "Failed to add staff.");
+            }
 
         } catch (Exception ex) {
             ex.printStackTrace();

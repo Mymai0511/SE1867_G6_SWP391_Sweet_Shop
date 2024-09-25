@@ -56,6 +56,9 @@
                         </div>
                         <div class="card-body">
                             <div class="new-user-info">
+                                <c:if test="${not empty message}">
+                                    <div class="alert alert-info">${message}</div>
+                                </c:if>
 
                                 <form id="addStaffForm" action="/addstaff" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
                                     <div class="row">
@@ -163,10 +166,6 @@
                                         <div class="form-group col-md-12">
                                             <input type="checkbox" id="togglePassword" onclick="togglePasswordVisibility()"> Show Password
                                         </div>
-
-                                        <c:if test="${not empty message}">
-                                            <div class="alert alert-info">${message}</div>
-                                        </c:if>
 
                                         <button type="submit" class="btn btn-primary">Add New User</button>
                                     </div>

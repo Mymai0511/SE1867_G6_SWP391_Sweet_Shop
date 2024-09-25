@@ -9,22 +9,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Staff;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "GetStaffController", value = {"/getstaff"})
 public class GetStaffController extends HttpServlet {
-    private List<Staff> staffList = new ArrayList<>();
-
+    private StaffProcess staffProcess;
 
     @Override
     public void init() {
-        staffList = StaffProcess.Instance().read();
+        staffProcess = new StaffProcess(); // Initialize StaffProcess
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<Staff> staffList = staffProcess.getAllStaff(); // Get all staff
         request.setAttribute("staffs", staffList);
         request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response);
     }
@@ -32,6 +31,6 @@ public class GetStaffController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        // Handle any post requests if needed
     }
 }

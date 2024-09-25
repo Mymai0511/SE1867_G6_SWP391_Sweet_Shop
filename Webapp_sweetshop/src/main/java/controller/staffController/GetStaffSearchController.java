@@ -14,16 +14,17 @@ import java.util.List;
 
 @WebServlet(name = "GetStaffSearchController", value = {"/getstaffsearch"})
 public class GetStaffSearchController extends HttpServlet {
-    private List<Staff> staffList = new ArrayList<>();
+    private StaffProcess staffProcess;
 
     @Override
     public void init() {
-        staffList = StaffProcess.Instance().read(); // Load danh sách staff ban đầu
+        staffProcess = new StaffProcess(); // Load danh sách staff ban đầu
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<Staff> staffList = staffProcess.getStaffDisable(); // Lấy danh sách nhân viên không hoạt động
         request.setAttribute("staffs", staffList);
         request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response);
     }
@@ -32,7 +33,7 @@ public class GetStaffSearchController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String searchKeyword = request.getParameter("search"); // Lấy từ khóa tìm kiếm từ request
-        List<Staff> searchedStaffs = StaffProcess.Instance().searchStaff(searchKeyword); // Gọi phương thức tìm kiếm
+        List<Staff> searchedStaffs = staffProcess.searchStaff(searchKeyword); // Gọi phương thức tìm kiếm
 
         request.setAttribute("staffs", searchedStaffs); // Đưa danh sách staff đã tìm kiếm vào request
         request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response); // Chuyển hướng về trang danh sách staff

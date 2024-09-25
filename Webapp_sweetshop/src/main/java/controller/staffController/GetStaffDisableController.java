@@ -9,22 +9,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Staff;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "GetStaffDisableController", value = {"/staffdisable"})
 public class GetStaffDisableController extends HttpServlet {
-    private List<Staff> staffList = new ArrayList<>();
 
+    private StaffProcess staffProcess;
 
     @Override
     public void init() {
-        staffList = StaffProcess.Instance().gettStaffDisable();
+        staffProcess = new StaffProcess(); // Tạo mới StaffProcess
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<Staff> staffList = staffProcess.getStaffDisable(); // Lấy danh sách nhân viên không hoạt động
         request.setAttribute("staffs", staffList);
         request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response);
     }
@@ -32,6 +32,6 @@ public class GetStaffDisableController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        // Implement any post request handling if needed
     }
 }
