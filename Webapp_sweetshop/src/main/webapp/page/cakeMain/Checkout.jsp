@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Hưng
@@ -32,6 +33,14 @@
     <link rel="stylesheet" href="../../assets/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="../../assets/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="../../assets/css/style.css" type="text/css">
+
+    <style>
+        select {
+            all: unset; /* Xóa tất cả các thuộc tính CSS */
+            appearance: none; /* Loại bỏ kiểu mặc định của trình duyệt */
+            width: auto; /* Đặt chiều rộng về mặc định */
+        }
+    </style>
 </head>
 
 <body>
@@ -172,124 +181,82 @@
 <section class="checkout spad">
     <div class="container">
         <div class="checkout__form">
-            <form action="#">
+            <form action="checkout" method="post">
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
                         <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
                             here</a> to enter your code</h6>
                         <h6 class="checkout__title">Billing Details</h6>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="checkout__input">
-                                    <p>Fist Name<span>*</span></p>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="checkout__input">
-                                    <p>Last Name<span>*</span></p>
-                                    <input type="text">
-                                </div>
-                            </div>
-                        </div>
                         <div class="checkout__input">
-                            <p>Country<span>*</span></p>
-                            <input type="text">
+                            <p>Consignee Name<span>*</span></p>
+                            <input type="text" name="name" placeholder="Enter consignee name..."/>
                         </div>
-                        <div class="checkout__input">
-                            <p>Address<span>*</span></p>
-                            <input type="text" placeholder="Street Address" class="checkout__input__add">
-                            <input type="text" placeholder="Apartment, suite, unite ect (optinal)">
-                        </div>
-                        <div class="checkout__input">
-                            <p>Town/City<span>*</span></p>
-                            <input type="text">
-                        </div>
-                        <div class="checkout__input">
-                            <p>Country/State<span>*</span></p>
-                            <input type="text">
-                        </div>
-                        <div class="checkout__input">
-                            <p>Postcode / ZIP<span>*</span></p>
-                            <input type="text">
-                        </div>
+
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>Phone<span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" name="phone" id="phone" placeholder="Enter phone number..."/>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="checkout__input">
                                     <p>Email<span>*</span></p>
-                                    <input type="text">
+                                    <input type="email" name="email" id="email" placeholder="Enter email...">
                                 </div>
                             </div>
                         </div>
-                        <div class="checkout__input__checkbox">
-                            <label for="acc">
-                                Create an account?
-                                <input type="checkbox" id="acc">
-                                <span class="checkmark"></span>
-                            </label>
-                            <p>Create an account by entering the information below. If you are a returning customer
-                                please login at the top of the page</p>
+
+                        <div class="checkout__input row mb-3">
+                            <div class="col-sm-12 col-md-4">
+                                <p>Xã<span>*</span></p>
+                                <select name="location" size="10">
+                                    <c:set var="index" value="0"/>
+                                    <c:forEach var="l" items="${location}">
+                                        <option value="${l}" <c:if test="${index == 0}">selected</c:if>>${l}</option>
+                                        <c:set var="index" value="${index + 1}"/>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <p>Huyện<span>*</span></p>
+                                <select name="district">
+                                    <option value="Thạch Thất" style="width: 100%">Thạch Thất</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <p>Tỉnh<span>*</span></p>
+                                <select name="country" style="width: 100% !important; box-sizing: border-box !important;">
+                                    <option value="Hà Nội">Hà Nội</option>
+                                </select>
+                            </div>
                         </div>
+
                         <div class="checkout__input">
-                            <p>Account Password<span>*</span></p>
-                            <input type="text">
+                            <p>Voucher</p>
+                            <input type="text" name="voucher" id="voucher" placeholder="Add code voucher ..."/>
                         </div>
-                        <div class="checkout__input__checkbox">
-                            <label for="diff-acc">
-                                Note about your order, e.g, special noe for delivery
-                                <input type="checkbox" id="diff-acc">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                        <div class="checkout__input">
-                            <p>Order notes<span>*</span></p>
-                            <input type="text"
-                                   placeholder="Notes about your order, e.g. special notes for delivery.">
-                        </div>
+                        <input type="hidden" id="voucherList" name="voucherList" value="${codeVoucher}" />
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="checkout__order">
                             <h6 class="order__title">Your order</h6>
                             <div class="checkout__order__products">Product <span>Total</span></div>
                             <ul class="checkout__total__products">
-                                <li><samp>01.</samp> Vanilla salted caramel <span>$ 300.0</span></li>
-                                <li><samp>02.</samp> German chocolate <span>$ 170.0</span></li>
-                                <li><samp>03.</samp> Sweet autumn <span>$ 170.0</span></li>
-                                <li><samp>04.</samp> Cluten free mini dozen <span>$ 110.0</span></li>
+                                <c:set var="index" value="0" />
+                                <c:set var="total" value="0" />
+                                <c:forEach var="pd" items="${listPD}">
+                                    <c:set var="total" value="${total + pd.price}" />
+                                    <li>
+                                        <samp>${index + 1}. </samp>
+                                        ${product.getProductById(pd.productID).name}
+                                        <span>${pd.price} vnd</span>
+                                    </li>
+                                </c:forEach>
                             </ul>
                             <ul class="checkout__total__all">
-                                <li>Subtotal <span>$750.99</span></li>
-                                <li>Total <span>$750.99</span></li>
+                                <li>Total <span>${total} vnd</span></li>
                             </ul>
-                            <div class="checkout__input__checkbox">
-                                <label for="acc-or">
-                                    Create an account?
-                                    <input type="checkbox" id="acc-or">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adip elit, sed do eiusmod tempor incididunt
-                                ut labore et dolore magna aliqua.</p>
-                            <div class="checkout__input__checkbox">
-                                <label for="payment">
-                                    Check Payment
-                                    <input type="checkbox" id="payment">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                            <div class="checkout__input__checkbox">
-                                <label for="paypal">
-                                    Paypal
-                                    <input type="checkbox" id="paypal">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
                             <button type="submit" class="site-btn">PLACE ORDER</button>
                         </div>
                     </div>
@@ -345,8 +312,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-7">
-                    <p class="copyright__text text-white"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    <p class="copyright__text text-white">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                        All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i>
+                        by <a href="https://colorlib.com" target="_blank">Colorlib</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
                 </div>
@@ -386,5 +356,73 @@
 <script src="../../assets/js/owl.carousel.min.js"></script>
 <script src="../../assets/js/jquery.nicescroll.min.js"></script>
 <script src="../../assets/js/main.js"></script>
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        // Dừng form không submit ngay lập tức
+        e.preventDefault();
+
+        // Lấy tất cả input fields
+        const name = document.querySelector('input[name="name"]');
+        const phone = document.querySelector('input[name="phone"]');
+        const email = document.querySelector('input[name="email"]');
+        const voucher = document.querySelector('input[name="voucher"]');
+        const voucherList = document.getElementById('voucherList').value; // Danh sách mã voucher
+
+        // Xóa các thông báo lỗi cũ
+        document.querySelectorAll('.error-message').forEach(el => el.remove());
+
+        // Hàm loại bỏ khoảng trắng đầu cuối và nhiều khoảng trắng chuyển thành 1
+        function cleanInput(input) {
+            return input.value.trim().replace(/\s+/g, ' ');
+        }
+
+        // Hiển thị thông báo lỗi
+        function showError(field, message) {
+            const errorMessage = document.createElement('span');
+            errorMessage.classList.add('error-message');
+            errorMessage.style.color = 'red';
+            errorMessage.innerText = message;
+            field.parentNode.appendChild(errorMessage);
+        }
+
+        // Validate các trường không được để trống
+        function validateField(field, fieldName) {
+            const value = cleanInput(field);
+            if (value === '') {
+                showError(field, `${fieldName} không được để trống`);
+                return false;
+            }
+            field.value = value; // Cập nhật lại giá trị sau khi clean
+            return true;
+        }
+
+        // Kiểm tra voucher
+        function validateVoucher(voucher, voucherList) {
+            const voucherValue = cleanInput(voucher); // Lấy mã voucher người dùng nhập
+            const voucherArray = voucherList.split('|').filter(v => v); // Tách chuỗi mã voucher
+            if (!voucherArray.includes(voucherValue)) {
+                showError(voucher, 'Mã voucher không tồn tại');
+                return false;
+            }
+            return true;
+        }
+
+        // Biến để kiểm tra xem tất cả các trường có hợp lệ không
+        let isValid = true;
+
+        // Kiểm tra các trường
+        if (!validateField(name, 'Tên người nhận')) isValid = false;
+        if (!validateField(phone, 'Số điện thoại')) isValid = false;
+        if (!validateField(email, 'Email')) isValid = false;
+
+        // Voucher có thể bỏ trống, nhưng nếu nhập phải kiểm tra hợp lệ
+        if (voucher.value.trim() !== '' && !validateVoucher(voucher, voucherList)) isValid = false;
+
+        // Nếu tất cả các trường đều hợp lệ thì submit form
+        if (isValid) {
+            e.target.submit();
+        }
+    });
+</script>
 </body>
 </html>

@@ -326,11 +326,15 @@
                                 name="btnSize"
                                 id="size"
                                 class="btn btn-outline-info mb-3"
-                                value='${pd.id}", "${pd.price}", "${pd.size}", "${pd.productID}'
-                                onclick="changeSize(${pd.price})">
+                                value="${pd.id}, ${pd.price}, ${pd.size}, ${pd.productID}"
+                                onclick="changeSize(${pd.price}, ${pd.size}, ${pd.id})">
                                 ${pd.size}
                         </button>
                     </c:forEach>
+
+                    <input type="hidden" name="idPd" value="" id="selectId">
+                    <input type="hidden" name="size" value="" id="selectSize"/>
+                    <input type="hidden" name="price" value="" id="selectPrice"/>
 
                     <div class="product__details__option row">
                         <div class="quantity col-12 mb-3">
@@ -441,42 +445,63 @@
     document.addEventListener("DOMContentLoaded", function () {
         const firstButton = document.querySelector("button[name='btnSize']");
         if (firstButton) {
+            const id = extractIdFromValue(firstButton.value);
             const price = extractPriceFromValue(firstButton.value);
-            changeSize(price, firstButton); // Gọi hàm và truyền cả button
+            const size = extractSizeFromValue(firstButton.value);
+            changeSize(price, size, id, firstButton);
         }
     });
 
-    // Hàm lấy giá trị price từ thuộc tính value
+    // Function to extract id from the button's value
+    function extractIdFromValue(value) {
+        const parts = value.split(",");
+        return parts[0].trim();
+    }
+
+    // Function to extract price from the button's value
     function extractPriceFromValue(value) {
         const parts = value.split(",");
-        let price = parts[1].trim().replace('"', '');
+        let price = parts[1].trim();
         return parseFloat(price);
     }
 
-    // Hàm cập nhật giá và thay đổi class của nút bấm
-    function changeSize(price, button) {
-        // Thay đổi nội dung giá sản phẩm
+    // Function to extract size from the button's value
+    function extractSizeFromValue(value) {
+        const parts = value.split(",");
+        return parts[2].trim();
+    }
+
+    // Function to update price, size, id, and change button class
+    function changeSize(price, size, id, button) {
+        // Update the product price display
         let priceChange = document.getElementById("price");
         priceChange.innerHTML = price + " vnd";
 
-        // Lấy tất cả các nút để đổi class
+        // Update the hidden inputs for id, size, and price
+        document.getElementById("selectId").value = id;
+        document.getElementById("selectSize").value = size;
+        document.getElementById("selectPrice").value = price;
+
+        // Remove active class from all buttons and set it for the clicked button
         const buttons = document.querySelectorAll("button[name='btnSize']");
         buttons.forEach(btn => {
-            btn.classList.remove('btn-info'); // Xóa class 'btn-info'
-            btn.classList.add('btn-outline-info'); // Đảm bảo là 'btn-outline-info'
+            btn.classList.remove('btn-info'); // Remove 'btn-info'
+            btn.classList.add('btn-outline-info'); // Add 'btn-outline-info'
         });
 
-        // Thêm class 'btn-info' cho nút đã bấm
-        button.classList.remove('btn-outline-info');  // Xóa class 'btn-outline-info'
-        button.classList.add('btn-info');  // Thêm class 'btn-info'
+        // Add active class to the clicked button
+        button.classList.remove('btn-outline-info');  // Remove 'btn-outline-info'
+        button.classList.add('btn-info');  // Add 'btn-info'
     }
 
-    // Xử lý sự kiện click của từng nút
+    // Handle the click event for each button
     const buttons = document.querySelectorAll("button[name='btnSize']");
     buttons.forEach(button => {
         button.addEventListener("click", function () {
+            const id = extractIdFromValue(this.value);
             const price = extractPriceFromValue(this.value);
-            changeSize(price, this); // Gọi hàm changeSize với giá trị và chính nút đã bấm
+            const size = extractSizeFromValue(this.value);
+            changeSize(price, size, id, this); // Call changeSize with id, price, size, and button
         });
     });
 </script>
