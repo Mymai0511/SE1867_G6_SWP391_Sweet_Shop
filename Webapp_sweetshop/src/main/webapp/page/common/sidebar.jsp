@@ -7,7 +7,7 @@
     <div class="iq-sidebar-logo d-flex align-items-center">
         <a href="../backend/index.html" class="header-logo">
             <img src="../../assets/image/logo.svg" alt="logo">
-            <h3 class="logo-title light-logo">Webkit</h3>
+            <h3 class="logo-title light-logo">Cake</h3>
         </a>
         <div class="iq-menu-bt-sidebar ml-0">
             <i class="las la-bars wrapper-menu"></i>

@@ -45,7 +45,6 @@
 
     <div class="content-page">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-xl-12 col-lg-12">
                     <div class="card">
@@ -56,6 +55,7 @@
                         </div>
                         <div class="card-body">
                             <div class="new-user-info">
+                                <!-- Hiển thị thông báo lỗi nếu có -->
                                 <c:if test="${not empty message}">
                                     <div class="alert alert-info">${message}</div>
                                 </c:if>
@@ -65,7 +65,8 @@
                                         <!-- Profile Image Section -->
                                         <div class="form-group col-md-12">
                                             <div class="crm-profile-img-edit position-relative">
-                                                <img class="crm-profile-pic rounded avatar-100" id="profileImage" src="../../assets/image/avatar/11.png" alt="profile-pic">
+                                                <img class="crm-profile-pic rounded avatar-100" id="profileImage"
+                                                     src="${profileImage != null ? profileImage : '../../assets/avatar/11.png'}" alt="profile-pic">
                                                 <div class="crm-p-image bg-primary">
                                                     <i class="las la-pen upload-button"></i>
                                                     <input class="file-upload" id="profilePic" name="profilePic" type="file" accept="image/jpeg" onchange="previewImage(event);">
@@ -84,14 +85,16 @@
                                         <!-- Full Name -->
                                         <div class="form-group col-md-6">
                                             <label for="fullname">Full Name:</label>
-                                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full Name" oninput="validateField('fullname')">
+                                            <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full Name"
+                                                   value="${fullname != null ? fullname : ''}" oninput="validateField('fullname')">
                                             <div id="fullnameError" class="text-danger" style="display: none;"></div>
                                         </div>
 
                                         <!-- Date Of Birth -->
                                         <div class="form-group col-md-6">
                                             <label for="dob">Date Of Birth:</label>
-                                            <input type="date" class="form-control" id="dob" name="dob" placeholder="Date Of Birth" oninput="validateField('dob')">
+                                            <input type="date" class="form-control" id="dob" name="dob" placeholder="Date Of Birth"
+                                                   value="${dobParam != null ? dobParam : ''}" oninput="validateField('dob')">
                                             <div id="dobError" class="text-danger" style="display: none;"></div>
                                         </div>
 
@@ -99,9 +102,9 @@
                                         <div class="form-group col-md-6">
                                             <label>Gender:</label>
                                             <select id="gender" name="gender" class="selectpicker form-control" data-style="py-0" onchange="validateField('gender')">
-                                                <option value="">Select Gender</option>
-                                                <option value="Female">Female</option>
-                                                <option value="Male">Male</option>
+                                                <option value="" ${genderParam == '' ? 'selected' : ''}>Select Gender</option>
+                                                <option value="Female" ${genderParam == 'Female' ? 'selected' : ''}>Female</option>
+                                                <option value="Male" ${genderParam == 'Male' ? 'selected' : ''}>Male</option>
                                             </select>
                                             <div id="genderError" class="text-danger" style="display: none;"></div>
                                         </div>
@@ -110,9 +113,9 @@
                                         <div class="form-group col-md-6">
                                             <label>Status:</label>
                                             <select id="status" name="status" class="selectpicker form-control" data-style="py-0" onchange="validateField('status')">
-                                                <option value="">Select Status</option>
-                                                <option value="Active">Active</option>
-                                                <option value="Disable">Disable</option>
+                                                <option value="" ${statusParam == '' ? 'selected' : ''}>Select Status</option>
+                                                <option value="Active" ${statusParam == 'Active' ? 'selected' : ''}>Active</option>
+                                                <option value="Disable" ${statusParam == 'Disable' ? 'selected' : ''}>Disable</option>
                                             </select>
                                             <div id="statusError" class="text-danger" style="display: none;"></div>
                                         </div>
@@ -120,21 +123,24 @@
                                         <!-- Address -->
                                         <div class="form-group col-md-12">
                                             <label for="address">Address:</label>
-                                            <input type="text" class="form-control" id="address" name="address" placeholder="Address" oninput="validateField('address')">
+                                            <input type="text" class="form-control" id="address" name="address" placeholder="Address"
+                                                   value="${address != null ? address : ''}" oninput="validateField('address')">
                                             <div id="addressError" class="text-danger" style="display: none;"></div>
                                         </div>
 
                                         <!-- Mobile Number -->
                                         <div class="form-group col-md-12">
                                             <label for="mobno">Mobile Number:</label>
-                                            <input type="text" class="form-control" id="mobno" name="mobno" placeholder="Mobile Number" oninput="validateField('mobno')">
+                                            <input type="text" class="form-control" id="mobno" name="mobno" placeholder="Mobile Number"
+                                                   value="${phone != null ? phone : ''}" oninput="validateField('mobno')">
                                             <div id="mobnoError" class="text-danger" style="display: none;"></div>
                                         </div>
 
                                         <!-- Email -->
                                         <div class="form-group col-md-12">
                                             <label for="email">Email:</label>
-                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" oninput="validateField('email')">
+                                            <input type="email" class="form-control" id="email" name="email" placeholder="Email"
+                                                   value="${email != null ? email : ''}" oninput="validateField('email')">
                                             <div id="emailError" class="text-danger" style="display: none;"></div>
                                         </div>
 
@@ -144,21 +150,24 @@
                                         <!-- Username -->
                                         <div class="form-group col-md-12">
                                             <label for="uname">User Name:</label>
-                                            <input type="text" class="form-control" id="uname" name="uname" placeholder="User Name" oninput="validateField('uname')">
+                                            <input type="text" class="form-control" id="uname" name="uname" placeholder="User Name"
+                                                   value="${username != null ? username : ''}" oninput="validateField('uname')">
                                             <div id="unameError" class="text-danger" style="display: none;"></div>
                                         </div>
 
                                         <!-- Password -->
                                         <div class="form-group col-md-6">
                                             <label for="pass">Password:</label>
-                                            <input type="password" class="form-control" id="pass" name="pass" placeholder="Password" oninput="validateField('pass')">
+                                            <input type="password" class="form-control" id="pass" name="pass" placeholder="Password"
+                                                   value="${password != null ? password : ''}" oninput="validateField('pass')">
                                             <div id="passError" class="text-danger" style="display: none;"></div>
                                         </div>
 
                                         <!-- Repeat Password -->
                                         <div class="form-group col-md-6">
                                             <label for="rpass">Repeat Password:</label>
-                                            <input type="password" class="form-control" id="rpass" name="rpass" placeholder="Repeat Password" oninput="validateField('rpass')">
+                                            <input type="password" class="form-control" id="rpass" name="rpass" placeholder="Repeat Password"
+                                                   value="${repeatPassword != null ? repeatPassword : ''}" oninput="validateField('rpass')">
                                             <div id="rpassError" class="text-danger" style="display: none;"></div>
                                         </div>
 
@@ -171,6 +180,7 @@
                                     </div>
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -201,6 +211,8 @@
 </footer>
 <!-- footer end -->
 <script>
+
+    //xem trước hình ảnh được tải lên cho ảnh đại diện
     function previewImage(event) {
         const file = event.target.files[0];
         const imgError = document.getElementById('fileError');
@@ -208,7 +220,7 @@
             if (file.type !== 'image/jpeg') {
                 imgError.style.display = 'block';
                 imgError.innerText = 'Only JPG files are allowed.';
-                document.getElementById('profileImage').src = "../../assets/image/avatar/11.png"; // Reset image
+                document.getElementById('profileImage').src = "../../assets/avatar/11.png"; // Reset image
             } else {
                 imgError.style.display = 'none';
                 const reader = new FileReader();
@@ -220,17 +232,16 @@
         }
     }
 
+    // kiểm tra tính hợp lệ
     function validateField(field) {
         let isValid = true;
-        const value = document.getElementById(field).value;
+        // lấy giá trị từ trường dữ liệu và loại bỏ khoảng trắng đầu và cuối
+        const value = document.getElementById(field).value.trim();
         const errorElement = document.getElementById(field + 'Error');
 
         switch(field) {
             case 'fullname':
-                // Loại bỏ khoảng trắng ở đầu và cuối chuỗi
-                let trimmedValue = value.trim();
-
-                // Kiểm tra chuỗi có rỗng sau khi loại bỏ khoảng trắng không
+                // Kiểm tra chuỗi có rỗng ko
                 if (trimmedValue === "") {
                     errorElement.style.display = 'block';
                     errorElement.innerText = 'Full Name cannot be blank or contain only spaces.';
@@ -278,6 +289,7 @@
                 break;
 
             case 'address':
+
                 if (value.length > 200) {
                     errorElement.style.display = 'block';
                     errorElement.innerText = 'Address cannot exceed 200 characters.';
@@ -346,6 +358,7 @@
         return isValid;
     }
 
+    //chuyển đổi giữa hiển thị và ẩn mật khẩu khi người dùng chọn "Show Password"
     function togglePasswordVisibility() {
         const passwordFields = [document.getElementById('pass'), document.getElementById('rpass')];
         passwordFields.forEach(field => {
@@ -353,6 +366,7 @@
         });
     }
 
+    //kiểm tra toàn bộ các trường trong biểu mẫu khi người dùng nhấn nút submit
     function validateForm() {
         let isValid = true;
         const fields = ['fullname', 'dob', 'gender', 'status', 'address', 'mobno', 'email', 'uname', 'pass', 'rpass'];

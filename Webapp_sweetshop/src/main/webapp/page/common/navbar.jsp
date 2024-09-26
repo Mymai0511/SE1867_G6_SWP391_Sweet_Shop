@@ -9,7 +9,7 @@
             <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
                 <i class="ri-menu-line wrapper-menu"></i>
                 <a href="../backend/index.html" class="header-logo">
-                    <h4 class="logo-title text-uppercase">Webkit</h4>
+                    <h4 class="logo-title text-uppercase">Cake</h4>
 
                 </a>
             </div>

@@ -19,31 +19,40 @@ import java.nio.file.Paths;
  */
 public class UploadFile {
 
+    //lưu đường dẫn tới thư mục mà các tệp được tải lên sẽ được lưu trữ
     private String UPLOAD_DIRECTORY;
 
+
+    //xác định vị trí lưu tệp, kiểm tra và lưu các tệp đã được tải lên
     public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get the real path to the root of your deployed application
-        String realPath = request.getContextPath();
-        // Navigate from the deployment directory to the desired path
-        // This assumes the "webapp" folder in your project will map to the root folder in the deployment
-        Path uploadPath = Paths.get(realPath).resolve("webapp/assets/image/avatar");
+
+        // Get the real path to the "build/web" directory
+        String realPath = request.getServletContext().getRealPath("");
+        // Navigate to the "web/uploadFiles" directory
+        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/image/avatar");
+
+        //Lưu trữ đường dẫn dưới dạng string
         UPLOAD_DIRECTORY = uploadPath.toString();
+
+        //Tạo thư mục nếu không tồn tại
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
+
+        //danh sách để lưu tên của các tệp đã tải lên
         List<String> uploadedFileNames = new ArrayList<>();
 
         try {
-            // Tìm tất cả các phần được gửi từ form
+            // Vòng lặp để xử lý từng file
             for (Part part : request.getParts()) {
-                // Kiểm tra nếu phần dữ liệu này là một tệp
+                // Kiểm tra và lưu file
                 if (part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
-                    // Lấy tên của tập tin được gửi
-                    String fileName = extractFileName(part);
+                    String fileName = extractFileName(part);// Lấy tên của file sau khi được xử lý tính duy nhất
                     if (fileName != null && !fileName.isEmpty()) {
-                        // Lưu tập tin vào thư mục upload
+                        // Lưu tập tin vào thư mục đã chỉ định
+                         // File.separator: "/" cung cấp dấu phân cách đường dẫn hệ thống phù hợp với hệ điều hành
                         part.write(UPLOAD_DIRECTORY + File.separator + fileName);
-                        // Thêm tên tập tin vào danh sách
+                        // Thêm tên file vào danh sách các file đã được lưu
                         uploadedFileNames.add(fileName);
                     }
                 }
@@ -56,31 +65,29 @@ public class UploadFile {
         return uploadedFileNames;
     }
 
-    /**
-     * Phương thức hỗ trợ để trích xuất tên tập tin từ phần được gửi trong yêu
-     * cầu HTTP multipart.
-     *
-     * @param part Phần chứa thông tin về tập tin được gửi.
-     * @return Tên của tập tin được trích xuất từ phần, hoặc chuỗi trống nếu
-     * không tìm thấy.
-     */
+    //xử lý các tên file để đảm bảo tính duy nhất
     private String extractFileName(Part part) {
-        // Lấy tiêu đề "content-disposition" từ phần
+        //- lấy tiêu đề "content-disposition": chứa thông tin về loại nội dung, tên tệp...
+        //- "content-disposition" thường có nhiều phần được phân tách bằng dấu chấm phẩy (;).
+        //- dựa vào (;) tách các phần này thành một mảng chuỗi (items).
         String contentDisp = part.getHeader("content-disposition");
         String[] items = contentDisp.split(";");
+
         for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                // Lấy tên tập tin ban đầu
+            if (s.trim().startsWith("filename")) {//Tìm Tên Tệp
+                // Xử lại bỏ (= và ") để lấy tên file ban đầu
                 String originalFileName = s.substring(s.indexOf("=") + 2, s.length() - 1);
                 // Tạo một chuỗi duy nhất (UUID) để thêm vào tên tập tin
                 String uniqueID = UUID.randomUUID().toString();
-                // Tách phần mở rộng của tập tin (nếu có)
-                String fileExtension = "";
-                int dotIndex = originalFileName.lastIndexOf('.');
+
+                // Tách tên tệp và phần mở rộng của nó
+                String fileExtension = "";// phần mo rộng sau dấu "."
+                int dotIndex = originalFileName.lastIndexOf('.');//vị trí dấu "."
                 if (dotIndex != -1) {
-                    fileExtension = originalFileName.substring(dotIndex);
-                    originalFileName = originalFileName.substring(0, dotIndex);
+                    fileExtension = originalFileName.substring(dotIndex); //phần mở rộng
+                    originalFileName = originalFileName.substring(0, dotIndex);// tên file
                 }
+
                 // Kết hợp tên tập tin ban đầu với UUID để tạo ra tên tập tin duy nhất
                 return originalFileName + "_" + uniqueID + fileExtension;
             }

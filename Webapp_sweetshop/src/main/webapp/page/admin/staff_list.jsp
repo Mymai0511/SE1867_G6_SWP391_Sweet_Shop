@@ -71,6 +71,23 @@
                                             <a class="button btn button-icon bg-primary" target="_blank" href="/staffactive">Active</a>
                                             <a class="button btn button-icon bg-primary" target="_blank" href="/staffdisable">Disable</a>
                                         </div>
+
+                                        <!-- Dropdown Menu for Sorting -->
+                                        <div class="dropdown mr-3">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSortButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Sort By
+                                            </button>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownSortButton">
+                                                <a class="dropdown-item" href="#" data-sort="nameAsc">Name (A-Z)</a>
+                                                <a class="dropdown-item" href="#" data-sort="nameDesc">Name (Z-A)</a>
+                                                <a class="dropdown-item" href="#" data-sort="dobAsc">Date of Birth (Oldest First)</a>
+                                                <a class="dropdown-item" href="#" data-sort="dobDesc">Date of Birth (Youngest First)</a>
+                                            </div>
+                                        </div>
+
+
+                                        <!-- End of Dropdown -->
+
                                         <div class="pl-3 btn-new border-left">
                                             <a href="/addstaff" class="btn btn-primary" >Add New Staff</a>
                                         </div>
@@ -92,19 +109,19 @@
                                    aria-describedby="user-list-page-info">
                                 <thead>
                                 <tr class="ligth">
-                                    <th>#</th>
-                                    <th>Profile</th>
-                                    <th onclick="sortTable(2)">Name</th>
-                                    <th onclick="sortTable(3)">Gender</th>
-                                    <th onclick="sortTable(4)">Date of Birth</th>
-                                    <th onclick="sortTable(5)">Status</th>
+<%--                                    <th>#</th>--%>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Date of Birth</th>
+                                    <th>Status</th>
                                     <th style="min-width: 100px">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
                                     <tr>
-                                        <td>${loopStatus.count}</td>
+<%--                                        <td>${loopStatus.count}</td>--%>
                                         <td class="text-center"><img class="rounded img-fluid avatar-40"
                                                                      src="${staff.avatar}"
                                                                      alt="profile"></td>
@@ -119,8 +136,8 @@
                                         </td>
                                         <td>
                                             <div class="flex align-items-center list-user-action">
-                                                <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
-                                                   data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>
+<%--                                                <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""--%>
+<%--                                                   data-original-title="Add" href="#"><i class="ri-user-add-line mr-0"></i></a>--%>
                                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
                                                    data-original-title="Edit" href="#"><i class="ri-pencil-line mr-0"></i></a>
                                                 <a class="btn btn-sm bg-primary" data-toggle="tooltip" data-placement="top" title=""
@@ -134,20 +151,12 @@
                         </div>
                         <div class="row justify-content-between mt-3">
                             <div id="user-list-page-info" class="col-md-6">
-                                <span>Showing 1 to 5 of 5 entries</span>
+                                <span></span>
                             </div>
                             <div class="col-md-6">
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination justify-content-end mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                        </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">Next</a>
-                                        </li>
+                                        <!-- JavaScript will populate this section -->
                                     </ul>
                                 </nav>
                             </div>
@@ -181,93 +190,9 @@
     </div>
 </footer>
 <!-- footer end -->
-<script>
-    var dir = "asc"; // Hướng sắp xếp mặc định
 
-    function sortTable(n) {
-        var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
-        table = document.getElementById("user-list-table");
-        switching = true;
-
-        while (switching) {
-            switching = false;
-            rows = table.rows;
-
-            for (i = 1; i < (rows.length - 1); i++) {
-                shouldSwitch = false;
-                x = rows[i].getElementsByTagName("TD")[n];
-                y = rows[i + 1].getElementsByTagName("TD")[n];
-
-                // So sánh dựa trên cột
-                if (n === 2) { // Name
-                    if (dir === "asc") {
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else {
-                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                } else if (n === 3) { // Gender
-                    if (dir === "asc") {
-                        if (x.innerHTML > y.innerHTML) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else {
-                        if (x.innerHTML < y.innerHTML) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                } else if (n === 4) { // Date of Birth
-                    var dateX = new Date(x.innerHTML);
-                    var dateY = new Date(y.innerHTML);
-                    if (dir === "asc") {
-                        if (dateX > dateY) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else {
-                        if (dateX < dateY) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                } else if (n === 5) { // Status
-                    if (dir === "asc") {
-                        if (x.innerHTML > y.innerHTML) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else {
-                        if (x.innerHTML < y.innerHTML) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (shouldSwitch) {
-                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                switching = true;
-                switchcount++;
-            } else {
-                if (switchcount === 0 && dir === "asc") {
-                    dir = "desc"; // Đổi hướng sắp xếp
-                } else {
-                    dir = "asc";
-                }
-            }
-        }
-    }
-</script>
-
-
+<%--js sắp xếp và phân trang--%>
+<script src="../../assets/app/js/getstaff.js"></script>
 
 <!-- Backend Bundle JavaScript -->
 <script src="../../assets/js/backend-bundle.min.js"></script>
