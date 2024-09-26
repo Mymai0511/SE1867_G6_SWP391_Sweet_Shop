@@ -261,6 +261,7 @@
                                         <samp>${index + 1}. </samp>
                                         ${product.getProductById(pd.productID).name}
                                         <span>${pd.price} vnd</span>
+                                        <input type="hidden" name="pice" value="${pd.price}"/>
                                     </li>
                                 </c:forEach>
                             </ul>
