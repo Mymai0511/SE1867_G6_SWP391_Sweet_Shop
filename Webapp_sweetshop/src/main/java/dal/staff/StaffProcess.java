@@ -47,6 +47,7 @@ public class StaffProcess extends DAO {
         return staffList;
     }
 
+
     public List<Staff> getAllStaff() {
         return getStaffByCondition(""); // Lấy tất cả nhân viên
     }
@@ -75,6 +76,25 @@ public class StaffProcess extends DAO {
         }
         return staffs;
     }
+
+    public Staff getStaffById(String id) {
+        Staff staff = null;
+        String sql = "SELECT * FROM user WHERE id = ?";
+        try  {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                staff = createStaffFromResultSet(rs);
+            }
+        }catch (SQLException e) {
+            // Consider throwing a custom exception here
+            e.printStackTrace();
+        }
+        return staff;
+
+    }
+
 
     public boolean add(Staff staff) {
         String sql = "INSERT INTO user (username, password, fName, gender, email, phone, dob, avatar, address, status, createdAt, updatedAt, role) " +
