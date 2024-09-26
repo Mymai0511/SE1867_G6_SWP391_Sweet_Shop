@@ -90,6 +90,12 @@ public class ProductDetailProcess extends DAO {
         return productDetailList;
     }
 
+    /**
+     * get list product detail by list id product
+     *
+     * @param listId List id product
+     * @return list ProductDetail
+     */
     public List<ProductDetail> getPDByListPDId(String[] listId) {
         List<ProductDetail> productDetailList = new ArrayList<>();
         for (String id : listId) {

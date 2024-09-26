@@ -51,11 +51,12 @@ public class MediaProcess extends DAO {
         String sql = "SELECT * FROM media WHERE productID = ? LIMIT 1;";
         Media media = null;
         try {
-            media = new Media();
+
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1,productID);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
+                media = new Media();
                 media.setId(rs.getInt("id"));
                 media.setImage(rs.getString("image"));
                 media.setPostID(rs.getInt("postID"));
