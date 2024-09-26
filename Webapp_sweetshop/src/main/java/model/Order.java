@@ -11,6 +11,7 @@ import java.util.Date;
 @ToString
 public class Order {
     private int id;
+    private String consignee;
     private String phone;
     private String email;
     private String shipAddress;

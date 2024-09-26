@@ -59,7 +59,7 @@ public class ProductDetailController extends HttpServlet {
         String price = request.getParameter("price");
         String quantity = request.getParameter("quantity");
         if (request.getParameter("btnBuy") != null) {
-            response.sendRedirect(request.getContextPath() + "/checkout?idPd=" + idPd + "&size=" + size + "&price=" + price);
+            response.sendRedirect(request.getContextPath() + "/checkout?idPd=" + idPd + "&quantity=" + quantity);
         }
     }
 
