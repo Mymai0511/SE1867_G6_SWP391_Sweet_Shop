@@ -40,6 +40,16 @@
             appearance: none; /* Loại bỏ kiểu mặc định của trình duyệt */
             width: auto; /* Đặt chiều rộng về mặc định */
         }
+        /* Style cho input có lỗi */
+        .input-error {
+            border: 2px solid red; /* Border đỏ */
+        }
+
+        /* Style cho placeholder của input có lỗi */
+        .input-error::placeholder {
+            color: red; /* Đổi màu placeholder thành đỏ */
+        }
+
     </style>
 </head>
 
@@ -168,7 +178,7 @@
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="breadcrumb__links">
-                    <a href="./index.html">Home</a>
+                    <a href="./home">Home</a>
                     <span>Checkout</span>
                 </div>
             </div>
@@ -184,8 +194,6 @@
             <form action="checkout" method="post">
                 <div class="row">
                     <div class="col-lg-8 col-md-6">
-                        <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                            here</a> to enter your code</h6>
                         <h6 class="checkout__title">Billing Details</h6>
                         <div class="checkout__input">
                             <p>Consignee Name<span>*</span></p>
@@ -208,24 +216,26 @@
                         </div>
 
                         <div class="checkout__input row mb-3">
-                            <div class="col-sm-12 col-md-4">
-                                <p>Xã<span>*</span></p>
-                                <select name="location" size="10">
-                                    <c:set var="index" value="0"/>
+                            <div class="col-md-3 col-sm-12">
+                                <p>Village<span>*</span></p>
+                                <input type="text" name="village" value="" placeholder="Enter village ..." style="height: 40px; border-radius: 5px">
+                            </div>
+                            <div class="col-sm-12 col-md-3">
+                                <p>Commune<span>*</span></p>
+                                <select class="form-select" name="location">
                                     <c:forEach var="l" items="${location}">
-                                        <option value="${l}" <c:if test="${index == 0}">selected</c:if>>${l}</option>
-                                        <c:set var="index" value="${index + 1}"/>
+                                        <option value="${l}">${l}</option>
                                     </c:forEach>
                                 </select>
                             </div>
-                            <div class="col-sm-12 col-md-4">
-                                <p>Huyện<span>*</span></p>
+                            <div class="col-sm-12 col-md-3">
+                                <p>District<span>*</span></p>
                                 <select name="district">
                                     <option value="Thạch Thất" style="width: 100%">Thạch Thất</option>
                                 </select>
                             </div>
-                            <div class="col-sm-12 col-md-4">
-                                <p>Tỉnh<span>*</span></p>
+                            <div class="col-sm-12 col-md-3">
+                                <p>Country<span>*</span></p>
                                 <select name="country" style="width: 100% !important; box-sizing: border-box !important;">
                                     <option value="Hà Nội">Hà Nội</option>
                                 </select>
@@ -257,7 +267,7 @@
                             <ul class="checkout__total__all">
                                 <li>Total <span>${total} vnd</span></li>
                             </ul>
-                            <button type="submit" class="site-btn">PLACE ORDER</button>
+                            <button type="submit" name="btnPlaceOrder" class="site-btn">PLACE ORDER</button>
                         </div>
                     </div>
                 </div>
@@ -365,6 +375,7 @@
         const name = document.querySelector('input[name="name"]');
         const phone = document.querySelector('input[name="phone"]');
         const email = document.querySelector('input[name="email"]');
+        const village = document.querySelector('input[name="village"]'); // Thêm thôn/xóm/số nhà
         const voucher = document.querySelector('input[name="voucher"]');
         const voucherList = document.getElementById('voucherList').value; // Danh sách mã voucher
 
@@ -389,7 +400,7 @@
         function validateField(field, fieldName) {
             const value = cleanInput(field);
             if (value === '') {
-                showError(field, `${fieldName} không được để trống`);
+                showError(field, `${fieldName} you must input and not null`);
                 return false;
             }
             field.value = value; // Cập nhật lại giá trị sau khi clean
@@ -398,10 +409,10 @@
 
         // Kiểm tra voucher
         function validateVoucher(voucher, voucherList) {
-            const voucherValue = cleanInput(voucher); // Lấy mã voucher người dùng nhập
-            const voucherArray = voucherList.split('|').filter(v => v); // Tách chuỗi mã voucher
+            const voucherValue = cleanInput(voucher);
+            const voucherArray = voucherList.split('|').filter(v => v);
             if (!voucherArray.includes(voucherValue)) {
-                showError(voucher, 'Mã voucher không tồn tại');
+                showError(voucher, 'Voucher code is not exits');
                 return false;
             }
             return true;
@@ -414,7 +425,7 @@
         if (!validateField(name, 'Tên người nhận')) isValid = false;
         if (!validateField(phone, 'Số điện thoại')) isValid = false;
         if (!validateField(email, 'Email')) isValid = false;
-
+        if (!validateField(village, 'Village')) isValid = false;
         // Voucher có thể bỏ trống, nhưng nếu nhập phải kiểm tra hợp lệ
         if (voucher.value.trim() !== '' && !validateVoucher(voucher, voucherList)) isValid = false;
 

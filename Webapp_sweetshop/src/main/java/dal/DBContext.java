@@ -17,7 +17,7 @@ public class DBContext {
     public DBContext() {
         try {
             String user = "root"; // Your MySQL username
-            String pass = "12345"; // Your MySQL password
+            String pass = "07082003"; // Your MySQL password
             String url = "jdbc:mysql://localhost:3306/shopcake"; // MySQL connection URL
             Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL JDBC driver
             connection = DriverManager.getConnection(url, user, pass);
