@@ -227,7 +227,16 @@
 
         switch(field) {
             case 'fullname':
-                if (!/^[a-zA-Z\s]{1,30}$/.test(value)) {
+                // Loại bỏ khoảng trắng ở đầu và cuối chuỗi
+                let trimmedValue = value.trim();
+
+                // Kiểm tra chuỗi có rỗng sau khi loại bỏ khoảng trắng không
+                if (trimmedValue === "") {
+                    errorElement.style.display = 'block';
+                    errorElement.innerText = 'Full Name cannot be blank or contain only spaces.';
+                    isValid = false;
+                } else if (!/^[a-zA-Z\s]{1,30}$/.test(trimmedValue)) {
+                    // Kiểm tra tên chỉ chứa chữ cái và tối đa 30 ký tự
                     errorElement.style.display = 'block';
                     errorElement.innerText = 'Full Name must be letters only and max 30 characters.';
                     isValid = false;

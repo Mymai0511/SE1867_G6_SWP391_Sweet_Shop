@@ -24,7 +24,6 @@ public class UploadFile {
     public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Get the real path to the root of your deployed application
         String realPath = request.getContextPath();
-
         // Navigate from the deployment directory to the desired path
         // This assumes the "webapp" folder in your project will map to the root folder in the deployment
         Path uploadPath = Paths.get(realPath).resolve("webapp/assets/image/avatar");
