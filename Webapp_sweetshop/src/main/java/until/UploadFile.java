@@ -4,7 +4,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,19 +14,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
+ *
  * @author trantoan
  */
 public class UploadFile {
 
     private String UPLOAD_DIRECTORY;
 
-    public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Get the real path to the root of your deployed application
-        String realPath = request.getContextPath();
-
-        // Navigate from the deployment directory to the desired path
-        // This assumes the "webapp" folder in your project will map to the root folder in the deployment
-        Path uploadPath = Paths.get(realPath).resolve("webapp/assets/image/avatar");
+    public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // Get the real path to the "build/web" directory
+        String realPath = request.getServletContext().getRealPath("");
+        // Navigate to the "web/uploadFiles" directory
+        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/image/avatar");
         UPLOAD_DIRECTORY = uploadPath.toString();
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

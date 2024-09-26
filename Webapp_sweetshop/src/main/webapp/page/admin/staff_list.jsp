@@ -72,7 +72,7 @@
                                             <a class="button btn button-icon bg-primary" target="_blank" href="/staffdisable">Disable</a>
                                         </div>
                                         <div class="pl-3 btn-new border-left">
-                                            <a href="/addstaff" class="btn btn-primary" data-toggle="modal">Add New Staff</a>
+                                            <a href="/addstaff" class="btn btn-primary" >Add New Staff</a>
                                         </div>
                                     </div>
                                     <!-- <div class="user-list-files d-flex">

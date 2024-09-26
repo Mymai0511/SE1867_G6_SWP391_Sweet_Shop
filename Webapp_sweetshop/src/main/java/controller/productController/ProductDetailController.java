@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.*;
+import session.SesionRepo;
 import until.Unique;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class ProductDetailController extends HttpServlet {
             category = CategoryProcess.INSTANCE.getCategoryByID(product.getCategoryID() + "");
             productDetailList = ProductDetailProcess.INSTANCE.getProductDetailByProductID(idProduct);
             List<Media> mediaList = MediaProcess.INSTANCE.getAllMediaByProductID(idProduct);
-            user = (User) request.getSession().getAttribute("user") == null
+            user = SesionRepo.getUser(request, response) == null
                     ? null
                     : (User) request.getSession().getAttribute("user");
 
