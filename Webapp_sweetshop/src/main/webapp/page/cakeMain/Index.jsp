@@ -60,19 +60,9 @@
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__option">
         <ul>
-            <li>USD <span class="arrow_carrot-down"></span>
-                <ul>
-                    <li>EUR</li>
-                    <li>USD</li>
-                </ul>
+            <li>
+                <a href="/auth/login">Login</a>
             </li>
-            <li>ENG <span class="arrow_carrot-down"></span>
-                <ul>
-                    <li>Spanish</li>
-                    <li>ENG</li>
-                </ul>
-            </li>
-            <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
         </ul>
     </div>
 </div>
@@ -87,19 +77,9 @@
                     <div class="header__top__inner">
                         <div class="header__top__left">
                             <ul>
-                                <li>USD <span class="arrow_carrot-down"></span>
-                                    <ul>
-                                        <li>EUR</li>
-                                        <li>USD</li>
-                                    </ul>
+                                <li>
+                                    <a href="/auth/login">Login</a>
                                 </li>
-                                <li>ENG <span class="arrow_carrot-down"></span>
-                                    <ul>
-                                        <li>Spanish</li>
-                                        <li>ENG</li>
-                                    </ul>
-                                </li>
-                                <li><a href="#">Sign in</a> <span class="arrow_carrot-down"></span></li>
                             </ul>
                         </div>
                         <div class="header__logo">

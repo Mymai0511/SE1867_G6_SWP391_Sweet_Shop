@@ -33,21 +33,18 @@ public class AddNewStaffController extends HttpServlet {
     }
 
     //xác định thư mục nơi sẽ lưu trữ ảnh đại diện
-    private static final String UPLOAD_DIRECTORY = "assets/image/avatar";
+    private static final String UPLOAD_DIRECTORY = "assets/avatar";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
+        request.getRequestDispatcher("page/admin/add_new_staff.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // upload file
-            UploadFile uploadFile = new UploadFile();
-            List<String> imgProduct = uploadFile.fileUpload(request, response);
             // Process normal fields
             String username = request.getParameter("uname").trim();
             String password = request.getParameter("pass").trim();
@@ -60,6 +57,18 @@ public class AddNewStaffController extends HttpServlet {
             String address = request.getParameter("address").trim();
             String statusParam = request.getParameter("status").trim();
 
+            // Lưu các giá trị đã nhập lại trong request attributes để gửi về trang JSP nếu gặp lỗi
+            request.setAttribute("username", username);
+            request.setAttribute("password", password);
+            request.setAttribute("repeatPassword", repeatPassword);
+            request.setAttribute("fullName", fullName);
+            request.setAttribute("genderParam", genderParam);
+            request.setAttribute("email", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("dobParam", dobParam);
+            request.setAttribute("address", address);
+            request.setAttribute("statusParam", statusParam);
+
             // Check password
             if (!password.equals(repeatPassword)) {
                 request.setAttribute("message", "Passwords do not match.");
@@ -67,18 +76,19 @@ public class AddNewStaffController extends HttpServlet {
                 return;
             }
 
-            // Process file upload (image file)
+            // Check file avatar
+            // phần tệp từ request HTTP với tên "profilePic"
             Part filePart = request.getPart("profilePic");
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-            //Đảm bảo rằng tệp tải lên thực sự được nhận bởi servlet
+            //file có bị null hay không or kích thước bằng 0
             if (filePart == null || filePart.getSize() == 0) {
                 request.setAttribute("message", "No file uploaded.");
                 request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
                 return;
             }
 
-            // Check file extension
+            // kiểm tra định dạng tệp
             String fileExtension = getFileExtension(fileName);
             if (!fileExtension.equalsIgnoreCase("jpg") && !fileExtension.equalsIgnoreCase("jpeg")) {
                 request.setAttribute("message", "File must be a JPG image.");
@@ -86,22 +96,11 @@ public class AddNewStaffController extends HttpServlet {
                 return;
             }
 
-            // Lấy đường dẫn thực tế đến thư mục gốc của ứng dụng
-            String realPath = getServletContext().getRealPath("");
+            // upload file dùng class UploadFile cho quá trình tải file lên.
+            UploadFile uploadFile = new UploadFile();//Lấy phần tệp từ yêu cầu
+            List<String> imgStaff = uploadFile.fileUpload(request, response);//Lấy tên tệp
 
-            // Kết hợp đường dẫn gốc với đường dẫn thư mục tải lên
-            String uploadPath = realPath + File.separator + UPLOAD_DIRECTORY;
-
-            // Tạo thư mục nếu nó không tồn tại
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            // Lưu tệp tải lên vào thư mục đã xác định
-            filePart.write(uploadPath + File.separator + fileName);
-
-            // Tiếp tục xử lý các giá trị khác và thêm nhân viên vào cơ sở dữ liệu...
+            // check các giá trị khác và thêm nhân viên vào cơ sở dữ liệu
             boolean gender = "Male".equalsIgnoreCase(genderParam);
             int status = "Active".equalsIgnoreCase(statusParam) ? 1 : 0;
             Date dob = Date.valueOf(dobParam);
@@ -118,10 +117,9 @@ public class AddNewStaffController extends HttpServlet {
             newStaff.setAddress(address);
             newStaff.setStatus(status);
             newStaff.setRole(2); // Role for staff is 2
-            newStaff.setAvatar(UPLOAD_DIRECTORY + "/" + fileName);
+            newStaff.setAvatar(imgStaff.get(0));// tải 1 ảnh nen lay image dau tien
 
             // Thiết lập thời gian hiện tại cho createdAt và updatedAt
-
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
             newStaff.setCreatedAt(currentDate);
             newStaff.setUpdatedAt(currentDate);
@@ -130,6 +128,17 @@ public class AddNewStaffController extends HttpServlet {
             boolean addSuccess = staffProcess.add(newStaff);
 
             if (addSuccess) {
+                // Nếu thêm thành công, xóa các thuộc tính đã thiết lập
+                request.removeAttribute("username");
+                request.removeAttribute("password");
+                request.removeAttribute("repeatPassword");
+                request.removeAttribute("fullName");
+                request.removeAttribute("genderParam");
+                request.removeAttribute("email");
+                request.removeAttribute("phone");
+                request.removeAttribute("dobParam");
+                request.removeAttribute("address");
+                request.removeAttribute("statusParam");
                 request.setAttribute("message", "Staff added successfully!");
             } else {
                 request.setAttribute("message", "Failed to add staff.");
@@ -139,8 +148,6 @@ public class AddNewStaffController extends HttpServlet {
             ex.printStackTrace();
             request.setAttribute("message", "An error occurred: " + ex.getMessage());
         }
-
-        // Forward to the add_new_staff.jsp page with a message
         request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
     }
 

@@ -62,7 +62,7 @@ public class StaffProcess extends DAO {
 
     public List<Staff> searchStaff(String keyword) {
         List<Staff> staffs = new ArrayList<>();
-        String sql = "SELECT * FROM user WHERE role = 2 AND username LIKE ? ORDER BY username ASC;";
+        String sql = "SELECT * FROM user WHERE role = 2 AND fName LIKE ? ORDER BY username ASC;";
         try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
             ps.setString(1, "%" + keyword + "%");
             try (ResultSet rs = ps.executeQuery()) {
