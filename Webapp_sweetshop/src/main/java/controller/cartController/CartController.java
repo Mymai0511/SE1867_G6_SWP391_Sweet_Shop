@@ -74,28 +74,28 @@ public class CartController extends HttpServlet {
     /**
      * delete product in a cart
      */
-    private void deleteCartItem(HttpServletRequest request, HttpServletResponse response, int userId) throws IOException {
+    private void deleteCartItem(HttpServletRequest request, HttpServletResponse response, int cartid) throws IOException {
         int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
-        cartDao.removeCartItem(productDetailId, userId);
+        cartDao.removeCartItem(productDetailId, cartid);
         response.sendRedirect("cartcontroller");
     }
 
     /**
      * delete change quantity of the product inside the cart
      */
-    private void updateCartItem(HttpServletRequest request, HttpServletResponse response, int userId) throws IOException {
+    private void updateCartItem(HttpServletRequest request, HttpServletResponse response, int cartid) throws IOException {
         int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        cartDao.updateCartItemQuantity(productDetailId, quantity, userId);
+        cartDao.updateCartItemQuantity(productDetailId, quantity, cartid);
         response.sendRedirect("cartcontroller");
     }
 
     /**
      * Send to check out page
      */
-    private void checkout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect("Checkout.jsp");
+    private void checkout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.getRequestDispatcher("page/cakeMain/Checkout.jsp").forward(request, response);
     }
 }
 
