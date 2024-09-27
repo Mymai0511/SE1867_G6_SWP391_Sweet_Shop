@@ -1,13 +1,8 @@
 package controller.cartController;
 
-/**
- *
- * @author hoang
- */
 import dal.cart.CartDao;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
-
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -28,6 +23,7 @@ public class CartController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
+        int userId = 1; // This should be dynamically obtained from session or login
 
         try {
             if (action == null) {
@@ -36,16 +32,16 @@ public class CartController extends HttpServlet {
 
             switch (action) {
                 case "delete":
-                    deleteCartItem(request, response);
+                    deleteCartItem(request, response, userId);
                     break;
                 case "update":
-                    updateCartItem(request, response);
+                    updateCartItem(request, response, userId);
                     break;
                 case "checkout":
                     checkout(request, response);
                     break;
                 default:
-                    showCart(request, response);
+                    showCart(request, response, userId);
                     break;
             }
         } catch (Exception ex) {
@@ -57,10 +53,10 @@ public class CartController extends HttpServlet {
         doGet(request, response);
     }
 
-    private void showCart(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<CartDetail> cartItems = cartDao.getAllCartItems();
-        double subtotal = cartDao.calculateSubtotal();
-        double discount = cartDao.getDiscount();
+    private void showCart(HttpServletRequest request, HttpServletResponse response, int userId) throws ServletException, IOException {
+        List<CartDetail> cartItems = cartDao.getAllCartItems(userId);
+        double subtotal = cartDao.calculateSubtotal(userId);
+        double discount = cartDao.getDiscount(userId);
         double total = subtotal - discount;
 
         request.setAttribute("cartItems", cartItems);
@@ -72,23 +68,22 @@ public class CartController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void deleteCartItem(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        cartDao.removeCartItem(productId);
-        response.sendRedirect("CartController");
+    private void deleteCartItem(HttpServletRequest request, HttpServletResponse response, int userId) throws IOException {
+        int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
+        cartDao.removeCartItem(productDetailId, userId);
+        response.sendRedirect("cartcontroller");
     }
 
-    private void updateCartItem(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int productId = Integer.parseInt(request.getParameter("productId"));
+    private void updateCartItem(HttpServletRequest request, HttpServletResponse response, int userId) throws IOException {
+        int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        cartDao.updateCartItemQuantity(productId, quantity);
-        response.sendRedirect("CartController");
+        cartDao.updateCartItemQuantity(productDetailId, quantity, userId);
+        response.sendRedirect("cartcontroller");
     }
 
     private void checkout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        
         response.sendRedirect("bill.jsp");
     }
-
 }
+

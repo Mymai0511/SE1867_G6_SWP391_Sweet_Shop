@@ -20,4 +20,6 @@ public class CartDetail {
     private int status;
     private int cartID;
     private int productDetailID;
+    private Product product;
+    private ProductDetail productDetail;
 }
