@@ -123,7 +123,7 @@
                                     <tr>
 <%--                                        <td>${loopStatus.count}</td>--%>
                                         <td class="text-center"><img class="rounded img-fluid avatar-40"
-                                                                     src="${staff.avatar}"
+                                                                     src="../../assets/app/image/avatar/${staff.avatar}"
                                                                      alt="profile"></td>
 <%--                                        <td>${staff.fName}</td>--%>
                                         <td>${staff.fullName}</td>
