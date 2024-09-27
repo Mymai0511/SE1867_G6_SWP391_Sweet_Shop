@@ -24,7 +24,7 @@ public class GetStaffSearchController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Staff> staffList = staffProcess.getStaffDisable(); // Lấy danh sách nhân viên không hoạt động
+        List<Staff> staffList = staffProcess.getAllStaff();
         request.setAttribute("staffs", staffList);
         request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response);
     }
@@ -35,6 +35,7 @@ public class GetStaffSearchController extends HttpServlet {
         String searchKeyword = request.getParameter("search"); // Lấy từ khóa tìm kiếm từ request
         List<Staff> searchedStaffs = staffProcess.searchStaff(searchKeyword); // Gọi phương thức tìm kiếm
 
+        request.setAttribute("search", searchKeyword);
         request.setAttribute("staffs", searchedStaffs); // Đưa danh sách staff đã tìm kiếm vào request
         request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response); // Chuyển hướng về trang danh sách staff
     }

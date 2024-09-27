@@ -58,8 +58,8 @@
                                     <div id="user_list_datatable_info" class="dataTables_filter">
                                         <form class="mr-3 position-relative" action="/getstaffsearch" method="post">
                                             <div class="form-group mb-0">
-                                                <input type="search" name="search" class="form-control" id="exampleInputSearch" placeholder="Search"
-                                                       aria-controls="user-list-table">
+                                                <input type="search" name="search" class="form-control" id="exampleInputSearch" placeholder="Search name...."
+                                                       aria-controls="user-list-table" value="${search != null ? search : ''}">
                                             </div>
                                         </form>
                                     </div>
