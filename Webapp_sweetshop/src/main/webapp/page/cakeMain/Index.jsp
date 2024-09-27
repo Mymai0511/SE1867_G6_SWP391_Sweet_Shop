@@ -61,7 +61,7 @@
     <div class="offcanvas__option">
         <ul>
             <li>
-                <a href="./login">Sign in</a>
+                <a href="/auth/login">Login</a>
             </li>
         </ul>
     </div>
@@ -78,7 +78,7 @@
                         <div class="header__top__left">
                             <ul>
                                 <li>
-                                    <a href="./login">Sign in</a>
+                                    <a href="/auth/login">Login</a>
                                 </li>
                             </ul>
                         </div>

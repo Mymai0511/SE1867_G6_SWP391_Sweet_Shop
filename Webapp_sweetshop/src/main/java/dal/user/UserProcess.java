@@ -123,20 +123,54 @@ public class UserProcess extends DAO {
         return id;
     }
 
-    /**
-     * find a user by username or password and password
-     *
-     * @param username username or password
-     * @param password password
-     * @return new user if info is correct else null
-     */
-    public User findUser(String username, String password) {
+//    /**
+//     * find a user by username or password and password
+//     *
+//     * @param username username or password
+//     * @param password password
+//     * @return new user if info is correct else null
+//     */
+//    public User findUser(String username, String password) {
+//        User user = null;
+//        String sql = "SELECT * FROM shopcake.user WHERE (username = ? OR email = ?) AND password = ?";
+//        try {
+//            PreparedStatement ps = this.connection.prepareStatement(sql);
+//            ps.setString(1, username);
+//            ps.setString(2, username);
+//            ps.setString(3, password);
+//            ResultSet rs = ps.executeQuery();
+//            while (rs.next()) {
+//                user = new User();
+//                user.setId(rs.getInt("id"));
+//                user.setUsername(rs.getString("username"));
+//                user.setPassword(rs.getString("password"));
+//                user.setFullName(rs.getString("fName"));
+//                user.setGender(rs.getBoolean("gender"));
+//                user.setEmail(rs.getString("email"));
+//                user.setPhone(rs.getString("phone"));
+//                user.setDob(rs.getDate("dob"));
+//                user.setAvatar(rs.getString("avatar"));
+//                user.setAddress(rs.getString("address"));
+//                user.setStatus(rs.getInt("status"));
+//                user.setCreatedAt(rs.getDate("createdAt"));
+//                user.setUpdatedAt(rs.getDate("updatedAt"));
+//                user.setRole(rs.getInt("role"));
+//            }
+//        } catch (SQLException e) {
+//            status = e.getMessage();
+//        }
+//        return user;
+//    }
+
+
+    //sửa lại hàm này hoặc viết thêm 1 hàm : lấy ra tài khoản có status = 1
+    public User loadUser(String nameOrEmail, String password) {
         User user = null;
         String sql = "SELECT * FROM shopcake.user WHERE (username = ? OR email = ?) AND password = ?";
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
-            ps.setString(1, username);
-            ps.setString(2, username);
+            ps.setString(1, nameOrEmail);
+            ps.setString(2, nameOrEmail);
             ps.setString(3, password);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -161,6 +195,7 @@ public class UserProcess extends DAO {
         }
         return user;
     }
+
 
 
 //    public void update(User user) {
@@ -192,7 +227,7 @@ public class UserProcess extends DAO {
 
     public static void main(String[] args) {
         // Gọi hàm read để lấy danh sách nhân viên
-        User User = UserProcess.Instance.findUser("customer", "12345");
+        User User = UserProcess.Instance.loadUser("admin", "12345");
 
         // In ra thông tin của từng nhân viên trong danh sách
             System.out.println("ID: " + User.getId());
@@ -207,6 +242,7 @@ public class UserProcess extends DAO {
             System.out.println("Status: " + User.getStatus());
             System.out.println("Created At: " + User.getCreatedAt());
             System.out.println("Updated At: " + User.getUpdatedAt());
+        System.out.println("Role: " + User.getRole());
             System.out.println("-------------------------");
     }
 
