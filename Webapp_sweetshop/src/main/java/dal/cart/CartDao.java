@@ -57,6 +57,20 @@ public class CartDao extends DBContext {
         return cartList;
     }
 
+    public static void main(String[] args) {
+        CartDao cartDao = new CartDao();
+
+        List<CartDetail> cartItems = cartDao.getAllCartItems(1);
+
+        for (CartDetail cd : cartItems) {
+            System.out.println("Product Name: " + cd.getProduct().getName());
+            System.out.println("Size: " + cd.getProductDetail().getSize());
+            System.out.println("Price: " + cd.getProductDetail().getPrice());
+            System.out.println("Quantity: " + cd.getQuantity());
+            System.out.println("-----------------------------------");
+        }
+    }
+
     public double calculateSubtotal(int userId) {
         double subtotal = 0;
         String query = "SELECT SUM(pd.price * cd.quantity) AS subtotal "
@@ -77,7 +91,7 @@ public class CartDao extends DBContext {
     }
 
     public double getDiscount(int userId) {
-        // Implement your discount logic here; for simplicity, returning 0.
+
         return 0;
     }
 
