@@ -15,7 +15,7 @@ import model.Order;
 import model.ProductDetail;
 import model.User;
 import model.Voucher;
-import session.SesionRepo;
+import session.SessionRepo;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class Checkout extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = SesionRepo.getUser(request,response);
+        User user = SessionRepo.getUser(request,response);
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
         String email = request.getParameter("email");

@@ -5,10 +5,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 
-public class SesionRepo {
-    public static SesionRepo INSTANCE = new SesionRepo();
+public class SessionRepo {
+    public static SessionRepo INSTANCE = new SessionRepo();
 
-    private SesionRepo() {}
+    private SessionRepo() {}
 
     public static User getUser(HttpServletRequest request, HttpServletResponse response) {
         return (User) request.getSession().getAttribute("user");

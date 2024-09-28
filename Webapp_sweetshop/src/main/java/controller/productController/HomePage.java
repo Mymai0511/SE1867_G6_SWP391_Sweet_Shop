@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Media;
 import model.Product;
+import session.SessionRepo;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,6 +28,7 @@ public class HomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("user", SessionRepo.getUser(request,response));
         request.setAttribute("productDetail", ProductDetailProcess.INSTANCE);
         request.setAttribute("category", CategoryProcess.INSTANCE);
         request.setAttribute("media", MediaProcess.INSTANCE);
