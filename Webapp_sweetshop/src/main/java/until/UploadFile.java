@@ -22,14 +22,13 @@ public class UploadFile {
     //lưu đường dẫn tới thư mục mà các tệp được tải lên sẽ được lưu trữ
     private String UPLOAD_DIRECTORY;
 
-
     //xác định vị trí lưu tệp, kiểm tra và lưu các tệp đã được tải lên
     public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         // Get the real path to the "build/web" directory
         String realPath = request.getServletContext().getRealPath("");
         // Navigate to the "web/uploadFiles" directory
-        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/image/avatar");
+        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/images");
 
         //Lưu trữ đường dẫn dưới dạng string
         UPLOAD_DIRECTORY = uploadPath.toString();

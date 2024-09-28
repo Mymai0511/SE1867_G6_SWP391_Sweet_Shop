@@ -31,7 +31,7 @@ public class HomePage extends HttpServlet {
         request.setAttribute("category", CategoryProcess.INSTANCE);
         request.setAttribute("media", MediaProcess.INSTANCE);
         request.setAttribute("productList", productList);
-        request.getRequestDispatcher("page/cakeMain/Index.jsp").forward(request, response);
+        request.getRequestDispatcher("view/index.jsp").forward(request, response);
     }
 
     @Override
