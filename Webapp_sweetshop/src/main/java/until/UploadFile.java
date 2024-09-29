@@ -26,14 +26,20 @@ public class UploadFile {
     //xác định vị trí lưu tệp, kiểm tra và lưu các tệp đã được tải lên
     public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // Get the real path to the "build/web" directory
-        String realPath = request.getServletContext().getRealPath("");
-        // Navigate to the "web/uploadFiles" directory
-        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/image/avatar");
+//        // Get the real path to the "build/web" directory
+//        String realPath = request.getServletContext().getRealPath("");
+//        // Navigate to the "web/uploadFiles" directory
+//        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/image/avatar");
+//
+//
+//        //Lưu trữ đường dẫn dưới dạng string
+//        UPLOAD_DIRECTORY = uploadPath.toString();
 
-        //Lưu trữ đường dẫn dưới dạng string
-        UPLOAD_DIRECTORY = uploadPath.toString();
+        // Đường dẫn mặc định đến thư mục avatar
+        // Thay đổi đường dẫn này theo cấu trúc thư mục của bạn
+        String UPLOAD_DIRECTORY = "D:/Semester_5/SWP_1867AI/Project/Sweet_Shop/Webapp_sweetshop/src/main/webapp/assets/app/image/avatar";
 
+        Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
         //Tạo thư mục nếu không tồn tại
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
