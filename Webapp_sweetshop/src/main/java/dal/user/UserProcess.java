@@ -91,7 +91,7 @@ public class UserProcess extends DAO {
      * @return new id of user after add and null if add not success
      */
     public String addAndReturnId(User User) {
-        String sql = "{CALL insertUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String sql = "{CALL insertUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         String id = null;
         try{
             CallableStatement cs = this.connection.prepareCall(sql);
@@ -105,9 +105,7 @@ public class UserProcess extends DAO {
             cs.setString(8, User.getAvatar());
             cs.setString(9, User.getAddress());
             cs.setInt(10, User.getStatus());
-            cs.setDate(11, new java.sql.Date(User.getCreatedAt().getTime()));
-            cs.setDate(12, new java.sql.Date(User.getUpdatedAt().getTime()));
-            cs.setInt(13, User.getRole());
+            cs.setInt(11, User.getRole());
             boolean hasResult = cs.execute();
             if (hasResult) {
                 ResultSet rs = cs.getResultSet();

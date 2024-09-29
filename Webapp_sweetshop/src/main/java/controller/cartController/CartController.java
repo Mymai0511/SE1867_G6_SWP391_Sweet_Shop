@@ -11,6 +11,7 @@ import java.util.List;
 import jakarta.servlet.annotation.WebServlet;
 import model.CartDetail;
 
+
 @WebServlet(value = "/cartcontroller")
 public class CartController extends HttpServlet {
 
@@ -23,7 +24,7 @@ public class CartController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        int userId = 1; // This should be dynamically obtained from session or login
+        int userId = 1; // Assuming userId = 1 for now
 
         try {
             if (action == null) {
@@ -53,6 +54,9 @@ public class CartController extends HttpServlet {
         doGet(request, response);
     }
 
+    /**
+     * get cart-detail from data
+     */
     private void showCart(HttpServletRequest request, HttpServletResponse response, int userId) throws ServletException, IOException {
         List<CartDetail> cartItems = cartDao.getAllCartItems(userId);
         double subtotal = cartDao.calculateSubtotal(userId);
@@ -64,26 +68,34 @@ public class CartController extends HttpServlet {
         request.setAttribute("discount", discount);
         request.setAttribute("total", total);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("ShoppingCart.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("page/cakeMain/ShoppingCart.jsp").forward(request, response);
     }
 
-    private void deleteCartItem(HttpServletRequest request, HttpServletResponse response, int userId) throws IOException {
+    /**
+     * delete product in a cart
+     */
+    private void deleteCartItem(HttpServletRequest request, HttpServletResponse response, int cartid) throws IOException {
         int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
-        cartDao.removeCartItem(productDetailId, userId);
+        cartDao.removeCartItem(productDetailId, cartid);
         response.sendRedirect("cartcontroller");
     }
 
-    private void updateCartItem(HttpServletRequest request, HttpServletResponse response, int userId) throws IOException {
+    /**
+     * delete change quantity of the product inside the cart
+     */
+    private void updateCartItem(HttpServletRequest request, HttpServletResponse response, int cartid) throws IOException {
         int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-        cartDao.updateCartItemQuantity(productDetailId, quantity, userId);
+        cartDao.updateCartItemQuantity(productDetailId, quantity, cartid);
         response.sendRedirect("cartcontroller");
     }
 
-    private void checkout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect("bill.jsp");
+    /**
+     * Send to check out page
+     */
+    private void checkout(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.getRequestDispatcher("page/cakeMain/Checkout.jsp").forward(request, response);
     }
 }
 

@@ -22,7 +22,6 @@ public class UploadFile {
     //lưu đường dẫn tới thư mục mà các tệp được tải lên sẽ được lưu trữ
     private String UPLOAD_DIRECTORY;
 
-
     //xác định vị trí lưu tệp, kiểm tra và lưu các tệp đã được tải lên
     public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

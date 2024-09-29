@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.*;
-import session.SesionRepo;
+import session.SessionRepo;
 import until.Unique;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class ProductDetailController extends HttpServlet {
             category = CategoryProcess.INSTANCE.getCategoryByID(product.getCategoryID() + "");
             productDetailList = ProductDetailProcess.INSTANCE.getProductDetailByProductID(idProduct);
             List<Media> mediaList = MediaProcess.INSTANCE.getAllMediaByProductID(idProduct);
-            user = SesionRepo.getUser(request, response) == null
+            user = SessionRepo.getUser(request, response) == null
                     ? null
                     : (User) request.getSession().getAttribute("user");
 
@@ -59,7 +59,7 @@ public class ProductDetailController extends HttpServlet {
         String price = request.getParameter("price");
         String quantity = request.getParameter("quantity");
         if (request.getParameter("btnBuy") != null) {
-            response.sendRedirect(request.getContextPath() + "/checkout?idPd=" + idPd + "&size=" + size + "&price=" + price);
+            response.sendRedirect(request.getContextPath() + "/checkout?idPd=" + idPd + "&quantity=" + quantity);
         }
     }
 
