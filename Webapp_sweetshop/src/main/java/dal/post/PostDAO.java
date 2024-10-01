@@ -1,8 +1,7 @@
 package dal.post;
 
-package com.example.dao;
 
-import com.example.model.Post;
+import model.Post;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
