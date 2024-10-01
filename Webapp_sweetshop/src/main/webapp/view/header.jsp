@@ -110,7 +110,7 @@
                             <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
                                     <li><a href="/home">Products</a></li>
-                                    <li><a href="cart.jsp">Cart</a></li>
+                                    <li><a href="/cartcontroller">Cart</a></li>
                                     <c:choose>
                                         <c:when test="${user == null}" >
                                             <li><a href="/login">Login</a></li>

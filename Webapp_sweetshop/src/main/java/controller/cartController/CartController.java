@@ -68,7 +68,7 @@ public class CartController extends HttpServlet {
         request.setAttribute("discount", discount);
         request.setAttribute("total", total);
 
-        request.getRequestDispatcher("page/cakeMain/ShoppingCart.jsp").forward(request, response);
+        request.getRequestDispatcher("view/cart.jsp").forward(request, response);
     }
 
     /**
