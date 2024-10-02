@@ -38,7 +38,7 @@ public class AddNewStaffController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("page/admin/add_new_staff.jsp").forward(request, response);
+        request.getRequestDispatcher("page/admin/add-new-staff.jsp").forward(request, response);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class AddNewStaffController extends HttpServlet {
             ex.printStackTrace();
             request.setAttribute("message", "An error occurred: " + ex.getMessage());
         }
-        request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
     }
 
     // Method to get file extension
