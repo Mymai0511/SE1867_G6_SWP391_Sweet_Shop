@@ -5,8 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Danh Sách Sản Phẩm</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -38,7 +36,8 @@
                 <b>Sort by</b>
             </h3>
             <div class="filter-sort__list-filter d-flex p-2">
-                <a class="btn d-flex" style="background-color: #f0efef; margin-right: 10px;">
+                <c:set var="search" value="${sessionScope.search}" />
+                <a class="btn d-flex" href="./home?sort=DESC&search1=${search}" style="background-color: #f0efef; margin-right: 10px;">
                     <div class="icon">
                         <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                             <path
@@ -48,7 +47,7 @@
                     </div>
                     &nbsp;Price height - low
                 </a>
-                <a class="btn d-flex" style="background-color: #f0efef;">
+                <a class="btn d-flex" href="./home?sort=ASC&search1=${search}" style="background-color: #f0efef;">
                     <div class="icon">
                         <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                             <path

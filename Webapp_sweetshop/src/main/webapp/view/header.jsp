@@ -17,7 +17,7 @@
     <div class="first-header d-flex justify-content-between align-items-center"
          style="background-color: rgb(247, 247, 247);">
         <p class="site-name">
-            <a href="/home"><img src="../assets/image/home/logo.png" alt="" /></a>
+            <a href="/home"><img src="../assets/image/home/logo.png" alt=""/></a>
         </p>
         <div class="d-flex align-items-center">
             <div class="login-or-logout d-flex justify-content-center align-items-center p-3">
@@ -28,7 +28,8 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 0px 50px;">        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 0px 50px;">
+        <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -52,9 +53,13 @@
                     <a class="nav-link" href="#">Contact</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <c:set var="search" value="${sessionScope.search}" />
+                <c:set var="sort" value="${sessionScope.sort}" />
+                <form action="home" method="get" class="d-flex">
+                    <input class="form-control me-2" name="search" value="${search}" type="search" placeholder="Search"
+                           aria-label="Search">
                     <button class="btn btn-outline-secondary" type="submit">Search</button>
+                    <input type="hidden" value="${sort}" name="sort1">
                 </form>
             </div>
         </div>
