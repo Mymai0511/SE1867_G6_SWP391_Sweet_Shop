@@ -25,7 +25,7 @@ public class GetStaffController extends HttpServlet {
             throws ServletException, IOException {
         List<Staff> staffList = staffProcess.getAllStaff(); // Get all staff
         request.setAttribute("staffs", staffList);
-        request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response);
+        request.getRequestDispatcher("page/admin/staff-list.jsp").forward(request, response);
     }
 
     @Override

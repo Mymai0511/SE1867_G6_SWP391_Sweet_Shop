@@ -26,17 +26,33 @@ public class CartController extends HttpServlet {
         String action = request.getParameter("action");
         int userId = 1; // Assuming userId = 1 for now
 
+        //first time request no productDetailID
+        //So check if it null set it to 0.
+        //If It's null, it causes the error 500
+        String productDetailIDParam = request.getParameter("productDetailID");
+        int productDetailID = 0;
+        if (productDetailIDParam != null) {
+            try {
+                productDetailID = Integer.parseInt(productDetailIDParam);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+        }
+
         try {
             if (action == null) {
                 action = "";
             }
 
             switch (action) {
-                case "delete":
-                    deleteCartItem(request, response, userId);
+                case "remove":
+                    removeCartItem(request, response, userId,productDetailID);
                     break;
-                case "update":
-                    updateCartItem(request, response, userId);
+                case "increase":
+                    increaseCartItem(request, response, userId,productDetailID);
+                    break;
+                case "decrease":
+                    decreaseCartItem(request, response, userId,productDetailID);
                     break;
                 case "checkout":
                     checkout(request, response);
@@ -68,28 +84,39 @@ public class CartController extends HttpServlet {
         request.setAttribute("discount", discount);
         request.setAttribute("total", total);
 
-        request.getRequestDispatcher("page/cakeMain/ShoppingCart.jsp").forward(request, response);
+        request.getRequestDispatcher("view/cart.jsp").forward(request, response);
     }
 
-    /**
-     * delete product in a cart
-     */
-    private void deleteCartItem(HttpServletRequest request, HttpServletResponse response, int cartid) throws IOException {
-        int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
-        cartDao.removeCartItem(productDetailId, cartid);
+    private void increaseCartItem(HttpServletRequest request, HttpServletResponse response, int userId, int productDetailID) throws IOException {
+        CartDetail cartItem = cartDao.getCartItemByProductDetailID(userId, productDetailID);
+        if (cartItem != null) {
+            int newQuantity = cartItem.getQuantity() - 1;
+            if (newQuantity > 0) {
+                cartDao.updateCartItemQuantity(productDetailID, newQuantity, userId);
+            } else {
+                cartDao.removeCartItem(productDetailID, userId);
+            }
+        }
         response.sendRedirect("cartcontroller");
     }
 
-    /**
-     * delete change quantity of the product inside the cart
-     */
-    private void updateCartItem(HttpServletRequest request, HttpServletResponse response, int cartid) throws IOException {
-        int productDetailId = Integer.parseInt(request.getParameter("productDetailId"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-
-        cartDao.updateCartItemQuantity(productDetailId, quantity, cartid);
+    private void decreaseCartItem(HttpServletRequest request, HttpServletResponse response, int userId, int productDetailID) throws IOException {
+        CartDetail cartItem = cartDao.getCartItemByProductDetailID(userId, productDetailID);
+        if (cartItem != null) {
+            int newQuantity = cartItem.getQuantity() + 1;
+            cartDao.updateCartItemQuantity(productDetailID, newQuantity, userId);
+        }
         response.sendRedirect("cartcontroller");
     }
+
+
+
+    private void removeCartItem(HttpServletRequest request, HttpServletResponse response, int userId, int productDetailID) throws IOException {
+        cartDao.removeCartItem(productDetailID, userId);
+        response.sendRedirect("cartcontroller");
+    }
+
+
 
     /**
      * Send to check out page

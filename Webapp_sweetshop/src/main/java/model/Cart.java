@@ -17,6 +17,5 @@ import lombok.Setter;
 public class Cart {
     private int id;
     private int userID;
-
 }
  

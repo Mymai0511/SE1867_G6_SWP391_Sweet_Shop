@@ -56,83 +56,36 @@
                     <td></td>
                 </tr>
                 </thead>
+                <!--Cart container-->
                 <tbody>
-                <tr>
-                    <td class="cart_product">
-                        <a href=""><img src="../assets/image/cart/one.png" alt=""></a>
-                    </td>
-                    <td class="cart_description">
-                        <h4><a href="">Colorblock Scuba</a></h4>
-                        <p>Web ID: 1089772</p>
-                    </td>
-                    <td class="cart_price">
-                        <p>$59</p>
-                    </td>
-                    <td class="cart_quantity">
-                        <div class="cart_quantity_button">
-                            <a class="cart_quantity_up" href=""> + </a>
-                            <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                            <a class="cart_quantity_down" href=""> - </a>
-                        </div>
-                    </td>
-                    <td class="cart_total">
-                        <p class="cart_total_price">$59</p>
-                    </td>
-                    <td class="cart_delete">
-                        <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                    </td>
-                </tr>
+                <c:forEach var="item" items="${cartItems}">
+                    <tr>
+                        <td class="cart_product">
+                            <a href="viewdetail?id=${item.productDetailID}"><img src="../assets/image/cart/one.png" alt="Product Image"></a>
+                        </td>
+                        <td class="cart_description">
+                            <h4><a href="viewdetail?id=${item.productDetailID}">${item.product.name}</a></h4>
+                            <p>Size: ${item.productDetail.size}</p>
+                        </td>
+                        <td class="cart_price">
+                            <p>${item.productDetail.price}$</p>
+                        </td>
+                        <td class="cart_quantity">
+                            <div class="cart_quantity_button">
+                                <a class="cart_quantity_up" href="cartcontroller?action=increase&productDetailID=${item.productDetailID}"> + </a>
+                                <input class="cart_quantity_input" type="text" name="quantity" value="${item.quantity}" autocomplete="off" size="2">
+                                <a class="cart_quantity_down" href="cartcontroller?action=decrease&productDetailID=${item.productDetailID}"> - </a>
 
-                <tr>
-                    <td class="cart_product">
-                        <a href=""><img src="../assets/image/cart/two.png" alt=""></a>
-                    </td>
-                    <td class="cart_description">
-                        <h4><a href="">Colorblock Scuba</a></h4>
-                        <p>Web ID: 1089772</p>
-                    </td>
-                    <td class="cart_price">
-                        <p>$59</p>
-                    </td>
-                    <td class="cart_quantity">
-                        <div class="cart_quantity_button">
-                            <a class="cart_quantity_up" href=""> + </a>
-                            <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                            <a class="cart_quantity_down" href=""> - </a>
-                        </div>
-                    </td>
-                    <td class="cart_total">
-                        <p class="cart_total_price">$59</p>
-                    </td>
-                    <td class="cart_delete">
-                        <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="cart_product">
-                        <a href=""><img src="../assets/image/cart/three.png" alt=""></a>
-                    </td>
-                    <td class="cart_description">
-                        <h4><a href="">Colorblock Scuba</a></h4>
-                        <p>Web ID: 1089772</p>
-                    </td>
-                    <td class="cart_price">
-                        <p>$59</p>
-                    </td>
-                    <td class="cart_quantity">
-                        <div class="cart_quantity_button">
-                            <a class="cart_quantity_up" href=""> + </a>
-                            <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                            <a class="cart_quantity_down" href=""> - </a>
-                        </div>
-                    </td>
-                    <td class="cart_total">
-                        <p class="cart_total_price">$59</p>
-                    </td>
-                    <td class="cart_delete">
-                        <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                    </td>
-                </tr>
+                            </div>
+                        </td>
+                        <td class="cart_total">
+                            <p class="cart_total_price">${Math.round( (item.productDetail.price * item.quantity) * 100.0 ) / 100.0}$</p>
+                        </td>
+                        <td class="cart_delete">
+                            <a class="cart_quantity_delete" href="cartcontroller?action=remove&productDetailID=${item.productDetailID}"> remove </a>
+                        </td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>
@@ -203,13 +156,12 @@
             <div class="col-sm-6">
                 <div class="total_area">
                     <ul>
-                        <li>Cart Sub Total <span>$59</span></li>
-                        <li>Eco Tax <span>$2</span></li>
-                        <li>Shipping Cost <span>Free</span></li>
-                        <li>Total <span>$61</span></li>
+                        <li>Cart Sub Total <span>${Math.round(subtotal * 100.0) / 100.0}$</span></li>
+                        <li>Discount <span>${Math.round(discount * 100.0) / 100.0}$</span></li>
+                        <li>Total <span>${Math.round(total * 100.0) / 100.0}$</span></li>
                     </ul>
                     <a class="btn btn-default update" href="">Update</a>
-                    <a class="btn btn-default check_out" href="">Check Out</a>
+                    <a class="btn btn-default check_out" href="bill.jsp">Check Out</a>
                 </div>
             </div>
         </div>
