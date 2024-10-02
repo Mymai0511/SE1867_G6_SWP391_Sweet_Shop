@@ -124,6 +124,12 @@ header {
     transition: color 0.3s ease;
 }
 
+.login-or-logout a:hover {
+    color: #ff5722; /* Màu khi hover */
+    text-decoration: underline;
+}
+
+/* Nâng cao giao diện Navbar */
 .navbar {
     margin-top: 10px;
 }
@@ -146,11 +152,8 @@ header {
     border-color: rgba(0, 0, 0, 0.1);
 }
 
-.login-or-logout a:hover {
-    color: #333333 !important;
-    text-decoration: underline;
-}
 
+/* Responsive */
 @media (max-width: 768px) {
     .first-header {
         flex-direction: column;
@@ -161,14 +164,3 @@ header {
         padding: 10px 0 0 0;
     }
 }
-
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background-color: #ffffff; /* Màu nền cho header */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Đổ bóng cho header */
-}
-
