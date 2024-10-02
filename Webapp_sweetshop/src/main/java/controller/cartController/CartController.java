@@ -90,7 +90,7 @@ public class CartController extends HttpServlet {
     private void increaseCartItem(HttpServletRequest request, HttpServletResponse response, int userId, int productDetailID) throws IOException {
         CartDetail cartItem = cartDao.getCartItemByProductDetailID(userId, productDetailID);
         if (cartItem != null) {
-            int newQuantity = cartItem.getQuantity() - 1;
+            int newQuantity = cartItem.getQuantity() + 1;
             if (newQuantity > 0) {
                 cartDao.updateCartItemQuantity(productDetailID, newQuantity, userId);
             } else {
@@ -103,7 +103,7 @@ public class CartController extends HttpServlet {
     private void decreaseCartItem(HttpServletRequest request, HttpServletResponse response, int userId, int productDetailID) throws IOException {
         CartDetail cartItem = cartDao.getCartItemByProductDetailID(userId, productDetailID);
         if (cartItem != null) {
-            int newQuantity = cartItem.getQuantity() + 1;
+            int newQuantity = cartItem.getQuantity() - 1;
             cartDao.updateCartItemQuantity(productDetailID, newQuantity, userId);
         }
         response.sendRedirect("cartcontroller");

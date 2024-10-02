@@ -14,27 +14,13 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Cart | E-Shopper</title>
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
-    <link href="../assets/css/prettyPhoto.css" rel="stylesheet">
-    <link href="../assets/css/price-range.css" rel="stylesheet">
-    <link href="../assets/css/animate.css" rel="stylesheet">
-    <link href="../assets/css/main.css" rel="stylesheet">
-    <link href="../assets/css/responsive.css" rel="stylesheet">
-    <!--[if lt IE 9]>
+
     <script src="../assets/js/html5shiv.js"></script>
-    <script src="../assets/js/respond.min.js"></script>
-    <![endif]-->
-    <link rel="shortcut icon" href="../assets/image/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/image/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/image/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/image/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../assets/image/ico/apple-touch-icon-57-precomposed.png">
-</head><!--/head-->
+
 
 <body>
 
-<jsp:include page="header.jsp" flush="true" />
+<jsp:include page="header.jsp"/>
 
 <section id="cart_items">
     <div class="container">
@@ -72,9 +58,9 @@
                         </td>
                         <td class="cart_quantity">
                             <div class="cart_quantity_button">
-                                <a class="cart_quantity_up" href="cartcontroller?action=increase&productDetailID=${item.productDetailID}"> + </a>
+                                <button><a href="cartcontroller?action=increase&productDetailID=${item.productDetailID}"> + </button>
                                 <input class="cart_quantity_input" type="text" name="quantity" value="${item.quantity}" autocomplete="off" size="2">
-                                <a class="cart_quantity_down" href="cartcontroller?action=decrease&productDetailID=${item.productDetailID}"> - </a>
+                                <button><a href="cartcontroller?action=decrease&productDetailID=${item.productDetailID}"> - </button>
 
                             </div>
                         </td>

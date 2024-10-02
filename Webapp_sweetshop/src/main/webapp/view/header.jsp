@@ -23,7 +23,7 @@
             <div class="login-or-logout d-flex justify-content-center align-items-center p-3">
                 <a class="text-decoration-none" style="margin-right: 16px;" href="#"><i class="fa fa-user"></i> Account</a>
                 <a class="text-decoration-none" style="margin-right: 16px;" href="#"><i class="fa fa-star"></i> Wishlist</a>
-                <a class="text-decoration-none" style="margin-right: 16px;" href="cart.jsp"><i class="fa fa-shopping-cart"></i> Cart</a>
+                <a class="text-decoration-none" style="margin-right: 16px;" href="/cartcontroller"><i class="fa fa-shopping-cart"></i> Cart</a>
                 <a class="text-decoration-none" style="margin-right: 16px;" href="/login"><i class="fa fa-lock"></i> Login</a>
             </div>
         </div>
