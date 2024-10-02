@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.Media;
 import model.Product;
 import session.SessionRepo;
+import validation.CheckInput;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,10 +25,8 @@ public class HomePage extends HttpServlet {
     private static final int LIMIT = 12;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Product> productList = new ArrayList<>();
-
         int page = 1; // Trang mặc định
         String pageParam = request.getParameter("page");
         if (pageParam != null) {
@@ -38,24 +37,35 @@ public class HomePage extends HttpServlet {
                 page = 1;
             }
         }
-
         // 1. Tính tổng số sản phẩm
-        int totalProducts = ProductProcess.INSTANCE.getTotalProducts();
+        String findByName = SessionRepo.getSearch(request, response);
+        if (findByName == null) {
+            findByName = CheckInput.checkInputString(request.getParameter("search"));
+            if (findByName != null) {
+                SessionRepo.setSearch(request, response, findByName);
+            }
+        } else {
+            if (!findByName.equals(request.getParameter("search"))) {
+                findByName = CheckInput.checkInputString(request.getParameter("search"));
+                if (findByName != null) {
+                    SessionRepo.setSearch(request, response, findByName);
+                }
+            }
+        }
+//        String findByName = "Wedding Cake";
+        int totalProducts = ProductProcess.INSTANCE.getTotalProducts(findByName);
         int totalPages = (int) Math.ceil((double) totalProducts / LIMIT);
-
         // Đảm bảo trang hiện tại không vượt quá tổng số trang
         if (page > totalPages) page = totalPages;
-
         // 2. Tính OFFSET
         int offset = (page - 1) * LIMIT;
-
         // 3. Lấy danh sách sản phẩm cho trang hiện tại
-        List<Product> products = ProductProcess.INSTANCE.getProductsByPage(LIMIT, offset);
+        List<Product> products = ProductProcess.INSTANCE.getProductsByPage(findByName, LIMIT, offset, request.getParameter("ASC") != null);
         // 4. Thiết lập các thuộc tính để chuyển sang JSP
         request.setAttribute("products", products);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
-        request.setAttribute("user", SessionRepo.getUser(request,response));
+        request.setAttribute("user", SessionRepo.getUser(request, response));
         request.setAttribute("productDetail", ProductDetailProcess.INSTANCE);
         request.setAttribute("category", CategoryProcess.INSTANCE);
         request.setAttribute("media", MediaProcess.INSTANCE);
@@ -64,8 +74,7 @@ public class HomePage extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
 
