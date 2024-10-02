@@ -76,29 +76,29 @@ public class AddNewStaffController extends HttpServlet {
                 return;
             }
 
-            // Check file avatar
-            // phần tệp từ request HTTP với tên "profilePic"
-            Part filePart = request.getPart("profilePic");
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-
-            //file có bị null hay không or kích thước bằng 0
-            if (filePart == null || filePart.getSize() == 0) {
-                request.setAttribute("message", "No file uploaded.");
-                request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
-                return;
-            }
-
-            // kiểm tra định dạng tệp
-            String fileExtension = getFileExtension(fileName);
-            if (!fileExtension.equalsIgnoreCase("jpg") && !fileExtension.equalsIgnoreCase("jpeg")) {
-                request.setAttribute("message", "File must be a JPG image.");
-                request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
-                return;
-            }
-
-            // upload file dùng class UploadFile cho quá trình tải file lên.
-            UploadFile uploadFile = new UploadFile();//Lấy phần tệp từ yêu cầu
-            List<String> imgStaff = uploadFile.fileUpload(request, response);//Lấy tên tệp
+//            // Check file avatar
+//            // phần tệp từ request HTTP với tên "profilePic"
+//            Part filePart = request.getPart("profilePic");
+//            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+//
+//            //file có bị null hay không or kích thước bằng 0
+//            if (filePart == null || filePart.getSize() == 0) {
+//                request.setAttribute("message", "No file uploaded.");
+//                request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
+//                return;
+//            }
+//
+//            // kiểm tra định dạng tệp
+//            String fileExtension = getFileExtension(fileName);
+//            if (!fileExtension.equalsIgnoreCase("jpg") && !fileExtension.equalsIgnoreCase("jpeg")) {
+//                request.setAttribute("message", "File must be a JPG image.");
+//                request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
+//                return;
+//            }
+//
+//            // upload file dùng class UploadFile cho quá trình tải file lên.
+//            UploadFile uploadFile = new UploadFile();//Lấy phần tệp từ yêu cầu
+//            List<String> imgStaff = uploadFile.fileUpload(request, response);//Lấy tên tệp
 
             // check các giá trị khác và thêm nhân viên vào cơ sở dữ liệu
             boolean gender = "Male".equalsIgnoreCase(genderParam);
@@ -117,7 +117,8 @@ public class AddNewStaffController extends HttpServlet {
             newStaff.setAddress(address);
             newStaff.setStatus(status);
             newStaff.setRole(2); // Role for staff is 2
-            newStaff.setAvatar(imgStaff.get(0));// tải 1 ảnh nen lay image dau tien
+
+//            newStaff.setAvatar(imgStaff.get(0));// tải 1 ảnh nen lay image dau tien
 
             // Thiết lập thời gian hiện tại cho createdAt và updatedAt
             java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
