@@ -59,6 +59,8 @@
 }
 
 
+
+
 .pagination {
     text-align: center;
     margin: 20px;
@@ -82,15 +84,7 @@
     background-color: #ddd;
 }
 
-.login-or-logout > a:hover {
-    color: red !important;
-}
 /* Tổng thể Header */
-header {
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    padding-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
 /* First Header */
 .first-header {
@@ -125,7 +119,7 @@ header {
 }
 
 .login-or-logout a:hover {
-    color: #ff5722; /* Màu khi hover */
+    color: #fdb45e; /* Màu khi hover */
     text-decoration: underline;
 }
 
@@ -145,13 +139,16 @@ header {
 }
 
 .nav-link:hover {
-    color: #ff5722 !important;
+    color: #fdb45e !important;
 }
 
 .navbar-light .navbar-toggler {
     border-color: rgba(0, 0, 0, 0.1);
 }
 
+.active {
+    color: #fdb45e !important;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
