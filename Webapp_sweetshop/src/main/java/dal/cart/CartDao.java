@@ -25,12 +25,13 @@ public class CartDao extends DBContext {
      * @return a product list in a shopping cart
      */
     public List<CartDetail> getAllCartItems(int userID) {
-        String sql = "SELECT p.name AS product_name, pd.size, cd.quantity, pd.price\n" +
+        String sql = "SELECT p.name AS product_name, pd.size, pd.price, cd.quantity, cd.productDetailID\n" +
                 "FROM cartDetail cd\n" +
                 "JOIN productDetail pd ON cd.productDetailID = pd.id\n" +
                 "JOIN product p ON pd.productID = p.id\n" +
                 "JOIN cart c ON cd.cartID = c.id\n" +
                 "WHERE c.userID = ?;";
+
         List<CartDetail> cartList = new ArrayList<>();
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql);
@@ -48,6 +49,7 @@ public class CartDao extends DBContext {
                 item.setQuantity(rs.getInt("quantity"));
                 item.setProduct(product);
                 item.setProductDetail(productDetail);
+                item.setProductDetailID(rs.getInt("productDetailID"));//ProductDetailID inside user's cart
 
                 cartList.add(item);
             }
@@ -57,19 +59,53 @@ public class CartDao extends DBContext {
         return cartList;
     }
 
+
     public static void main(String[] args) {
         CartDao cartDao = new CartDao();
 
         List<CartDetail> cartItems = cartDao.getAllCartItems(1);
-
         for (CartDetail cd : cartItems) {
             System.out.println("Product Name: " + cd.getProduct().getName());
+            System.out.println("ID: " + cd.getProductDetailID());
             System.out.println("Size: " + cd.getProductDetail().getSize());
             System.out.println("Price: " + cd.getProductDetail().getPrice());
             System.out.println("Quantity: " + cd.getQuantity());
             System.out.println("-----------------------------------");
         }
     }
+    public CartDetail getCartItemByProductDetailID(int userID, int productDetailID) {
+        String query = "SELECT cd.id, cd.quantity, pd.size, pd.price, p.name " +
+                "FROM cartDetail cd " +
+                "JOIN productDetail pd ON cd.productDetailID = pd.id " +
+                "JOIN product p ON pd.productID = p.id " +
+                "JOIN cart c ON cd.cartID = c.id " +
+                "WHERE c.userID = ? AND pd.id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setInt(1, userID);
+            ps.setInt(2, productDetailID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                CartDetail cartDetail = new CartDetail();
+                cartDetail.setQuantity(rs.getInt("quantity"));
+
+                Product product = new Product();
+                product.setName(rs.getString("name"));
+
+                ProductDetail productDetail = new ProductDetail();
+                productDetail.setSize(rs.getString("size"));
+                productDetail.setPrice(rs.getFloat("price"));
+                productDetail.setId(productDetailID);
+
+                cartDetail.setProduct(product);
+                cartDetail.setProductDetail(productDetail);
+                return cartDetail;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     public double calculateSubtotal(int userId) {
         double subtotal = 0;
@@ -96,9 +132,9 @@ public class CartDao extends DBContext {
     }
 
     public void removeCartItem(int productDetailID, int userId) {
-        String query = "DELETE cd FROM cartdetail cd "
-                + "JOIN cart c ON cd.cartID = c.id "
-                + "WHERE cd.productDetailID = ? AND c.userID = ?";
+        String query = "DELETE cd FROM cartDetail cd " +
+                "JOIN cart c ON cd.cartID = c.id " +
+                "WHERE cd.productDetailID = ? AND c.userID = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, productDetailID);
             ps.setInt(2, userId);
@@ -109,10 +145,10 @@ public class CartDao extends DBContext {
     }
 
     public void updateCartItemQuantity(int productDetailID, int quantity, int userId) {
-        String query = "UPDATE cartdetail cd "
-                + "JOIN cart c ON cd.cartID = c.id "
-                + "SET cd.quantity = ? "
-                + "WHERE cd.productDetailID = ? AND c.userID = ?";
+        String query = "UPDATE cartDetail cd " +
+                "JOIN cart c ON cd.cartID = c.id " +
+                "SET cd.quantity = ? " +
+                "WHERE cd.productDetailID = ? AND c.userID = ?";
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setInt(1, quantity);
             ps.setInt(2, productDetailID);
