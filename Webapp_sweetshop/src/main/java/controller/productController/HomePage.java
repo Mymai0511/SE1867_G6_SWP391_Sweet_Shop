@@ -38,15 +38,19 @@ public class HomePage extends HttpServlet {
             }
         }
         // 1. Tính tổng số sản phẩm
+        String sort1 = request.getParameter("sort1") == null ? "asc" : request.getParameter("sort1");
+        String search1 = request.getParameter("search1") == null ? "" : request.getParameter("search1");
         String findByName = SessionRepo.getSearch(request, response);
         if (findByName == null) {
-            findByName = CheckInput.checkInputString(request.getParameter("search"));
+            findByName = CheckInput.checkInputString(request.getParameter("search") == null ? "" : request.getParameter("search"));
             if (findByName != null) {
                 SessionRepo.setSearch(request, response, findByName);
             }
         } else {
-            if (!findByName.equals(request.getParameter("search"))) {
-                findByName = CheckInput.checkInputString(request.getParameter("search"));
+            String checkSearch = request.getParameter("search") == null ? search1 : request.getParameter("search");
+            if (!findByName.equals(checkSearch)) {
+                findByName = CheckInput.checkInputString(request.getParameter("search") == null ? "" : request.getParameter("search"));
+                findByName = findByName == null ? "" : findByName;
                 if (findByName != null) {
                     SessionRepo.setSearch(request, response, findByName);
                 }
@@ -59,7 +63,8 @@ public class HomePage extends HttpServlet {
                     : CheckInput.checkInputString(request.getParameter("sort"));
             SessionRepo.setSort(request, response, sort);
         } else {
-            if (!sort.equals(request.getParameter("sort"))) {
+            String checkSort = request.getParameter("sort") == null ? sort1 : request.getParameter("sort");
+            if (!sort.equals(checkSort)) {
                 sort = CheckInput.checkInputString(request.getParameter("sort")) == null
                         ? "asc"
                         : CheckInput.checkInputString(request.getParameter("sort"));
