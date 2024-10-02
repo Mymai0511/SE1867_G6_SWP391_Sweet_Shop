@@ -5,6 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Danh Sách Sản Phẩm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="../assets/css/style.css">
@@ -31,7 +33,7 @@
 
 <c:choose>
     <c:when test="${not empty products}">
-        <main class="container" style="margin-top: 180px">
+        <main class="container">
             <h3 class="p-2">
                 <b>Sort by</b>
             </h3>
@@ -68,9 +70,16 @@
                                 <h5 class="card-title">${product.name}</h5>
                             </div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">${productDetail.getMinPriceByProductId(product.id)}vnd - ${productDetail.getMaxPriceByProductId(product.id)}vnd </li>
-                                <li class="list-group-item">${category.getCategoryByID(product.categoryID).getName()}</li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-start"><b>Price:</b></span>
+                                    <span class="text-end">${productDetail.getMinPriceByProductId(product.id)}vnd - ${productDetail.getMaxPriceByProductId(product.id)}vnd</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-start"><b>Category:</b></span>
+                                    <span class="text-end">${category.getCategoryByID(product.categoryID).getName()}</span>
+                                </li>
                             </ul>
+
                             <div class="card-body d-flex justify-content-center">
                                 <button class="btn btn-outline-warning ">View detail</button>
                             </div>
