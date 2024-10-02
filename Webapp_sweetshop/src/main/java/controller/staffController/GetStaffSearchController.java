@@ -26,7 +26,7 @@ public class GetStaffSearchController extends HttpServlet {
             throws ServletException, IOException {
         List<Staff> staffList = staffProcess.getAllStaff();
         request.setAttribute("staffs", staffList);
-        request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response);
+        request.getRequestDispatcher("page/admin/staff-list.jsp").forward(request, response);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class GetStaffSearchController extends HttpServlet {
 
         request.setAttribute("search", searchKeyword);
         request.setAttribute("staffs", searchedStaffs); // Đưa danh sách staff đã tìm kiếm vào request
-        request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response); // Chuyển hướng về trang danh sách staff
+        request.getRequestDispatcher("page/admin/staff-list.jsp").forward(request, response); // Chuyển hướng về trang danh sách staff
     }
 }

@@ -26,7 +26,7 @@ public class GetStaffDisableController extends HttpServlet {
             throws ServletException, IOException {
         List<Staff> staffList = staffProcess.getStaffDisable(); // Lấy danh sách nhân viên không hoạt động
         request.setAttribute("staffs", staffList);
-        request.getRequestDispatcher("page/admin/staff_list.jsp").forward(request, response);
+        request.getRequestDispatcher("page/admin/staff-list.jsp").forward(request, response);
     }
 
     @Override

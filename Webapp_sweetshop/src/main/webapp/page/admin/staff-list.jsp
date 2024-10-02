@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,97 +13,83 @@
     <meta name="keywords" content="bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
-
     <link rel="shortcut icon" href="../../assets/image/icons/icon-48x48.png" />
-
-    <link rel="canonical" href="/pages-clients.html" />
-
+    <link rel="canonical" href="/staff-list.jsp" />
     <title>Staff List</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet">
-
-    <!-- Choose your prefered color scheme -->
-    <!-- <link href="css/light.css" rel="stylesheet"> -->
-    <!-- <link href="css/dark.css" rel="stylesheet"> -->
-
-    <!-- BEGIN SETTINGS -->
-    <!-- Remove this after purchasing -->
     <link class="js-stylesheet" href="../../assets/css/light.css" rel="stylesheet">
-    <!-- <script src="../../assets/js/settings.js"></script>  -->
 
-    <style>body {
-        opacity: 0;
-    }
-    .pagination .page-item .page-link {
-        color: #6c757d;
-        border-radius: 50%;
-        margin: 0 5px;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        border: 1px solid #dee2e6;
-        background-color: #f8f9fa;
-    }
+    <style>
+        body {
+            opacity: 0;
+        }
 
-    .pagination .page-item.active .page-link {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
+        .pagination {
+            margin-top: 20px; /* Space above pagination */
+        }
 
-    .pagination .page-item .page-link:hover {
-        background-color: #e9ecef;
-        border-color: #dee2e6;
-    }
+        .pagination .btn {
+            background-color: #007bff; /* Primary button color */
+            border: none;
+            color: white;
+            transition: background-color 0.2s;
+        }
 
-    .pagination .page-item.disabled .page-link {
-        background-color: #e9ecef;
-        color: #6c757d;
-        cursor: not-allowed;
-    }
+        .pagination .btn:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
 
-    .pagination .page-item .page-link i {
-        font-size: 0.875rem;
-    }
+        .pagination .page-info {
+            font-weight: bold;
+            font-size: 1rem; /* Adjust font size */
+            color: #333; /* Text color for better visibility */
+        }
+
+        .pagination .page-link {
+            border: 1px solid #007bff;
+            border-radius: 5px; /* Rounded corners for page numbers */
+            width: 36px; /* Fixed width for buttons */
+            height: 36px; /* Fixed height for buttons */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 4px; /* Space between page number buttons */
+            color: #007bff; /* Color for page numbers */
+            background-color: white; /* Background color for buttons */
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #007bff; /* Background color on hover */
+            color: white; /* Text color on hover */
+        }
+
+        .pagination .page-link.active {
+            background-color: #007bff; /* Active page button color */
+            color: white; /* Active text color */
+        }
+
+        .pagination .page-link.disabled {
+            background-color: #e9ecef; /* Disabled button background */
+            color: #6c757d; /* Disabled text color */
+            cursor: not-allowed; /* Change cursor for disabled */
+        }
+
     </style>
-    <!-- END SETTINGS -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120946860-10"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'UA-120946860-10', { 'anonymize_ip': true });
-    </script>
 </head>
-<!--
-  HOW TO USE:
-  data-theme: default (default), dark, light, colored
-  data-layout: fluid (default), boxed
-  data-sidebar-position: left (default), right
-  data-sidebar-layout: default (default), compact
--->
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-layout="default">
 <div class="wrapper">
-
-    <jsp:include page = "../common/sidebar.jsp" ></jsp:include>
+    <jsp:include page="../common/sidebar.jsp"></jsp:include>
 
     <div class="main">
-
-        <jsp:include page = "../common/navbar.jsp" ></jsp:include>
+        <jsp:include page="../common/navbar.jsp"></jsp:include>
 
         <main class="content">
             <div class="container-fluid p-0">
-
                 <div class="mb-3">
-                    <h1 class="h3 d-inline align-middle">Clients</h1><a class="badge bg-primary ms-2" href="#"
-                                                                        target="_blank"></a>
-                    <i class="fas fa-fw fa-external-link-alt"></i>
-                    </a>
+                    <h1 class="h3 d-inline align-middle">List Staff</h1>
+                    <a class="badge bg-primary ms-2" href="/getstaff" target="_blank"></a>
                 </div>
 
                 <div class="row">
@@ -112,9 +98,10 @@
                             <div class="card-header pb-0 d-flex align-items-center justify-content-between">
                                 <!-- Left side: Search button -->
                                 <div class="left-side d-flex align-items-center w-45">
-                                    <form class="d-none d-sm-inline-block flex-grow-1">
+                                    <form class="d-none d-sm-inline-block flex-grow-1" action="/getstaffsearch" method="post">
                                         <div class="input-group input-group-navbar">
-                                            <input type="text" class="form-control" placeholder="Search…" aria-label="Search">
+                                            <input type="text" name="search" class="form-control" placeholder="Search…" aria-label="Search"
+                                                   value="${search != null ? search : ''}">
                                             <button class="btn" type="button">
                                                 <i class="align-middle" data-feather="search"></i>
                                             </button>
@@ -124,14 +111,12 @@
 
                                 <!-- Right side: Buttons and Dropdown -->
                                 <div class="right-side d-flex align-items-center justify-content-end w-55">
-                                    <!-- 3 buttons: All, Active, Disable -->
                                     <div class="btn-group me-3" role="group" aria-label="Status buttons">
-                                        <button type="button" class="btn btn-primary">All</button>
-                                        <button type="button" class="btn btn-outline-primary">Active</button>
-                                        <button type="button" class="btn btn-outline-primary">Disable</button>
+                                        <a type="button" class="btn btn-primary" href="/getstaff">All</a>
+                                        <a type="button" class="btn btn-outline-primary" href="/staffactive">Active</a>
+                                        <a type="button" class="btn btn-outline-primary" href="/staffdisable">Disable</a>
                                     </div>
 
-                                    <!-- Dropdown for sorting -->
                                     <div class="dropdown me-3">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                             Sort
@@ -139,16 +124,18 @@
                                         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
                                             <li><a class="dropdown-item" href="#">Name Ascending</a></li>
                                             <li><a class="dropdown-item" href="#">Name Descending</a></li>
-                                            <li><a class="dropdown-item" href="#">Creation Date Ascending</a></li>
-                                            <li><a class="dropdown-item" href="#">Creation Date Descending</a></li>
+                                            <li><a class="dropdown-item" href="#">Date of Birth (Oldest First)</a></li>
+                                            <li><a class="dropdown-item" href="#">Date of Birth (Youngest First)</a></li>
                                         </ul>
                                     </div>
+
+                                    <!-- Add New Staff Button -->
+                                    <a class="btn btn-success me-3" href="/addstaff">Add New Staff</a>
                                 </div>
                             </div>
 
                             <div class="card-body">
-                                <!-- bang Staff -->
-                                <table class="table table-striped" style="width:100%">
+                                <table id="staffTable" class="table table-striped" style="width:100%">
                                     <thead>
                                     <tr>
                                         <th>#</th>
@@ -156,64 +143,44 @@
                                         <th>Date Of Birth</th>
                                         <th>Email</th>
                                         <th>Status</th>
-                                        <th>Action</th> <!-- Thêm cột Action -->
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="staffBody">
                                     <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
-                                    <tr>
-                                        <td><img src="../../assets/image/avatars/avatar.jpg" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
-                                        <td>${staff.fullName}</td>
-                                        <td>${staff.dob}</td>
-                                        <td>${staff.email}</td>
-                                        <td>
-                                             <span class="badge ${staff.status == 1 ? 'bg-primary' : 'bg-danger'}">
-                                                ${staff.status == 1 ? 'Active' : 'Disable'}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <!-- Action icons -->
-                                            <a href="#" class="text-primary me-2" title="Edit">
-                                                <i class="align-middle" data-feather="edit"></i>
-                                            </a>
-                                            <a href="#" class="text-danger" title="Delete">
-                                                <i class="align-middle" data-feather="trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                        <tr class="staffRow">
+                                            <td><img src="../../assets/image/avatars/avatar.jpg" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                            <td>${staff.fullName}</td>
+                                            <td>${staff.dob}</td>
+                                            <td>${staff.email}</td>
+                                            <td>
+                                                        <span class="badge ${staff.status == 1 ? 'bg-primary' : 'bg-danger'}">
+                                                                ${staff.status == 1 ? 'Active' : 'Disable'}
+                                                        </span>
+                                            </td>
+                                            <td>
+                                                <a href="#" class="text-primary me-2" title="Edit">
+                                                    <i class="align-middle" data-feather="edit"></i>
+                                                </a>
+                                                <a href="#" class="text-danger" title="Delete">
+                                                    <i class="align-middle" data-feather="trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
                                     </c:forEach>
-                                    <!-- You can add more rows similarly -->
                                     </tbody>
                                 </table>
-                            </div>
 
-                            <!-- phân trang -->
+                                <!-- Pagination Controls -->
+                                <div id="paginationControls" class="pagination mt-4 d-flex justify-content-end align-items-center">
+                                    <button id="prevButton" class="btn btn-secondary me-2" onclick="changePage(-1)">Previous</button>
+<%--                                    <span id="pageInfo" class="page-info me-3">1</span>--%>
+                                    <div id="pageNumbers" class="d-flex me-2">
+                                        <!-- Page numbers will be generated here -->
+                                    </div>
+                                    <button id="nextButton" class="btn btn-secondary" onclick="changePage(1)">Next</button>
+                                </div>
 
-                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                <span class="text-muted">Showing 1 to 10</span>
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                                <i class="fas fa-chevron-left"></i> <!-- Biểu tượng mũi tên trái -->
-                                            </a>
-                                        </li>
-                                        <li class="page-item active">
-                                            <a class="page-link" href="#">1</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">2</a>
-                                        </li>
-                                        <li class="page-item disabled">
-                                            <span class="page-link">...</span>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                                <i class="fas fa-chevron-right"></i> <!-- Biểu tượng mũi tên phải -->
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
                             </div>
                         </div>
                     </div>
@@ -221,10 +188,12 @@
             </div>
         </main>
 
-        <jsp:include page = "../common/footer.jsp" ></jsp:include>
-
+        <jsp:include page="../common/footer.jsp"></jsp:include>
     </div>
 </div>
+
+<script src="../../assets/js/user/paging.js"></script>
+<script src="../../assets/js/user/sortuser.js"></script>
 <script src="../../assets/js/app.js"></script>
 </body>
 </html>
