@@ -8,40 +8,29 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Danh Sách Bài Đăng</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>List of Posts</title>
 </head>
 <body>
-<h1>Danh Sách Bài Đăng</h1>
-<a href="posts?action=new">Tạo Bài Đăng Mới</a>
+<h1>Posts</h1>
+<a href="posts?action=new">Create New Post</a>
 <table border="1">
     <tr>
         <th>ID</th>
-        <th>Tiêu Đề</th>
-        <th>Tác Giả</th>
-        <th>Trạng Thái</th>
-        <th>Ngày Tạo</th>
-        <th>Hành Động</th>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Actions</th>
     </tr>
-    <c:forEach var="post" items="${listPost}">
+    <c:forEach var="post" items="${posts}">
         <tr>
             <td>${post.id}</td>
             <td>${post.title}</td>
-            <td>${post.userID}</td> <!-- Có thể hiển thị tên người dùng thay vì ID -->
+            <td>${post.content}</td>
             <td>
-                <c:choose>
-                    <c:when test="${post.status == 1}">Công khai</c:when>
-                    <c:otherwise>Nháp</c:otherwise>
-                </c:choose>
-            </td>
-            <td>${post.createdAt}</td>
-            <td>
-                <a href="posts?action=view&id=${post.id}">Xem</a>
-                <a href="posts?action=edit&id=${post.id}">Sửa</a>
-                <a href="posts?action=delete&id=${post.id}" onclick="return confirm('Bạn có chắc chắn muốn xóa?');">Xóa</a>
+                <a href="posts?action=edit&id=${post.id}">Edit</a>
+                <a href="posts?action=delete&id=${post.id}">Delete</a>
             </td>
         </tr>
     </c:forEach>
