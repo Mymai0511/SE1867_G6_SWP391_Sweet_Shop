@@ -24,7 +24,6 @@ public class ProductDetailController extends HttpServlet {
     String idProduct = null;
     Product product = null;
     Category category = null;
-    User user = null;
     List<ProductDetail> productDetailList = new ArrayList<>();
 
     @Override
@@ -37,18 +36,14 @@ public class ProductDetailController extends HttpServlet {
             category = CategoryProcess.INSTANCE.getCategoryByID(product.getCategoryID() + "");
             productDetailList = ProductDetailProcess.INSTANCE.getProductDetailByProductID(idProduct);
             List<Media> mediaList = MediaProcess.INSTANCE.getAllMediaByProductID(idProduct);
-            user = SessionRepo.getUser(request, response) == null
-                    ? null
-                    : (User) request.getSession().getAttribute("user");
 
-            request.setAttribute("user", user);
             request.setAttribute("size", uniqueSize(productDetailList));
             request.setAttribute("category", category);
             request.setAttribute("product", product);
             request.setAttribute("mediaList", mediaList);
             request.setAttribute("productDetail", ProductDetailProcess.INSTANCE);
             request.setAttribute("productDetailList", productDetailList);
-            request.getRequestDispatcher("page/cakeMain/ShopDetail.jsp").forward(request, response);
+            request.getRequestDispatcher("view/product-detail.jsp").forward(request, response);
         }
     }
 

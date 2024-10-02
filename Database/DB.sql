@@ -46,14 +46,15 @@ CREATE TABLE `order` (
                          id INT AUTO_INCREMENT PRIMARY KEY,
                          consignee TEXT,
                          phone VARCHAR(13),
+                         email text, 
                          shipAddress TEXT,
                          orderTime DATETIME,
                          deliveryTime DATETIME,
                          receiptTime DATETIME,
                          status INT,
                          voucherCode VARCHAR(6),
-                         CONSTRAINT FK_Voucher_Order FOREIGN KEY (voucherCode) REFERENCES voucher(code),
                          userId INT,
+                         CONSTRAINT FK_Voucher_Order FOREIGN KEY (voucherCode) REFERENCES voucher(code),
                          CONSTRAINT FK_User_Order FOREIGN KEY (userId) REFERENCES user(id)
 );
 
@@ -132,7 +133,6 @@ CREATE TABLE media (
 CREATE TABLE orderDetail (
                              id INT AUTO_INCREMENT PRIMARY KEY,
                              price FLOAT,
-                             codeVoucher VARCHAR(6),
                              quantity INT,
                              orderID INT,
                              productDetailID INT,
@@ -241,16 +241,136 @@ INSERT INTO cartDetail (quantity, status, cartID, productDetailID) VALUES
     (4, 1, 3, 10),
     (5, 1, 3, 7);
 
-insert into `order` (consignee, phone, shipAddress, orderTime, deliveryTime, receiptTime, status, voucherCode, userId) VALUES
-    ('John Doe', '0123456789', '123 Main St', '2024-09-10 14:00:00', '2024-09-12 10:00:00', '2024-09-12 12:00:00', 1, 'ABC123', 1),
-    ('Jane Smith', '0123456798', '456 Park Ave', '2024-09-11 15:00:00', '2024-09-13 11:00:00', '2024-09-13 13:00:00', 1, 'XYZ456', 1),
-    ('Alice Jones', '0123456797', '789 Oak St', '2024-09-12 16:00:00', '2024-09-14 12:00:00', '2024-09-14 14:00:00', 1, 'LMN789', 5),
-    ('Bob Brown', '0123456796', '321 Pine St', '2024-09-13 17:00:00', '2024-09-15 13:00:00', '2024-09-15 15:00:00', 1, 'DEF321', 5),
-    ('Charlie Black', '0123456795', '654 Cedar St', '2024-09-14 18:00:00', '2024-09-16 14:00:00', '2024-09-16 16:00:00', 1, 'GHI654', 9),
-    ('David Green', '0123456794', '987 Birch St', '2024-09-15 19:00:00', '2024-09-17 15:00:00', '2024-09-17 17:00:00', 1, 'JKL987', 9),
-    ('Emily White', '0123456793', '111 Elm St', '2024-09-16 20:00:00', '2024-09-18 16:00:00', '2024-09-18 18:00:00', 1, 'QWE123', 1),
-    ('Frank Silver', '0123456792', '222 Maple St', '2024-09-17 21:00:00', '2024-09-19 17:00:00', '2024-09-19 19:00:00', 1, 'RTY456', 5),
-    ('George Gold', '0123456791', '333 Willow St', '2024-09-18 22:00:00', '2024-09-20 18:00:00', '2024-09-20 20:00:00', 1, 'UIO789', 9),
-    ('Hannah Blue', '0123456790', '444 Ash St', '2024-09-19 23:00:00', '2024-09-21 19:00:00', '2024-09-21 21:00:00', 1, 'PAS123', 1);
+insert into `order` (consignee, phone, shipAddress, orderTime, deliveryTime, receiptTime, status, voucherCode, userId, email) VALUES
+    ('John Doe', '0123456789', '123 Main St', '2024-09-10 14:00:00', '2024-09-12 10:00:00', '2024-09-12 12:00:00', 1, 'ABC123', 1, '123@gmail.com'),
+    ('Jane Smith', '0123456798', '456 Park Ave', '2024-09-11 15:00:00', '2024-09-13 11:00:00', '2024-09-13 13:00:00', 1, 'XYZ456', 1, '123@gmail.com'),
+    ('Alice Jones', '0123456797', '789 Oak St', '2024-09-12 16:00:00', '2024-09-14 12:00:00', '2024-09-14 14:00:00', 1, 'LMN789', 5, '123@gmail.com'),
+    ('Bob Brown', '0123456796', '321 Pine St', '2024-09-13 17:00:00', '2024-09-15 13:00:00', '2024-09-15 15:00:00', 1, 'DEF321', 5, '123@gmail.com'),
+    ('Charlie Black', '0123456795', '654 Cedar St', '2024-09-14 18:00:00', '2024-09-16 14:00:00', '2024-09-16 16:00:00', 1, 'GHI654', 9, '123@gmail.com'),
+    ('David Green', '0123456794', '987 Birch St', '2024-09-15 19:00:00', '2024-09-17 15:00:00', '2024-09-17 17:00:00', 1, 'JKL987', 9, '123@gmail.com'),
+    ('Emily White', '0123456793', '111 Elm St', '2024-09-16 20:00:00', '2024-09-18 16:00:00', '2024-09-18 18:00:00', 1, 'QWE123', 1, '123@gmail.com'),
+    ('Frank Silver', '0123456792', '222 Maple St', '2024-09-17 21:00:00', '2024-09-19 17:00:00', '2024-09-19 19:00:00', 1, 'RTY456', 5, '123@gmail.com'),
+    ('George Gold', '0123456791', '333 Willow St', '2024-09-18 22:00:00', '2024-09-20 18:00:00', '2024-09-20 20:00:00', 1, 'UIO789', 9, '123@gmail.com'),
+    ('Hannah Blue', '0123456790', '444 Ash St', '2024-09-19 23:00:00', '2024-09-21 19:00:00', '2024-09-21 21:00:00', 1, 'PAS123', 1, '123@gmail.com');
+INSERT INTO post (title, content, status, createdAt, updatedAt) VALUES
+('New Cake Recipe', 'Check out our new cake recipe!', 1, '2024-09-18', '2024-09-18'),
+('Special Pastry', 'Special offer on our croissants!', 1, '2024-09-18', '2024-09-18');
 
-##########################################################################################
+INSERT INTO media (image, postID, productID) VALUES
+('145688445-chup-hinh-banh-ngot_08.jpg', 1, NULL),
+('145688445-chup-hinh-banh-ngot_08.jpg', 2, NULL);
+
+INSERT INTO media (image, postID, productID) VALUES
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 1),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 1),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 2),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 2),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 3),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 3),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 4),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 4),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 5),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 5),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 6),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 6),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 7),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 7),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 8),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 8),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 9),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 9),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 10),
+('145688445-chup-hinh-banh-ngot_08.jpg', NULL, 10);
+DELIMITER $$
+CREATE PROCEDURE insertUser(
+	IN p_username TEXT,
+	IN p_password TEXT,
+	IN p_fName TEXT,
+	IN p_gender BIT,
+	IN p_email TEXT,
+	IN p_phone VARCHAR(13),
+	IN p_dob DATE,
+	IN p_avatar TEXT,
+	IN p_address TEXT,
+	IN p_status INT,
+	IN p_role INT
+)
+BEGIN
+	-- Insert dữ liệu vào bảng user
+	INSERT INTO users (username, password, fName, gender, email, phone, dob, avatar, address, status, createdAt, updatedAt, role)
+	VALUES (p_username, p_password, p_fName, p_gender, p_email, p_phone, p_dob, p_avatar, p_address, p_status, now(), now(), p_role);
+	
+	-- Trả về ID của user vừa mới được insert
+	SELECT LAST_INSERT_ID() AS newUserID;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE insertOrder(
+    IN p_consignee TEXT,
+    IN p_phone VARCHAR(13),
+    IN p_email text,
+    IN p_shipAddress TEXT,
+    IN p_voucherCode VARCHAR(6),
+    IN p_userId INT
+)
+BEGIN
+    -- Insert dữ liệu vào bảng `order`
+    INSERT INTO `order` (consignee, phone,email, shipAddress, orderTime, deliveryTime, receiptTime, status, voucherCode, userId)
+    VALUES (p_consignee, p_phone,p_email, p_shipAddress, now(), null, null, 1, p_voucherCode, p_userId);
+
+    -- Trả về ID của order vừa mới được insert
+    SELECT LAST_INSERT_ID() AS newOrderID;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE insertOrderDetail(
+    IN p_price FLOAT,
+    IN p_quantity INT,
+    IN p_orderID INT,
+    IN p_productDetailID INT
+)
+BEGIN
+    -- Insert dữ liệu vào bảng `orderDetail`
+    INSERT INTO orderDetail (price, quantity, orderID, productDetailID)
+    VALUES (p_price, p_quantity, p_orderID, p_productDetailID);
+
+    -- Trả về ID của order detail vừa mới được insert
+    SELECT LAST_INSERT_ID() AS newOrderDetailID;
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE insertProduct(
+    IN p_name TEXT,
+    IN p_ingredient TEXT,
+    IN p_description TEXT,
+    IN p_status INT,
+    IN p_categoryID INT
+)
+BEGIN
+    -- Insert dữ liệu vào bảng `product`
+    INSERT INTO product (name, ingredient, description, status, createdAt, updatedAt, categoryID)
+    VALUES (p_name, p_ingredient, p_description, p_status, now(), now(), p_categoryID);
+
+    -- Trả về ID của sản phẩm vừa mới được insert
+    SELECT LAST_INSERT_ID() AS newProductID;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE insertCart(
+    IN p_userID INT
+)
+BEGIN
+    -- Insert dữ liệu vào bảng `cart`
+    INSERT INTO cart (userID)
+    VALUES (p_userID);
+
+    -- Trả về ID của giỏ hàng vừa mới được insert
+    SELECT LAST_INSERT_ID() AS newCartID;
+END$$
+DELIMITER ;
+
