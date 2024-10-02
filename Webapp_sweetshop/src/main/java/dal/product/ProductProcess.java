@@ -71,7 +71,7 @@ public class ProductProcess extends DAO {
     /**
      * Lấy danh sách sản phẩm cho một trang cụ thể, sắp xếp theo giá trị min của giá và tìm kiếm theo tên
      */
-    public List<Product> getProductsByPage(String searchName, int limit, int offset, boolean sortByMinPriceAsc) {
+    public List<Product> getProductsByPage(String searchName, int limit, int offset, String sortByMinPriceAsc) {
         List<Product> productList = new ArrayList<>();
         StringBuilder query = new StringBuilder("SELECT p.*, MIN(pd.price) AS minPrice FROM product p "
                 + "JOIN productDetail pd ON p.id = pd.productID WHERE p.status = ? ");
@@ -83,8 +83,8 @@ public class ProductProcess extends DAO {
         query.append("GROUP BY p.id ");
         // Thêm điều kiện sắp xếp theo giá trị min
         query.append("ORDER BY minPrice ");
-        query.append(sortByMinPriceAsc ? "ASC " : "DESC ");
-        query.append("LIMIT ? OFFSET ?");
+        query.append(sortByMinPriceAsc);
+        query.append(" LIMIT ? OFFSET ?");
         try {
             PreparedStatement ps = this.connection.prepareStatement(query.toString());
             ps.setString(1 , "1");

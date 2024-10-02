@@ -52,7 +52,21 @@ public class HomePage extends HttpServlet {
                 }
             }
         }
-//        String findByName = "Wedding Cake";
+        String sort = SessionRepo.getSort(request,response);
+        if (sort == null) {
+            sort = CheckInput.checkInputString(request.getParameter("sort")) == null
+                    ? "asc"
+                    : CheckInput.checkInputString(request.getParameter("sort"));
+            SessionRepo.setSort(request, response, sort);
+        } else {
+            if (!sort.equals(request.getParameter("sort"))) {
+                sort = CheckInput.checkInputString(request.getParameter("sort")) == null
+                        ? "asc"
+                        : CheckInput.checkInputString(request.getParameter("sort"));
+                SessionRepo.setSort(request, response, sort);
+            }
+        }
+
         int totalProducts = ProductProcess.INSTANCE.getTotalProducts(findByName);
         int totalPages = (int) Math.ceil((double) totalProducts / LIMIT);
         // Đảm bảo trang hiện tại không vượt quá tổng số trang
@@ -60,7 +74,7 @@ public class HomePage extends HttpServlet {
         // 2. Tính OFFSET
         int offset = (page - 1) * LIMIT;
         // 3. Lấy danh sách sản phẩm cho trang hiện tại
-        List<Product> products = ProductProcess.INSTANCE.getProductsByPage(findByName, LIMIT, offset, request.getParameter("ASC") != null);
+        List<Product> products = ProductProcess.INSTANCE.getProductsByPage(findByName, LIMIT, offset, sort);
         // 4. Thiết lập các thuộc tính để chuyển sang JSP
         request.setAttribute("products", products);
         request.setAttribute("currentPage", page);

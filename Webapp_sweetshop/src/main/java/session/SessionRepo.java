@@ -25,4 +25,12 @@ public class SessionRepo {
     public static void setSearch(HttpServletRequest request, HttpServletResponse response, String search) {
         request.getSession().setAttribute("search", search);
     }
+
+    public static String getSort(HttpServletRequest request, HttpServletResponse response) {
+        return (String) request.getSession().getAttribute("sort");
+    }
+
+    public static void setSort(HttpServletRequest request, HttpServletResponse response, String sort) {
+        request.getSession().setAttribute("sort", sort);
+    }
 }
