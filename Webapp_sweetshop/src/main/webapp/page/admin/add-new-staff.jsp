@@ -110,13 +110,12 @@
                                     </div>
                                     <div class="card-body">
                                         <c:if test="${not empty message}">
-                                        `   <div class="alert alert-info">${message}</div>
+                                            <div class="alert alert-info">${message}</div>
                                         </c:if>
-                                        <form>
+                                        <form id="staffForm" enctype="multipart/form-data" method="POST" action="/addstaff">
                                             <div class="row">
                                                 <div class="col-md-8">
-
-                                                    <!-- Full Name -->
+                                                    <!-- Các trường đầu vào của bạn ở đây -->
                                                     <div class="mb-3">
                                                         <label for="fullname">Full Name:</label>
                                                         <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full Name"
@@ -141,15 +140,26 @@
                                                         </select>
                                                         <div id="genderError" class="text-danger" style="display: none;"></div>
                                                     </div>
-
                                                 </div>
+
                                                 <div class="col-md-4">
                                                     <div class="text-center">
-                                                        <img alt="Charles Hall" src="../../assets/image/avatars/avatar.jpg" class="rounded-circle img-responsive mt-2"
-                                                             width="128" height="128" />
+                                                        <!-- Hình ảnh hiện tại -->
+                                                        <img id="previewImage" alt="Avatar" src="../../assets/image/avatars/avatar.jpg"
+                                                             class="rounded-circle img-responsive mt-2" width="128" height="128" />
+
                                                         <div class="mt-2">
-                                                            <span class="btn btn-primary"><i class="fas fa-upload"></i> Upload</span>
+                                                            <!-- Nút bấm Upload để kích hoạt input file -->
+                                                            <span class="btn btn-primary" onclick="document.getElementById('file-upload').click();">
+                                                                <i class="fas fa-upload"></i> Upload
+                                                            </span>
                                                         </div>
+
+                                                        <!-- Input file ẩn -->
+                                                        <input type="file" id="file-upload" name="file-upload" accept=".jpg"
+                                                               style="display: none;" onchange="handleImageUpload(event)">
+
+                                                        <!-- Thông báo lỗi nếu có -->
                                                         <small>For best results, use an image at least 128px by 128px in .jpg format</small>
                                                         <div id="fileError" class="text-danger" style="display: none;"></div>
                                                     </div>
@@ -213,36 +223,37 @@
                                                     <div id="rpassError" class="text-danger" style="display: none;"></div>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <button type="submit" class="btn btn-primary" onclick="return validateForm(event);">Save</button>
                                         </form>
                                     </div>
+
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="password" role="tabpanel">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Password</h5>
+<%--                            <div class="tab-pane fade" id="password" role="tabpanel">--%>
+<%--                                <div class="card">--%>
+<%--                                    <div class="card-body">--%>
+<%--                                        <h5 class="card-title">Password</h5>--%>
 
-                                        <form>
-                                            <div class="mb-3">
-                                                <label class="form-label" for="inputPasswordCurrent">Current password</label>
-                                                <input type="password" class="form-control" id="inputPasswordCurrent">
-                                                <small><a href="#">Forgot your password?</a></small>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label" for="inputPasswordNew">New password</label>
-                                                <input type="password" class="form-control" id="inputPasswordNew">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label" for="inputPasswordNew2">Verify password</label>
-                                                <input type="password" class="form-control" id="inputPasswordNew2">
-                                            </div>
-                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                        </form>
+<%--                                        <form>--%>
+<%--                                            <div class="mb-3">--%>
+<%--                                                <label class="form-label" for="inputPasswordCurrent">Current password</label>--%>
+<%--                                                <input type="password" class="form-control" id="inputPasswordCurrent">--%>
+<%--                                                <small><a href="#">Forgot your password?</a></small>--%>
+<%--                                            </div>--%>
+<%--                                            <div class="mb-3">--%>
+<%--                                                <label class="form-label" for="inputPasswordNew">New password</label>--%>
+<%--                                                <input type="password" class="form-control" id="inputPasswordNew">--%>
+<%--                                            </div>--%>
+<%--                                            <div class="mb-3">--%>
+<%--                                                <label class="form-label" for="inputPasswordNew2">Verify password</label>--%>
+<%--                                                <input type="password" class="form-control" id="inputPasswordNew2">--%>
+<%--                                            </div>--%>
+<%--                                            <button type="submit" class="btn btn-primary">Save changes</button>--%>
+<%--                                        </form>--%>
 
-                                    </div>
-                                </div>
-                            </div>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
                         </div>
                     </div>
                 </div>
@@ -254,6 +265,7 @@
 
     </div>
 </div>
+<script src="../../assets/js/user/validate.js"></script>
 <script src="../../assets/js/app.js"></script>
 </body>
 </html>

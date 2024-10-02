@@ -28,7 +28,7 @@ public class UploadFile {
 //        // Get the real path to the "build/web" directory
 //        String realPath = request.getServletContext().getRealPath("");
 //        // Navigate to the "web/uploadFiles" directory
-//        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/image/avatar");
+//        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/image/avatar-user");
 //
 //
 //        //Lưu trữ đường dẫn dưới dạng string
@@ -36,7 +36,7 @@ public class UploadFile {
 
         // Đường dẫn mặc định đến thư mục avatar
         // Thay đổi đường dẫn này theo cấu trúc thư mục của bạn
-        String UPLOAD_DIRECTORY = "D:/Semester_5/SWP_1867AI/Project/Sweet_Shop/Webapp_sweetshop/src/main/webapp/assets/app/image/avatar";
+//        String UPLOAD_DIRECTORY = "D:/Semester_5/SWP_1867AI/Project/Sweet_Shop/Webapp_sweetshop/src/main/webapp/assets/app/image/avatar";
 
         Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
         //Tạo thư mục nếu không tồn tại
