@@ -8,13 +8,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Media;
 import model.Product;
 import session.SessionRepo;
 import validation.CheckInput;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +20,12 @@ public class HomePage extends HttpServlet {
 
 
     // Số sản phẩm mỗi trang
-    private static final int LIMIT = 12;
+    private static final int LIMIT = 1;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Product> productList = new ArrayList<>();
-        int page = 1; // Trang mặc định
+        int page = 1;
         String pageParam = request.getParameter("page");
         if (pageParam != null) {
             try {
@@ -51,12 +49,10 @@ public class HomePage extends HttpServlet {
             if (!findByName.equals(checkSearch)) {
                 findByName = CheckInput.checkInputString(request.getParameter("search") == null ? "" : request.getParameter("search"));
                 findByName = findByName == null ? "" : findByName;
-                if (findByName != null) {
-                    SessionRepo.setSearch(request, response, findByName);
-                }
+                SessionRepo.setSearch(request, response, findByName);
             }
         }
-        String sort = SessionRepo.getSort(request,response);
+        String sort = SessionRepo.getSort(request, response);
         if (sort == null) {
             sort = CheckInput.checkInputString(request.getParameter("sort")) == null
                     ? "asc"

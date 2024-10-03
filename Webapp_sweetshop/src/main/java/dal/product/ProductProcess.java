@@ -46,14 +46,18 @@ public class ProductProcess extends DAO {
      * Lấy tổng số sản phẩm từ bảng product theo điều kiện tìm kiếm
      */
     public int getTotalProducts(String searchName) {
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) AS total FROM product p where p.status = ?  ");
+        StringBuilder sql = new StringBuilder("" +
+                "SELECT COUNT(DISTINCT p.id) AS total " +
+                "FROM product p " +
+                "JOIN productDetail pd ON p.id = pd.productID " +
+                "WHERE p.status = ? ");
         // Nếu có điều kiện tìm kiếm
         if (searchName != null && !searchName.isEmpty()) {
             sql.append("AND p.name LIKE ?");
         }
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql.toString());
-            ps.setString(1 , "1");
+            ps.setString(1, "1");
             // Thiết lập tham số tìm kiếm
             if (searchName != null && !searchName.isEmpty()) {
                 ps.setString(2, "%" + searchName + "%");
@@ -87,7 +91,7 @@ public class ProductProcess extends DAO {
         query.append(" LIMIT ? OFFSET ?");
         try {
             PreparedStatement ps = this.connection.prepareStatement(query.toString());
-            ps.setString(1 , "1");
+            ps.setString(1, "1");
             int paramIndex = 2;
             // Thiết lập tham số tìm kiếm tên
             if (searchName != null && !searchName.isEmpty()) {
@@ -113,7 +117,6 @@ public class ProductProcess extends DAO {
         }
         return productList;
     }
-
 
 
     /**

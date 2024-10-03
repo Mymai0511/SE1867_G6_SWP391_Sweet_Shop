@@ -37,6 +37,7 @@
             </h3>
             <div class="filter-sort__list-filter d-flex p-2">
                 <c:set var="search" value="${sessionScope.search}" />
+                <c:set var="sort" value="${sessionScope.sort}" />
                 <a class="btn d-flex" href="./home?sort=DESC&search1=${search}" style="background-color: #f0efef; margin-right: 10px;">
                     <div class="icon">
                         <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -110,12 +111,12 @@
 
     <!-- Nút "Trước" -->
     <c:if test="${currentPage > 1}">
-        <a href="home?page=${currentPage - 1}">&laquo; Trước</a>
+        <a href="home?page=${currentPage - 1}&sort1=${sort}&search1=${search}">&laquo; Trước</a>
     </c:if>
 
     <!-- Hiển thị "1 ..." nếu startPage > 1 -->
     <c:if test="${startPage > 1}">
-        <a href="home?page=1">1</a>
+        <a href="home?page=1&sort1=${sort}&search1=${search}">1</a>
         <span>...</span>
     </c:if>
 
@@ -126,7 +127,7 @@
                 <span class="current">${i}</span>
             </c:when>
             <c:otherwise>
-                <a href="home?page=${i}">${i}</a>
+                <a href="home?page=${i}&sort1=${sort}&search1=${search}">${i}</a>
             </c:otherwise>
         </c:choose>
     </c:forEach>
@@ -134,12 +135,12 @@
     <!-- Hiển thị "... totalPages" nếu endPage < totalPages -->
     <c:if test="${endPage < totalPages}">
         <span>...</span>
-        <a href="home?page=${totalPages}">${totalPages}</a>
+        <a href="home?page=${totalPages}&sort1=${sort}&search1=${search}">${totalPages}</a>
     </c:if>
 
     <!-- Nút "Sau" -->
     <c:if test="${currentPage < totalPages}">
-        <a href="home?page=${currentPage + 1}">Sau &raquo;</a>
+        <a href="home?page=${currentPage + 1}&sort1=${sort}&search1=${search}">Sau &raquo;</a>
     </c:if>
 </div>
 
