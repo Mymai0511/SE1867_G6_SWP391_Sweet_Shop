@@ -20,7 +20,7 @@ public class HomePage extends HttpServlet {
 
 
     // Số sản phẩm mỗi trang
-    private static final int LIMIT = 1;
+    private static final int LIMIT = 12;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
