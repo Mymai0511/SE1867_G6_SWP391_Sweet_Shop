@@ -191,7 +191,30 @@
         <jsp:include page="../common/footer.jsp"></jsp:include>
     </div>
 </div>
+<script>
+    window.onload = function() {
+        // Lấy đường dẫn hiện tại của trang
+        const currentPath = window.location.pathname;
 
+        // Lấy tất cả các phần tử 'a' trong nhóm nút
+        const buttons = document.querySelectorAll('.btn-group .btn');
+
+        // Lặp qua từng nút để kiểm tra URL và áp dụng lớp active
+        buttons.forEach(button => {
+            if (button.getAttribute('href') === currentPath) {
+                // Thêm lớp btn-primary cho nút đang được chọn
+                button.classList.remove('btn-outline-primary');
+                button.classList.add('btn-primary');
+            } else {
+                // Các nút khác giữ lớp btn-outline-primary
+                button.classList.remove('btn-primary');
+                button.classList.add('btn-outline-primary');
+            }
+        });
+    };
+
+</script>
+<script src="../../assets/js/user/sidebar.js"></script>
 <script src="../../assets/js/user/paging.js"></script>
 <script src="../../assets/js/user/sortuser.js"></script>
 <script src="../../assets/js/app.js"></script>
