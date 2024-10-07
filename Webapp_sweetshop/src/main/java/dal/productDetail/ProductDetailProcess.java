@@ -57,10 +57,6 @@ public class ProductDetailProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        String[] id = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        for (ProductDetail pd : ProductDetailProcess.INSTANCE.getPDByListPDId(id)) {
-            System.out.println(pd.toString());
-        }
     }
 
     /**

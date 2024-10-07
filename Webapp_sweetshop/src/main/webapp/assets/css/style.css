@@ -147,6 +147,7 @@
 }
 
 .active {
+    border: none;
     color: #fdb45e !important;
 }
 
