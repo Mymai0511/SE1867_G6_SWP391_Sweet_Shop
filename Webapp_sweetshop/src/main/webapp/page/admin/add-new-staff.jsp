@@ -31,43 +31,14 @@
     <link class="js-stylesheet" href="../../assets/css/light.css" rel="stylesheet">
     <!-- <script src="../../assets/js/settings.js"></script>  -->
 
-    <style>body {
+    <style>
+    body {
         opacity: 0;
     }
-    .pagination .page-item .page-link {
-        color: #6c757d;
-        border-radius: 50%;
-        margin: 0 5px;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        border: 1px solid #dee2e6;
-        background-color: #f8f9fa;
+    .content {
+        padding: 0px;
     }
 
-    .pagination .page-item.active .page-link {
-        background-color: #007bff;
-        color: white;
-        border-color: #007bff;
-    }
-
-    .pagination .page-item .page-link:hover {
-        background-color: #e9ecef;
-        border-color: #dee2e6;
-    }
-
-    .pagination .page-item.disabled .page-link {
-        background-color: #e9ecef;
-        color: #6c757d;
-        cursor: not-allowed;
-    }
-
-    .pagination .page-item .page-link i {
-        font-size: 0.875rem;
-    }
     </style>
     <!-- END SETTINGS -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-120946860-10"></script>
@@ -98,16 +69,11 @@
 
         <main class="content">
             <div class="container-fluid p-0">
-
-                <h1 class="h3 mb-3">Add New Staff</h1>
                 <div class="row">
                     <div class="col-md-12 col-xl-12">
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="account" role="tabpanel">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h5 class="card-title mb-0">New Staff Information</h5>
-                                    </div>
                                     <div class="card-body">
                                         <c:if test="${not empty message}">
                                             <div class="alert alert-info">${message}</div>
@@ -265,6 +231,16 @@
 
     </div>
 </div>
+
+<!-- Feather Icons -->
+<script src="https://unpkg.com/feather-icons"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Khởi tạo Feather Icons
+    feather.replace();
+</script>
+<script src="../../assets/js/user/sidebar.js"></script>
 <script src="../../assets/js/user/validate.js"></script>
 <script src="../../assets/js/app.js"></script>
 </body>

@@ -24,6 +24,10 @@
             opacity: 0;
         }
 
+        .content {
+            padding: 0px;
+        }
+
         .pagination {
             margin-top: 20px; /* Space above pagination */
         }
@@ -87,10 +91,10 @@
 
         <main class="content">
             <div class="container-fluid p-0">
-                <div class="mb-3">
-                    <h1 class="h3 d-inline align-middle">List Staff</h1>
-                    <a class="badge bg-primary ms-2" href="/getstaff" target="_blank"></a>
-                </div>
+<%--                <div class="mb-3">--%>
+<%--                    <h1 class="h3 d-inline align-middle">List Staff</h1>--%>
+<%--                    <a class="badge bg-primary ms-2" href="/getstaff" target="_blank"></a>--%>
+<%--                </div>--%>
 
                 <div class="row">
                     <div class="col-xl-12">
@@ -191,7 +195,99 @@
         <jsp:include page="../common/footer.jsp"></jsp:include>
     </div>
 </div>
+<script>
+    window.onload = function() {
+        // Lấy đường dẫn hiện tại của trang
+        const currentPath = window.location.pathname;
 
+        // Lấy tất cả các phần tử 'a' trong nhóm nút
+        const buttons = document.querySelectorAll('.btn-group .btn');
+
+        // Lặp qua từng nút để kiểm tra URL và áp dụng lớp active
+        buttons.forEach(button => {
+            if (button.getAttribute('href') === currentPath) {
+                // Thêm lớp btn-primary cho nút đang được chọn
+                button.classList.remove('btn-outline-primary');
+                button.classList.add('btn-primary');
+            } else {
+                // Các nút khác giữ lớp btn-outline-primary
+                button.classList.remove('btn-primary');
+                button.classList.add('btn-outline-primary');
+            }
+        });
+    };
+
+</script>
+<%--<script src="https://unpkg.com/feather-icons"></script>--%>
+<%--<!-- Bootstrap JS -->--%>
+<%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>--%>
+<%--<script>--%>
+<%--    // Khởi tạo Feather Icons--%>
+<%--    feather.replace();--%>
+<%--</script>--%>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Làm nổi bật mục sidebar dựa trên URL hiện tại
+        const sidebarLinks = document.querySelectorAll(".sidebar-link");
+        const currentPage = window.location.pathname;
+
+        // Duyệt qua tất cả các liên kết trong sidebar
+        sidebarLinks.forEach(link => {
+            // Kiểm tra xem liên kết có khớp với trang hiện tại không
+            if (link.getAttribute("href") === currentPage) {
+                // Thêm class 'active' vào liên kết tương ứng
+                link.classList.add("active");
+
+                // Nếu liên kết nằm trong một dropdown, mở dropdown cha
+                const parentDropdown = link.closest(".collapse");
+                if (parentDropdown) {
+                    parentDropdown.classList.add("show");
+
+                    // Nếu cần, cũng đánh dấu liên kết cha là 'active'
+                    const parentLink = parentDropdown.previousElementSibling;
+                    if (parentLink) {
+                        parentLink.classList.add("active");
+                    }
+                }
+            }
+        });
+
+        // Xử lý trạng thái của dropdown sau khi tải lại trang
+        const dropdownLinks = document.querySelectorAll("[data-bs-toggle='collapse']");
+
+        // Duyệt qua tất cả các liên kết có chức năng dropdown
+        dropdownLinks.forEach(link => {
+            const dropdown = document.querySelector(link.getAttribute("data-bs-target"));
+
+            // Kiểm tra xem dropdown có đang mở hay không
+            if (dropdown && dropdown.classList.contains("show")) {
+                link.classList.remove("collapsed");
+                link.classList.add("active");
+            }
+
+            // Thêm sự kiện click để thay đổi trạng thái của dropdown
+            link.addEventListener("click", function() {
+                const isCollapsed = link.classList.contains("collapsed");
+
+                // Xóa class 'active' khỏi các dropdown khác
+                dropdownLinks.forEach(otherLink => {
+                    if (otherLink !== link) {
+                        otherLink.classList.add("collapsed");
+                        otherLink.classList.remove("active");
+                    }
+                });
+
+                // Thay đổi class 'active' cho liên kết đã click
+                if (!isCollapsed) {
+                    link.classList.remove("active");
+                } else {
+                    link.classList.add("active");
+                }
+            });
+        });
+    });
+
+</script>
 <script src="../../assets/js/user/paging.js"></script>
 <script src="../../assets/js/user/sortuser.js"></script>
 <script src="../../assets/js/app.js"></script>

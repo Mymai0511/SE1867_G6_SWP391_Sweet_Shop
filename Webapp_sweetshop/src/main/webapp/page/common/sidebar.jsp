@@ -41,42 +41,60 @@
         </div>
 
         <ul class="sidebar-nav">
-            <li class="sidebar-header">
-                Pages
-            </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="#">
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboards</span>
                 </a>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="/getstaff">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">List Staff</span>
+            <li class="sidebar-item ">
+                <a data-bs-target="#icons" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="layout"></i> <span class="align-middle">Manager Products</span>
                 </a>
+                <ul id="icons" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Products</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Products</a></li>
+                </ul>
             </li>
 
-            <li class="sidebar-item">
-                <a class="sidebar-link" href="/getshipper">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">List Shipper</span>
+            <li class="sidebar-item ">
+                <a data-bs-target="#order" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="list"></i> <span class="align-middle">Manager Orders</span>
                 </a>
+                <ul id="order" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Orders</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Orders</a></li>
+                </ul>
             </li>
 
-<%--            <li class="sidebar-item">--%>
-<%--                <a href="/getshipper"  class="sidebar-link">--%>
-<%--                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Auth</span>--%>
-<%--                </a>--%>
-<%--                <ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">--%>
-<%--                    <li class="sidebar-item"><a class="sidebar-link" href="pages-sign-in.html">Sign In</a></li>--%>
-<%--                    <li class="sidebar-item"><a class="sidebar-link" href="pages-sign-up.html">Sign Up</a></li>--%>
-<%--                    <li class="sidebar-item"><a class="sidebar-link" href="pages-reset-password.html">Reset Password <span--%>
-<%--                            class="sidebar-badge badge bg-primary">Pro</span></a></li>--%>
-<%--                    <li class="sidebar-item"><a class="sidebar-link" href="pages-404.html">404 Page <span--%>
-<%--                            class="sidebar-badge badge bg-primary">Pro</span></a></li>--%>
-<%--                    <li class="sidebar-item"><a class="sidebar-link" href="pages-500.html">500 Page <span--%>
-<%--                            class="sidebar-badge badge bg-primary">Pro</span></a></li>--%>
-<%--                </ul>--%>
-<%--            </li>--%>
+            <li class="sidebar-item ">
+                <a data-bs-target="#form-plugins" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Manager Customers</span>
+                </a>
+                <ul id="form-plugins" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Customers</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Customer</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item ">
+                <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manager Staffs</span>
+                </a>
+                <ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="/getstaff">List Staffs</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/addstaff">Add New Staff</a></li>
+                </ul>
+            </li>
+            <li class="sidebar-item ">
+                <a data-bs-target="#shipper" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Manager Shippers</span>
+                </a>
+                <ul id="shipper" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Shippers</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Shipper</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>
