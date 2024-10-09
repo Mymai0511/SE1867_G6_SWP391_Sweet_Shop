@@ -42,6 +42,7 @@
             justify-content: center;
         }
 
+
         .cart_quantity_button button {
             background-color: #bebebf;
             border: none;
@@ -98,17 +99,48 @@
             display: inline-flex;
             align-items: center;
         }
+        .cart_edit{
+            background-color: #FFFFFF;
+            border: black solid 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+
+        }
+        .cart_quantity_delete{
+            background-color: #a10718;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
 
         /*Popup Screen Css*/
         .modal-content {
             background-color: white;
-            margin: 15% auto;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px; /* Đặt chiều rộng cố định */
+            max-width: 600px; /* Đảm bảo không vượt quá 600px */
+            height: 85vh; /* Chiều cao 85% của màn hình */
+            max-height: 85vh; /* Không vượt quá 85% chiều cao */
             padding: 20px;
             border: 1px solid #888;
-            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            overflow-y: auto;
         }
-
 
         .close {
             color: #aaa;
@@ -123,32 +155,32 @@
             text-decoration: none;
             cursor: pointer;
         }
-        .btn {
-            padding: 10px 20px;
-            margin: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .btn.cancel {
-            background-color: red;
+        .product-info img {
+            margin-right: 15px;
         }
 
-        .btn:hover {
-            opacity: 0.8;
-        }
-
-        label, select, input, textarea {
-            display: block;
+        .form-row {
+            display: flex;
+            align-items: center;
             margin-bottom: 10px;
         }
 
-        img {
-            max-width: 100px;
-            margin-bottom: 10px;
+        .form-row label {
+            width: 30%;
         }
+
+        .form-row select,
+        .form-row input {
+            width: 65%;
+        }
+
     </style>
 </head>
 
@@ -187,7 +219,7 @@
                         </td>
                         <td class="cart_description">
                             <h4><a href="viewdetail?id=${item.productDetailID}">${item.product.name}</a></h4>
-                            <p>${item.product.description}</p>
+                            <p>${item.product.description} | Type: ${item.productDetail.size}</p>
                         </td>
                         <td class="cart_price">
                             <p class="bold-price">${item.productDetail.price}$</p>
@@ -201,9 +233,9 @@
                         </td>
                         <td class="cart_actions">
                             <button class="cart_edit"><i class="fa fa-pencil"></i></button>
-                            <a class="cart_quantity_delete" href="cartcontroller?action=remove&productDetailID=${item.productDetailID}">
+                            <button class="cart_quantity_delete" href="cartcontroller?action=remove&productDetailID=${item.productDetailID}">
                                 <i class="fa fa-trash"></i>
-                            </a>
+                            </button>
                         </td>
                     </tr>
                 </c:forEach>
@@ -233,33 +265,48 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <h4>Edit Product</h4>
-        <img src="../assets/image/cart/one.png" alt="Product Image">
-        <p>Product: ${item.product.name}</p>
-        <p>Price: ${item.productDetail.price}$</p>
-        <label for="candle">Candle:</label>
-        <select id="candle">
-            <option value="small">Small (Height: 3-5cm)</option>
-            <option value="big">Big (Height: 5-7cm)</option>
-            <option value="number">Number</option>
-        </select>
-        <input type="text" placeholder="Number you want to" id="candleNumber">
-        <br>
-        <label><input type="checkbox" name="flare" value="birthdayFlare"> Birthday Flare</label>
-        <br>
-        <label for="messageOption">Message Option:</label>
-        <select id="messageOption">
-            <option value="cake">Write on cake</option>
-            <option value="card">Write on card</option>
-        </select>
-        <input type="text" placeholder="Write your message here" id="message">
-        <br>
+
+        <div class="product-info">
+            <img src="../assets/image/cart/one.png" alt="Product Image">
+            <div class="product-details">
+                <p>Product: ${item.product.name}</p>
+                <p>Price: ${item.productDetail.price}$</p>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <label for="candle">Candle:</label>
+            <select id="candle">
+                <option value="small">Small (Height: 3-5cm)</option>
+                <option value="big">Big (Height: 5-7cm)</option>
+                <option value="number">Number</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <label><input type="checkbox" name="flare" value="birthdayFlare"> Birthday Flare</label>
+        </div>
+
+        <div class="form-row">
+            <label for="messageOption">Message Option:</label>
+            <select id="messageOption">
+                <option value="cake">Write on cake</option>
+                <option value="card">Write on card</option>
+            </select>
+        </div>
+
+        <textarea id="message" placeholder="Write your message here"></textarea>
+
         <label for="note">Your note:</label>
         <textarea id="note" placeholder="Any special instructions"></textarea>
-        <br>
-        <button class="btn save" id="saveEdit">Save</button>
-        <button class="btn cancel" id="cancelEdit">Cancel</button>
+
+        <div class="form-row">
+            <button class="btn save" id="saveEdit">Save</button>
+            <button class="btn cancel" id="cancelEdit">Cancel</button>
+        </div>
     </div>
 </div>
+
 
 <jsp:include page="footer.jsp" flush="true" />
 
