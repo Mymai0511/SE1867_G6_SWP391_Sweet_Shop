@@ -25,7 +25,7 @@ public class CartDao extends DBContext {
      * @return a product list in a shopping cart
      */
     public List<CartDetail> getAllCartItems(int userID) {
-        String sql = "SELECT p.name AS product_name, pd.size, pd.price, cd.quantity, cd.productDetailID\n" +
+        String sql = "SELECT p.name AS product_name, p.description AS product_description, pd.size, pd.price, cd.quantity, cd.productDetailID\n" +
                 "FROM cartDetail cd\n" +
                 "JOIN productDetail pd ON cd.productDetailID = pd.id\n" +
                 "JOIN product p ON pd.productID = p.id\n" +
@@ -40,6 +40,7 @@ public class CartDao extends DBContext {
             while (rs.next()) {
                 Product product = new Product();
                 product.setName(rs.getString("product_name"));
+                product.setDescription(rs.getString("product_description"));
 
                 ProductDetail productDetail = new ProductDetail();
                 productDetail.setSize(rs.getString("size"));
@@ -60,19 +61,22 @@ public class CartDao extends DBContext {
     }
 
 
-    public static void main(String[] args) {
-        CartDao cartDao = new CartDao();
 
-        List<CartDetail> cartItems = cartDao.getAllCartItems(1);
-        for (CartDetail cd : cartItems) {
-            System.out.println("Product Name: " + cd.getProduct().getName());
-            System.out.println("ID: " + cd.getProductDetailID());
-            System.out.println("Size: " + cd.getProductDetail().getSize());
-            System.out.println("Price: " + cd.getProductDetail().getPrice());
-            System.out.println("Quantity: " + cd.getQuantity());
-            System.out.println("-----------------------------------");
-        }
-    }
+//    public static void main(String[] args) {
+//        CartDao cartDao = new CartDao();
+//
+//        List<CartDetail> cartItems = cartDao.getAllCartItems(1);
+//        for (CartDetail cd : cartItems) {
+//            System.out.println("Product Name: " + cd.getProduct().getName());
+//            System.out.println("Description: " + cd.getProduct().getDescription()); // Thêm phần hiển thị description
+//            System.out.println("ID: " + cd.getProductDetailID());
+//            System.out.println("Size: " + cd.getProductDetail().getSize());
+//            System.out.println("Price: " + cd.getProductDetail().getPrice());
+//            System.out.println("Quantity: " + cd.getQuantity());
+//            System.out.println("-----------------------------------");
+//        }
+//    }
+
     public CartDetail getCartItemByProductDetailID(int userID, int productDetailID) {
         String query = "SELECT cd.id, cd.quantity, pd.size, pd.price, p.name " +
                 "FROM cartDetail cd " +
