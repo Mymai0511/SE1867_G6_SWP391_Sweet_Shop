@@ -25,15 +25,15 @@ public class OrderProcess extends DAO {
      */
     public String create(String name, String phone, String email, String shipAddress, String voucher, String userId) {
         String id = null;
-        String sql = "(Call insertOrder(?,?,?,?,?,?)";
+        String sql = "CALL insertOrder(?,?,?,?,?,?)";  // Remove parentheses around the CALL statement
         try {
             CallableStatement cs = this.connection.prepareCall(sql);
-            cs.setString(1,name);
-            cs.setString(2,phone);
-            cs.setString(3,email);
-            cs.setString(4,shipAddress);
-            cs.setString(5,voucher);
-            cs.setString(6,userId);
+            cs.setString(1, name);
+            cs.setString(2, phone);
+            cs.setString(3, email);
+            cs.setString(4, shipAddress);
+            cs.setString(5, voucher);
+            cs.setString(6, userId);
             ResultSet rs = cs.executeQuery();
             while (rs.next()) {
                 id = rs.getString("newOrderID");
@@ -44,4 +44,13 @@ public class OrderProcess extends DAO {
         }
         return id;
     }
+
+
+    public static void main(String[] args) {
+        System.out.println(
+                OrderProcess.INSTANCE.create("12", "12", "123@gmail.com", "12",null,"27")
+        );
+    }
+
+
 }
