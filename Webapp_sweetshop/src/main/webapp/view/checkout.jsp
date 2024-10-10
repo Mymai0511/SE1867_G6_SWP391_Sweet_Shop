@@ -1,284 +1,303 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 9/28/2024
-  Time: 1:31 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Checkout | E-Shopper</title>
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
-    <link href="../assets/css/prettyPhoto.css" rel="stylesheet">
-    <link href="../assets/css/price-range.css" rel="stylesheet">
-    <link href="../assets/css/animate.css" rel="stylesheet">
-    <link href="../assets/css/main.css" rel="stylesheet">
-    <link href="../assets/css/responsive.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="../assets/js/html5shiv.js"></script>
-    <script src="../assets/js/respond.min.js"></script>
-    <![endif]-->
-    <link rel="shortcut icon" href="../assets/image/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/image/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/image/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/image/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../assets/image/ico/apple-touch-icon-57-precomposed.png">
-</head><!--/head-->
+    <title>Checkout</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-w4T06fD0C2yO5e4J3An0kSkZ7AzAp5eWz5nJAzVkmDNFNg4EN4z8nGqDhOXDheTi"
+          crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .checkout {
+            padding: 60px 0;
+        }
+
+        .checkout__title {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .billing-details {
+            border: 1px solid #e3e3e3;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: white;
+        }
+
+        .order-summary {
+            background-color: #ffe4b5; /* Light orange background color */
+            border-radius: 10px;
+            padding: 20px;
+            margin-left: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-summary h4 {
+            margin-bottom: 20px;
+        }
+
+        .order-summary .total {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #343a40;
+            border-color: #343a40;
+        }
+
+        .btn-primary:hover {
+            background-color: #23272b;
+            border-color: #1d2124;
+        }
+
+    </style>
+</head>
 
 <body>
 
-<jsp:include page="header.jsp" flush="true" />
+<jsp:include page="header.jsp" flush="true"/>
 
-<section id="cart_items">
+<section class="checkout">
     <div class="container">
-        <div class="breadcrumbs">
-            <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li class="active">Check out</li>
-            </ol>
-        </div><!--/breadcrums-->
-
-        <div class="step-one">
-            <h2 class="heading">Step1</h2>
-        </div>
-        <div class="checkout-options">
-            <h3>New User</h3>
-            <p>Checkout options</p>
-            <ul class="nav">
-                <li>
-                    <label><input type="checkbox"> Register Account</label>
-                </li>
-                <li>
-                    <label><input type="checkbox"> Guest Checkout</label>
-                </li>
-                <li>
-                    <a href=""><i class="fa fa-times"></i>Cancel</a>
-                </li>
-            </ul>
-        </div><!--/checkout-options-->
-
-        <div class="register-req">
-            <p>Please use Register And Checkout to easily get access to your order history, or use Checkout as Guest</p>
-        </div><!--/register-req-->
-
-        <div class="shopper-informations">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="shopper-info">
-                        <p>Shopper Information</p>
-                        <form>
-                            <input type="text" placeholder="Display Name">
-                            <input type="text" placeholder="User Name">
-                            <input type="password" placeholder="Password">
-                            <input type="password" placeholder="Confirm password">
-                        </form>
-                        <a class="btn btn-primary" href="">Get Quotes</a>
-                        <a class="btn btn-primary" href="">Continue</a>
-                    </div>
-                </div>
-                <div class="col-sm-5 clearfix">
-                    <div class="bill-to">
-                        <p>Bill To</p>
-                        <div class="form-one">
-                            <form>
-                                <input type="text" placeholder="Company Name">
-                                <input type="text" placeholder="Email*">
-                                <input type="text" placeholder="Title">
-                                <input type="text" placeholder="First Name *">
-                                <input type="text" placeholder="Middle Name">
-                                <input type="text" placeholder="Last Name *">
-                                <input type="text" placeholder="Address 1 *">
-                                <input type="text" placeholder="Address 2">
-                            </form>
+        <form action="checkout" method="post" class="row" onsubmit="return checkform(event)">
+            <div class="col-lg-8">
+                <div class="billing-details">
+                    <h4>BILLING DETAILS</h4>
+                    <%-- first name and last name--%>
+                    <div class="row mb-3">
+                        <div class="col-md-6" style="padding-left: 0px;">
+                            <label for="firstName" class="form-label">First Name<span
+                                    style="color: red;"><b>*</b></span></label>
+                            <input type="text" name="firstName" class="form-control" id="firstName"
+                                   placeholder="Enter first name" fdprocessedid="y9luur">
                         </div>
-                        <div class="form-two">
-                            <form>
-                                <input type="text" placeholder="Zip / Postal Code *">
-                                <select>
-                                    <option>-- Country --</option>
-                                    <option>United States</option>
-                                    <option>Bangladesh</option>
-                                    <option>UK</option>
-                                    <option>India</option>
-                                    <option>Pakistan</option>
-                                    <option>Ucrane</option>
-                                    <option>Canada</option>
-                                    <option>Dubai</option>
-                                </select>
-                                <select>
-                                    <option>-- State / Province / Region --</option>
-                                    <option>United States</option>
-                                    <option>Bangladesh</option>
-                                    <option>UK</option>
-                                    <option>India</option>
-                                    <option>Pakistan</option>
-                                    <option>Ucrane</option>
-                                    <option>Canada</option>
-                                    <option>Dubai</option>
-                                </select>
-                                <input type="password" placeholder="Confirm password">
-                                <input type="text" placeholder="Phone *">
-                                <input type="text" placeholder="Mobile Phone">
-                                <input type="text" placeholder="Fax">
-                            </form>
+                        <div class="col-md-6" style="padding-right: 0px;">
+                            <label for="lastName" class="form-label">Last Name<span style="color: red;"><b>*</b></span></label>
+                            <input type="text" name="lastName" class="form-control" id="lastName"
+                                   placeholder="Enter last name" fdprocessedid="4dqzv7">
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="order-message">
-                        <p>Shipping Order</p>
-                        <textarea name="message"  placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
-                        <label><input type="checkbox"> Shipping to bill address</label>
+                    <%-- phone number and email --%>
+                    <div class="row mb-3">
+                        <div class="col-md-6" style="padding-left: 0;">
+                            <label for="phoneNumber" class="form-label">Phone number<span
+                                    style="color: red;"><b>*</b></span></label>
+                            <input type="text" name="phoneNumber" class="form-control" id="phoneNumber"
+                                   placeholder="Enter phone number">
+                        </div>
+                        <div class="col-md-6" style="padding-right: 0;">
+                            <label for="email" class="form-label">Email<span style="color: red;"><b>*</b></span></label>
+                            <input type="email" name="email" class="form-control" id="email"
+                                   placeholder="Enter email">
+                        </div>
                     </div>
+                    <%-- location get product --%>
+                    <div class="row mb-3">
+                        <div class="col-md-3 col-sm-12" style="padding-left: 0">
+                            <label for="village" class="form-label">
+                                Village<span style="color: red;"><b>*</b></span>
+                            </label>
+                            <input type="text" name="village" class="form-control" id="village"
+                                   placeholder="Enter village ...">
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <label for="location" class="form-label">
+                                Commune<span style="color: red;"><b>*</b></span>
+                            </label>
+                            <select class="form-select" id="location" name="location">
+                                <c:forEach var="l" items="${location}">
+                                    <option value="${l}">${l}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <label for="district" class="form-label">
+                                District<span style="color: red;"><b>*</b></span>
+                            </label>
+                            <select class="form-select" id="district" name="district">
+                                <option value="Thạch Thất" style="width: 100%">Thạch Thất</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 col-md-3" style="padding-right: 0">
+                            <label for="country" class="form-label">
+                                Country<span style="color: red;"><b>*</b></span>
+                            </label>
+                            <select class="form-select" id="country" name="country">
+                                <option value="Hà Nội">Hà Nội</option>
+                            </select>
+                        </div>
+                    </div>
+                    <%-- note --%>
+                    <div class="mb-3">
+                        <label for="orderNotes" class="form-label">Order notes<span style="color: red;"><b>*</b></span></label>
+                        <textarea name="orderNotes" class="form-control" id="orderNotes" rows="3"
+                                  placeholder="Notes about your order, e.g. special notes for delivery."
+                        ></textarea>
+                    </div>
+                    <%-- voucher --%>
+                    <div class="mb-3">
+                        <p></p>
+                        <label for="voucher" class="form-label">Voucher</label>
+                        <input type="text" name="voucher" class="form-control" id="voucher"
+                               placeholder="Add code voucher"/>
+                    </div>
+                    <input type="hidden" id="voucherList" name="voucherList" value="${codeVoucher}"/>
                 </div>
             </div>
-        </div>
-        <div class="review-payment">
-            <h2>Review & Payment</h2>
-        </div>
+            <div class="col-lg-4">
+                <div class="order-summary">
+                    <h4>YOUR ORDER</h4>
+                    <ol type="1">
+                        <%-- Initialize the total variable --%>
+                        <c:set var="total" value="0.0" scope="page"/>
+                        <c:forEach var="pd" items="${listPD}" varStatus="status">
+                            <li class="d-flex justify-content-between">
+                <span>
+                    <samp>${status.index + 1}. </samp>${product.getProductById(pd.productID).name}
+                </span>
+                                <span>${pd.price} vnd</span>
 
-        <div class="table-responsive cart_info">
-            <table class="table table-condensed">
-                <thead>
-                <tr class="cart_menu">
-                    <td class="image">Item</td>
-                    <td class="description"></td>
-                    <td class="price">Price</td>
-                    <td class="quantity">Quantity</td>
-                    <td class="total">Total</td>
-                    <td></td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="cart_product">
-                        <a href=""><img src="../assets/image/cart/one.png" alt=""></a>
-                    </td>
-                    <td class="cart_description">
-                        <h4><a href="">Colorblock Scuba</a></h4>
-                        <p>Web ID: 1089772</p>
-                    </td>
-                    <td class="cart_price">
-                        <p>$59</p>
-                    </td>
-                    <td class="cart_quantity">
-                        <div class="cart_quantity_button">
-                            <a class="cart_quantity_up" href=""> + </a>
-                            <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                            <a class="cart_quantity_down" href=""> - </a>
-                        </div>
-                    </td>
-                    <td class="cart_total">
-                        <p class="cart_total_price">$59</p>
-                    </td>
-                    <td class="cart_delete">
-                        <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="cart_product">
-                        <a href=""><img src="../assets/image/cart/two.png" alt=""></a>
-                    </td>
-                    <td class="cart_description">
-                        <h4><a href="">Colorblock Scuba</a></h4>
-                        <p>Web ID: 1089772</p>
-                    </td>
-                    <td class="cart_price">
-                        <p>$59</p>
-                    </td>
-                    <td class="cart_quantity">
-                        <div class="cart_quantity_button">
-                            <a class="cart_quantity_up" href=""> + </a>
-                            <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                            <a class="cart_quantity_down" href=""> - </a>
-                        </div>
-                    </td>
-                    <td class="cart_total">
-                        <p class="cart_total_price">$59</p>
-                    </td>
-                    <td class="cart_delete">
-                        <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="cart_product">
-                        <a href=""><img src="../assets/image/cart/three.png" alt=""></a>
-                    </td>
-                    <td class="cart_description">
-                        <h4><a href="">Colorblock Scuba</a></h4>
-                        <p>Web ID: 1089772</p>
-                    </td>
-                    <td class="cart_price">
-                        <p>$59</p>
-                    </td>
-                    <td class="cart_quantity">
-                        <div class="cart_quantity_button">
-                            <a class="cart_quantity_up" href=""> + </a>
-                            <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                            <a class="cart_quantity_down" href=""> - </a>
-                        </div>
-                    </td>
-                    <td class="cart_total">
-                        <p class="cart_total_price">$59</p>
-                    </td>
-                    <td class="cart_delete">
-                        <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4">&nbsp;</td>
-                    <td colspan="2">
-                        <table class="table table-condensed total-result">
-                            <tr>
-                                <td>Cart Sub Total</td>
-                                <td>$59</td>
-                            </tr>
-                            <tr>
-                                <td>Exo Tax</td>
-                                <td>$2</td>
-                            </tr>
-                            <tr class="shipping-cost">
-                                <td>Shipping Cost</td>
-                                <td>Free</td>
-                            </tr>
-                            <tr>
-                                <td>Total</td>
-                                <td><span>$61</span></td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="payment-options">
-					<span>
-						<label><input type="checkbox"> Direct Bank Transfer</label>
-					</span>
-            <span>
-						<label><input type="checkbox"> Check Payment</label>
-					</span>
-            <span>
-						<label><input type="checkbox"> Paypal</label>
-					</span>
-        </div>
+                                    <%-- Update the total for each item --%>
+                                <c:set var="total" value="${total + pd.price}" scope="page"/>
+                            </li>
+                        </c:forEach>
+                    </ol>
+                    <hr/>
+                    <div class="total d-flex justify-content-between">
+                        <span>Total</span>
+                        <%-- Format the total to two decimal places --%>
+                        <span>
+                            <fmt:formatNumber value="${total}" type="number"
+                                              minFractionDigits="2" maxFractionDigits="2"/> vnd
+                        </span>
+                        <input type="hidden" name="pice" value="<fmt:formatNumber value="${total}" type="number"
+                                              minFractionDigits="2" maxFractionDigits="2"/>">
+                    </div>
+                    <hr/>
+                    <button type="submit" name="btnPlaceOrder" value="btnPlaceOrder" class="btn btn-warning">PLACE ORDER</button>
+                </div>
+            </div>
+        </form>
     </div>
-</section> <!--/#cart_items-->
+</section>
 
-<jsp:include page="footer.jsp" flush="true" />
+<jsp:include page="footer.jsp" flush="true"/>
 
-<script src="../assets/js/jquery.js"></script>
-<script src="../assets/js/bootstrap.min.js"></script>
-<script src="../assets/js/jquery.scrollUp.min.js"></script>
-<script src="../assets/js/jquery.prettyPhoto.js"></script>
-<script src="../assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-VoE7VGFccr6nlwRvAQHnaRAZ6c27w5iTYsOgXiAiknEF4NEeF1NSiReMPlEO+6eD"
+        crossorigin="anonymous"></script>
+<script>
+    function checkform(event) {
+        let valid = true; // Khởi tạo valid là true
+
+        // Kiểm tra tên
+        valid &= checkField("firstName", "Tên không được để trống!");
+
+        // Kiểm tra họ
+        valid &= checkField("lastName", "Họ không được để trống!");
+
+        // Kiểm tra số điện thoại
+        valid &= checkPhoneField("phoneNumber");
+
+        // Kiểm tra email
+        valid &= checkField("email", "Email không được để trống!");
+
+        // Kiểm tra làng/xã
+        valid &= checkField("village", "Làng không được để trống!");
+
+        // Kiểm tra ghi chú
+        valid &= checkField("orderNotes", "Ghi chú không được để trống!");
+
+        // Kiểm tra voucher (nếu cần)
+        let voucher = validateInput(document.getElementById("voucher").value);
+        if (voucher != "") {
+            valid &= checkValid(document.getElementById("voucher"), checkVoucher(voucher), "Voucher không tồn tại!");
+        }
+
+        // Nếu không hợp lệ, ngăn chặn gửi form
+        if (!valid) {
+            event.preventDefault(); // Ngăn chặn gửi form nếu không hợp lệ
+            return false;
+        }
+        // Nếu hợp lệ, cho phép form gửi tự nhiên
+        return true;
+    }
+
+
+    function checkVoucher(voucher) {
+        let check = false;
+        let voucherList = document.getElementById("voucherList").value.split("|");
+        console.log(document.getElementById("voucherList").value);
+        for (let v of voucherList) {
+            if (v == voucher) check = true;
+        }
+        return check;
+    }
+
+    function checkField(fieldId, errorMessage) {
+        const field = document.getElementById(fieldId);
+        const value = validateInput(field.value);
+        return checkValid(field, value, errorMessage);
+    }
+
+    function checkPhoneField(fieldId) {
+        const field = document.getElementById(fieldId);
+        const value = field.value.trim();
+        let valid = true;
+
+        // Check if the field is empty
+        if (validateInput(value) === false) {
+            valid = checkValid(field, false, "The phone number is not null!");
+        } else if (validatePhoneNumber(value) === false) {
+            valid = checkValid(field, false, "The phone number format is incorrect!");
+        } else {
+            // If valid, remove any existing error message
+            field.classList.remove("is-invalid");
+            removeExistingError(field);
+        }
+
+        return valid;
+    }
+
+    function checkValid(field, input, message) {
+        let valid = true;
+        // Remove existing error messages
+        removeExistingError(field);
+
+        if (input == null || input === "" || input == false) {
+            field.classList.add("is-invalid");
+            let error = document.createElement("span");
+            error.className = "text-danger";
+            error.innerText = message;
+            field.parentNode.appendChild(error);
+            valid = false;
+        } else {
+            field.classList.remove("is-invalid");
+        }
+        return valid;
+    }
+
+    function removeExistingError(field) {
+        const existingErrors = field.parentNode.querySelectorAll(".text-danger");
+        existingErrors.forEach(error => error.remove());
+    }
+
+    function validatePhoneNumber(phoneNumber) {
+        const phoneRegex = /^(?:\+84|0)\d{9}$/;
+        return phoneRegex.test(phoneNumber);
+    }
+
+    function validateInput(input) {
+        return input.trim() !== "" ? input.trim() : ""; // Return empty string if input is invalid
+    }
+</script>
 </body>
 </html>
