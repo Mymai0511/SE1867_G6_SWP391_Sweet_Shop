@@ -32,7 +32,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 400px;
+            max-width: 500px;
         }
 
         .login-header {
@@ -96,15 +96,17 @@
         <div class="login-header">
             <h2>Login</h2>
         </div>
-        <div class="messages text-center text-danger mb-3" id="messages">
-            ${message}
+        <div class="messages text-center ${mess != null ? "text-success" : (message != null ? "text-danger" : "")} mb-3" id="messages">
+            ${mess != null ? mess : message}
         </div>
+
         <form action="login" method="post" class="login-form" onsubmit="return checkLogin(event)">
             <div class="mb-3">
                 <label for="username" class="form-label">Username or Email</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" class="form-control" id="username" name="username"
+                    <input type="text" class="form-control" value="${username == null ? "" : username}" id="username"
+                           name="username"
                            placeholder="Enter your username or email">
                 </div>
             </div>
@@ -112,7 +114,8 @@
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input type="password" class="form-control" id="password" name="password"
+                    <input type="password" class="form-control" value="${password == null ? "" : password}"
+                           id="password" name="password"
                            placeholder="Enter your password">
                 </div>
             </div>
@@ -121,11 +124,11 @@
             </div>
             <!-- Updated button class -->
             <button type="submit" name="btnLogin" value="btnLogin"
-                    class="btn-login w-100 p-1" style="border-radius: 5px" >Submit
+                    class="btn-login w-100 p-2" style="border-radius: 5px">Submit
             </button>
         </form>
         <div class="login-footer">
-            <p class="mt-4">Don't have an account? <a href="#">Register</a></p>
+            <p class="mt-4">Don't have an account? <a href="/login?action=register">Register</a></p>
         </div>
     </div>
 </section>
