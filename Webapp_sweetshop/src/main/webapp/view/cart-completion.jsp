@@ -100,9 +100,28 @@
   <h2>Order Completion</h2>
   <div class="order-summary">
     <p>Your order has been successfully submitted!</p>
-    <p>Order ID: 123456</p>
-    <p>Total: $200</p>
+    <p>Order ID: ${order.id}</p> <!-- Lấy Order ID từ biến trong controller -->
+    <p>Total: ${order.totalPrice}$</p> <!-- Lấy tổng từ biến trong controller -->
     <p>Thank you for shopping with us!</p>
+  </div>
+  <div class="order-details">
+    <h3>Order Details</h3>
+    <table>
+      <tr>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+      <c:forEach var="item" items="${order.items}">
+        <tr>
+          <td>${item.product.name}</td>
+          <td>${item.productDetail.price}$</td>
+          <td>${item.quantity}</td>
+          <td>${item.productDetail.price * item.quantity}$</td>
+        </tr>
+      </c:forEach>
+    </table>
   </div>
   <div class="thank-you">
     You will receive an email confirmation with order details and payment instructions shortly.
@@ -135,5 +154,6 @@
     </div>
   </div>
 </div>
+
 </body>
 </html>

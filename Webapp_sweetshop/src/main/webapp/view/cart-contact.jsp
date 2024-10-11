@@ -87,6 +87,10 @@
         button[type="button"]:hover {
             background-color: #c9302c;
         }
+        .error-message{
+            font-weight: bold;
+            color: #a10718;
+        }
         .total-price {
             font-weight: bold;
             font-size: 1.2em;
@@ -107,33 +111,43 @@
                 <th>Total</th>
             </tr>
 
-            <tr>
-                <td>1</td>
-                <td>Product 1</td>
-                <td>$100</td>
-                <td>2</td>
-                <td>$200</td>
-            </tr>
+            <c:forEach var="item" items="${selectedCartItems}">
+                <tr>
+                    <td>${item.productDetailID}</td>
+                    <td>${item.product.name}</td>
+                    <td>${item.productDetail.price}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.productDetail.price * item.quantity}</td>
+                </tr>
+            </c:forEach>
         </table>
     </div>
-    <h3>Total Price: $200</h3>
+
+    <h3>Total Price: <span id="total_price">${totalPrice}</span></h3> <!-- Giả sử bạn đã tính tổng giá trị trong Controller -->
 
     <h3>Recipient Information</h3>
-    <form method="POST" action="SubmitOrder">
-        <label>Name: <input type="text" name="name" /></label><br />
+    <form method="POST" action="cartcontroller?action=confirm">
+        <c:if test="${not empty errorMessage}">
+            <div class="error-message">${errorMessage}</div>
+        </c:if>
+
+        <label>Name: <input type="text" name="name" required /></label><br />
         <label>Gender:
-            <select name="gender">
+            <select name="gender" required>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
             </select>
         </label><br />
-        <label>Email: <input type="email" name="email" /></label><br />
-        <label>Phone: <input type="text" name="phone" /></label><br />
-        <label>Address: <textarea name="address"></textarea></label><br />
+        <label>Email: <input type="email" name="email" required /></label><br />
+        <label>Phone: <input type="text" name="phone" required /></label><br />
+        <label>Address: <textarea name="address" required></textarea></label><br />
         <label>Note: <textarea name="note"></textarea></label><br />
+        <input type="hidden" name="selectedItems" value="${selectedCartItems}" /> <!-- Truyền danh sách sản phẩm -->
         <button type="submit">Submit</button>
         <button type="button" onclick="location.href='view/cart.jsp'">Change</button>
     </form>
+
 </div>
+
 </body>
 </html>

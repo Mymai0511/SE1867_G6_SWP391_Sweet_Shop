@@ -17,6 +17,9 @@
     <title>Cart | E-Shopper</title>
     <script src="../assets/js/html5shiv.js"></script>
     <style>
+        a{
+            text-decoration: none;
+        }
         td{
             text-align: center;
             vertical-align: middle;
@@ -129,10 +132,10 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 600px; /* Đặt chiều rộng cố định */
-            max-width: 600px; /* Đảm bảo không vượt quá 600px */
-            height: 85vh; /* Chiều cao 85% của màn hình */
-            max-height: 85vh; /* Không vượt quá 85% chiều cao */
+            width: 600px;
+            max-width: 600px;
+            height: 85vh;
+            max-height: 85vh;
             padding: 20px;
             border: 1px solid #888;
             display: flex;
@@ -180,92 +183,193 @@
         .form-row input {
             width: 65%;
         }
+        /* Section do_action */
+        #do_action {
+            margin-top: 20px;
+        }
+
+        .total_area {
+            border: 1px solid #ccc; /* Viền khung */
+            border-radius: 10px; /* Bo góc khung */
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #f9f9f9;
+        }
+
+        .total_area ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .total_area li {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+
+        .btn-checkout {
+            background-color: #ff7f50;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-checkout:hover {
+            background-color: #ff5733;
+            transition: background-color 0.3s ease;
+        }
+        .candle-selection {
+            border-radius: 3px;
+            border: 1px solid black;
+            width: 200px;
+            min-width: 150px;
+            padding: 5px;
+            font-size: 14px;
+        }
+        .candle-number-input{
+            border-radius: 3px;
+            border: 1px solid black;
+            width: 200px;
+            padding: 5px;
+        }
+         .birthday-flare {
+             display: flex;
+             align-items: center;
+         }
+        .birthday-flare input[type="checkbox"] {
+            transform: scale(1.5);
+            margin-right: 10px;
+        }
+        button.save-btn {
+            background-color: #8BC34A; /* Light green */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        button.save-btn:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button.cancel-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: none;
+            margin-left: 10px;
+        }
+
+        button.cancel-btn:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
     </style>
 </head>
 
 <body>
-
 <jsp:include page="header.jsp"/>
-
 <section id="cart_items">
     <div class="container">
-        <div class="breadcrumbs">
-            <ol class="breadcrumb">
-                <li><a href="#">Home</a></li>
-                <li class="active">Shopping Cart</li>
-            </ol>
-        </div>
         <div class="table-responsive cart_info">
-            <table class="table table-condensed cart-table">
-                <thead>
-                <tr class="cart_menu">
-                    <td class="checkbox">Select</td>
-                    <td class="image">Item</td>
-                    <td class="description">Description</td>
-                    <td class="price">Price</td>
-                    <td class="quantity">Quantity</td>
-                    <td class="actions">Actions</td>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="item" items="${cartItems}">
-                    <tr>
-                        <td class="cart_select">
-                                <input type="checkbox" name="selectedItems" value="${item.productDetailID}" class="cart-checkbox">
-                        </td>
-                        <td class="cart_product">
-                            <a href="viewdetail?id=${item.productDetailID}"><img src="../assets/image/cart/one.png" alt="Product Image"></a>
-                        </td>
-                        <td class="cart_description">
-                            <h4><a href="viewdetail?id=${item.productDetailID}">${item.product.name}</a></h4>
-                            <p>${item.product.description} | Type: ${item.productDetail.size}</p>
-                        </td>
-                        <td class="cart_price">
-                            <p class="bold-price">${item.productDetail.price}$</p>
-                        </td>
-                        <td class="cart_quantity">
-                            <div class="cart_quantity_button">
-                                <button class="quantity_minus"> - </button>
-                                <input class="cart_quantity_input" type="text" name="quantity" value="${item.quantity}" autocomplete="off" size="2">
-                                <button class="quantity_plus"> + </button>
-                            </div>
-                        </td>
-                        <td class="cart_actions">
-                            <button class="cart_edit"><i class="fa fa-pencil"></i></button>
-                            <button class="cart_quantity_delete" href="cartcontroller?action=remove&productDetailID=${item.productDetailID}">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+            <form action="cartcontroller?action=update" method="post" id="cart_form">
+                <c:choose>
+                    <c:when test="${empty cartItems}">
+                        <div class="empty-cart-message">
+                            <p>Oops! Empty cart!</p>
+                            <a href="home.jsp" class="go-shopping-button">Go Shopping</a>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <table class="table table-condensed cart-table">
+                            <thead>
+                            <tr class="cart_menu">
+                                <td class="checkbox">Select</td>
+                                <td class="image">Item</td>
+                                <td class="description">Description</td>
+                                <td class="price">Price</td>
+                                <td class="quantity">Quantity</td>
+                                <td class="actions">Actions</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="item" items="${cartItems}">
+                                <tr>
+                                    <td class="cart_select">
+                                        <input type="checkbox" name="selectedItems" value="${item.productDetailID}" class="cart-checkbox"
+                                               data-price="${item.productDetail.price}" data-quantity="${item.quantity}" data-size="${item.productDetail.size}">
+                                    </td>
+                                    <td class="cart_product">
+                                        <a href="viewdetail?id=${item.productDetailID}"><img src="../assets/image/cart/one.png" alt="Product_image"></a>
+                                    </td>
+                                    <td class="cart_description">
+                                        <h4><a href="viewdetail?id=${item.productDetailID}">${item.product.name}</a></h4>
+                                        <p>${item.product.description} | Type: ${item.productDetail.size}</p>
+                                    </td>
+                                    <td class="cart_price">
+                                        <p class="bold-price">${item.productDetail.price}$</p>
+                                    </td>
+                                    <td class="cart_quantity">
+                                        <div class="cart_quantity_button">
+                                            <button type="button" class="quantity_minus"> - </button>
+                                            <input class="cart_quantity_input" type="text" name="quantity_${item.productDetailID}" value="${item.quantity}" autocomplete="off" size="2">
+                                            <button type="button" class="quantity_plus"> + </button>
+                                        </div>
+                                    </td>
+                                    <td class="cart_actions">
+                                        <button class="cart_edit" type="button" data-name="${item.product.name}" data-price="${item.productDetail.price}">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+
+                                        <button class="cart_quantity_delete" href="cartcontroller?action=remove&productDetailID=${item.productDetailID}">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </c:otherwise>
+                </c:choose>
+            </form>
         </div>
     </div>
 </section>
 
 <section id="do_action">
     <div class="container">
-        <div class="col-sm-6">
+        <c:if test="${not empty cartItems}">
             <div class="total_area">
                 <ul>
-                    <li>Cart Sub Total <span>${Math.round(subtotal * 100.0) / 100.0}$</span></li>
-                    <li>Discount <span>${Math.round(discount * 100.0) / 100.0}$</span></li>
-                    <li>Total <span>${Math.round(total * 100.0) / 100.0}$</span></li>
+                    <li>Total: <span id="total_price">0.00$</span></li>
                 </ul>
-                <a class="btn btn-default update" href="">Update</a>
-                <a class="btn btn-default check_out" href="bill.jsp">Check Out</a>
+                <button type="submit" class="btn-checkout" form="cart_form" formaction="cartcontroller?action=checkout">Check Out</button>
             </div>
-        </div>
+        </c:if>
     </div>
 </section>
+
+
 <!--Popup Edit Screen-->
 <div id="editModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h4>Edit Product</h4>
-
         <div class="product-info">
             <img src="../assets/image/cart/one.png" alt="Product Image">
             <div class="product-details">
@@ -275,17 +379,25 @@
         </div>
 
         <div class="form-row">
-            <label for="candle">Candle:</label>
-            <select id="candle">
-                <option value="small">Small (Height: 3-5cm)</option>
-                <option value="big">Big (Height: 5-7cm)</option>
-                <option value="number">Number</option>
-            </select>
+            <table>
+                <tr>
+                    <td><label for="candle">Candle:</label></td><td><select id="candle" class="candle-selection">
+                                                                        <option value="small">Small (Height: 3-5cm)</option>
+                                                                        <option value="big">Big (Height: 5-7cm)</option>
+                                                                        <option value="number">Number</option>
+                                                                    </select>
+                                                                    </td>
+                    <td><div class="birthday-flare">
+                        <input type="checkbox" id="birthday-flare-checkbox">
+                    </div></td>
+                </tr>
+                <tr>
+                    <td></td><td><input type="number" class="candle-number-input" placeholder="Enter you number!"/></td><td><label for="birthday-flare-checkbox">Birthday Flare</label></td>
+                </tr>
+            </table>
         </div>
 
-        <div class="form-row">
-            <label><input type="checkbox" name="flare" value="birthdayFlare"> Birthday Flare</label>
-        </div>
+
 
         <div class="form-row">
             <label for="messageOption">Message Option:</label>
@@ -301,8 +413,8 @@
         <textarea id="note" placeholder="Any special instructions"></textarea>
 
         <div class="form-row">
-            <button class="btn save" id="saveEdit">Save</button>
-            <button class="btn cancel" id="cancelEdit">Cancel</button>
+            <button class="save-btn" id="saveEdit">Save</button>
+            <button class="cancel-btn" id="cancelEdit">Cancel</button>
         </div>
     </div>
 </div>
@@ -313,65 +425,75 @@
 <script>
     document.querySelectorAll('.quantity_plus').forEach(button => {
         button.addEventListener('click', function() {
-            let quantityInput = this.previousElementSibling; // Lấy input ở trước nút
-            quantityInput.value = parseInt(quantityInput.value) + 1; // Tăng số lượng
+            let quantityInput = this.previousElementSibling;
+            quantityInput.value = parseInt(quantityInput.value) + 1;
         });
     });
 
     document.querySelectorAll('.quantity_minus').forEach(button => {
         button.addEventListener('click', function() {
-            let quantityInput = this.nextElementSibling; // Lấy input ở sau nút
+            let quantityInput = this.nextElementSibling;
             if (parseInt(quantityInput.value) > 1) {
-                quantityInput.value = parseInt(quantityInput.value) - 1; // Giảm số lượng
+                quantityInput.value = parseInt(quantityInput.value) - 1;
             }
         });
     });
 
     // Handle the edit popup modal
     let editModal = document.getElementById("editModal");
-    let editButtons = document.querySelectorAll(".cart_edit");
     let closeModalButton = document.getElementsByClassName("close")[0];
 
-    editButtons.forEach(button => {
-        button.onclick = function() {
-            editModal.style.display = "block";
-        };
+    // When the edit button is clicked
+    document.querySelectorAll('.cart_edit').forEach(button => {
+        button.addEventListener('click', function() {
+            const productName = this.dataset.name;
+            const productPrice = this.dataset.price;
+
+            // Set the modal fields with product information
+            document.querySelector('#editModal .product-details p:first-of-type').textContent = `Product: ${productName}`;
+            document.querySelector('#editModal .product-details p:last-of-type').textContent = `Price: ${productPrice}$`;
+
+            // Show the modal
+            editModal.style.display = 'block';
+        });
     });
 
+    // Close the modal
     closeModalButton.onclick = function() {
         if (confirm("You did not save your option! Do you want to exit?")) {
             editModal.style.display = "none";
         }
     };
 
+    // Cancel button action
     document.getElementById("cancelEdit").onclick = function() {
         editModal.style.display = "none";
     };
 
+    // Close modal when clicking outside of it
     window.onclick = function(event) {
-        if (event.target == editModal) {
+        if (event.target === editModal) {
             if (confirm("You did not save your option! Do you want to exit?")) {
                 editModal.style.display = "none";
             }
         }
     };
 
-    function showModal() {
-        editModal.style.display = "block";
+    document.querySelectorAll('.cart-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateTotalPrice();
+        });
+    });
+
+    function updateTotalPrice() {
+        let totalPrice = 0;
+        document.querySelectorAll('.cart-checkbox:checked').forEach(checkbox => {
+            let price = parseFloat(checkbox.getAttribute('data-price'));
+            let quantity = parseInt(checkbox.closest('tr').querySelector('.cart_quantity_input').value);
+            totalPrice += price * quantity;
+        });
+        document.getElementById('total_price').textContent = totalPrice.toFixed(2) + "$";
     }
-
-    function closeModal() {
-        editModal.style.display = "none";
-    }
-
-    document.querySelector(".close").onclick = function() {
-        closeModal();
-    };
-
-    // Assign event to the Cancel button
-    document.getElementById("cancelEdit").onclick = function() {
-        closeModal();
-    };
 </script>
 <script src="../assets/js/jquery.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
