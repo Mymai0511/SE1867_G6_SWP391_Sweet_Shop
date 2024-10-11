@@ -222,12 +222,10 @@
             valid &= checkValid(document.getElementById("voucher"), checkVoucher(voucher), "Voucher không tồn tại!");
         }
 
-        // Nếu không hợp lệ, ngăn chặn gửi form
         if (!valid) {
-            event.preventDefault(); // Ngăn chặn gửi form nếu không hợp lệ
+            event.preventDefault();
             return false;
         }
-        // Nếu hợp lệ, cho phép form gửi tự nhiên
         return true;
     }
 
