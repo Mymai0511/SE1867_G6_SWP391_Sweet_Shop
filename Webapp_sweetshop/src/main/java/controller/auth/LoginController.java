@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 import session.SessionRepo;
+import until.DataEncryptionSHA256;
 
 import java.io.IOException;
 
@@ -16,7 +17,7 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("page/auth/login.jsp").forward(req,resp);
+        req.getRequestDispatcher("view/login.jsp").forward(req,resp);
     }
 
     @Override
@@ -28,8 +29,7 @@ public class LoginController extends HttpServlet {
                 register(req, resp);
             }
         }catch (Exception ex) {
-            ex.printStackTrace();
-            req.setAttribute("message", "An error occurred: " + ex.getMessage());
+            req.setAttribute("message", "Error system!");
             doGet(req,resp);
         }
     }
@@ -44,10 +44,10 @@ public class LoginController extends HttpServlet {
      */
     private void login (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String username = request.getParameter("nameOrEmail").trim();
+        String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
 
-        User user = UserProcess.Instance.loadUser(username, password);
+        User user = UserProcess.Instance.loadUser(username, DataEncryptionSHA256.hashPassword(password));
 
         if (user != null) {
             SessionRepo.setUser(request, response, user);
