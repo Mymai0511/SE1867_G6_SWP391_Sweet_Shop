@@ -143,8 +143,10 @@
                 btn.classList.remove('btn-info');
                 btn.classList.add('btn-outline-info');
             });
-            document.querySelector("button[value='" + id + "," + price + "," + size + "']").classList.remove('btn-outline-info');
-            document.querySelector("button[value='" + id + "," + price + "," + size + "']").classList.add('btn-info');
+            document.querySelector("button[value='" + id + "," + price + "," + size + "']")
+                .classList.remove('btn-outline-info');
+            document.querySelector("button[value='" + id + "," + price + "," + size + "']")
+                .classList.add('btn-info');
         }
 
         // Xử lý khi trang được tải
@@ -204,7 +206,11 @@
                     <h5 id="price">0 vnd</h5>
                     <h5>Size:</h5>
                     <c:forEach var="pd" items="${productDetailList}">
-                        <button type="button" name="btnSize" class="btn btn-outline-info mb-3" value="${pd.id}, ${pd.price}, ${pd.size}" onclick="changeSize(${pd.price}, '${pd.size}', ${pd.id})">
+                        <button type="button"
+                                name="btnSize"
+                                class="btn btn-outline-info mb-3"
+                                value="${pd.id}, ${pd.price}, ${pd.size}"
+                                onclick="changeSize(${pd.price}, '${pd.size}', ${pd.id})">
                                 ${pd.size}
                         </button>
                     </c:forEach>

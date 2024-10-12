@@ -43,4 +43,28 @@ public class OrderDetailProcess extends DAO {
         }
         return id;
     }
+
+    public String createReturnID(float totalPrice, String quantity, String idOrder, String idPd) {
+        String id = null;
+        String sql = "{Call insertOrderDetail(?,?,?,?)}";
+        try {
+            CallableStatement cs = this.connection.prepareCall(sql);
+            cs.setFloat(1, totalPrice);
+            cs.setInt(2, Integer.parseInt(quantity));
+            cs.setInt(3, Integer.parseInt(idOrder));
+            cs.setInt(4, Integer.parseInt(idPd));
+            cs.executeQuery();
+            ResultSet rs = cs.getResultSet();
+            if (rs.next()) {
+                id = rs.getString("newOrderDetailID");
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+        return id;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(OrderDetailProcess.INSTANCE.createReturnID(12.2f, "1", "12", "4"));
+    }
 }

@@ -305,6 +305,32 @@ BEGIN
 END$$
 DELIMITER ;
 
+drop procedure insertUser;
+
+DELIMITER $$
+CREATE PROCEDURE insertUser(
+	IN p_username TEXT,
+	IN p_password TEXT,
+	IN p_fName TEXT,
+	IN p_gender BIT,
+	IN p_email TEXT,
+	IN p_phone VARCHAR(13),
+	IN p_dob DATE,
+	IN p_avatar TEXT,
+	IN p_address TEXT,
+	IN p_status INT,
+	IN p_role INT
+)
+BEGIN
+	-- Insert dữ liệu vào bảng user
+	INSERT INTO user (username, password, fName, gender, email, phone, dob, avatar, address, status, createdAt, updatedAt, role)
+	VALUES (p_username, p_password, p_fName, p_gender, p_email, p_phone, p_dob, p_avatar, p_address, p_status, now(), now(), p_role);
+	
+	-- Trả về ID của user vừa mới được insert
+	SELECT LAST_INSERT_ID() AS newUserID;
+END$$
+DELIMITER ;
+
 DELIMITER $$
 CREATE PROCEDURE insertOrder(
     IN p_consignee TEXT,
@@ -374,3 +400,116 @@ BEGIN
 END$$
 DELIMITER ;
 
+DELIMITER $$
+CREATE TRIGGER trg_use_voucher
+BEFORE UPDATE ON voucher
+FOR EACH ROW
+BEGIN
+    -- Kiểm tra xem 'remaining' có giảm đi 1 không
+    IF NEW.remaining = OLD.remaining - 1 THEN
+        -- Nếu 'remaining' sau khi trừ là 0, cập nhật 'status' thành 0
+        IF NEW.remaining <= 0 THEN
+            SET NEW.status = 0;
+        END IF;
+    ELSE
+        -- Nếu 'remaining' không giảm đúng cách (ví dụ: giảm nhiều hơn 1 hoặc tăng), báo lỗi
+        SIGNAL SQLSTATE '45000' 
+            SET MESSAGE_TEXT = 'Thao tác cập nhật không hợp lệ: trường remaining phải giảm đúng 1.';
+    END IF;
+END$$
+DELIMITER ;
+
+
+ALTER TABLE `voucher`
+  MODIFY `status` INT(11) DEFAULT 1,
+  MODIFY `createdAt` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  MODIFY `updatedAt` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+
+DELIMITER $$
+
+CREATE PROCEDURE `use_voucher` (
+    IN p_code VARCHAR(6),
+    OUT p_result INT
+)
+BEGIN
+    DECLARE v_remaining INT;
+    DECLARE v_status INT;
+    DECLARE no_voucher INT DEFAULT 0;
+
+    -- Định nghĩa handler để xử lý khi không tìm thấy hàng
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_voucher = 1;
+
+    -- Kiểm tra xem voucher có tồn tại không
+    SELECT `remaining`, `status` INTO v_remaining, v_status
+    FROM `voucher`
+    WHERE `code` = p_code
+    FOR UPDATE;
+
+    IF no_voucher = 1 THEN
+        -- Voucher không tồn tại
+        SET p_result = 0;
+    ELSE
+        IF v_status = 1 AND v_remaining > 0 THEN
+            -- Giảm 'remaining' đi 1 và cập nhật 'status' nếu cần
+            UPDATE `voucher`
+            SET `remaining` = `remaining` - 1,
+                `updatedAt` = NOW(),
+                `status` = CASE WHEN (`remaining` - 1) <= 0 THEN 0 ELSE `status` END
+            WHERE `code` = p_code;
+
+            SET p_result = 1;
+        ELSE
+            -- Voucher đã hết hoặc không còn hoạt động
+            SET p_result = 0;
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;
+
+
+DROP PROCEDURE IF EXISTS `use_voucher`;
+DELIMITER $$
+
+CREATE PROCEDURE `use_voucher` (
+    IN p_code VARCHAR(6),
+    OUT p_result INT
+)
+BEGIN
+    DECLARE v_remaining INT;
+    DECLARE v_status INT;
+    DECLARE v_value INT;
+    DECLARE no_voucher INT DEFAULT 0;
+
+    -- Định nghĩa handler để xử lý khi không tìm thấy hàng
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_voucher = 1;
+
+    -- Kiểm tra xem voucher có tồn tại không
+    SELECT `remaining`, `status`, `value` INTO v_remaining, v_status, v_value
+    FROM `voucher`
+    WHERE `code` = p_code
+    FOR UPDATE;
+
+    IF no_voucher = 1 THEN
+        -- Voucher không tồn tại
+        SET p_result = 0;
+    ELSE
+        IF v_status = 1 AND v_remaining > 0 THEN
+            -- Giảm 'remaining' đi 1 và cập nhật 'status' nếu cần
+            UPDATE `voucher`
+            SET `remaining` = `remaining` - 1,
+                `updatedAt` = NOW(),
+                `status` = CASE WHEN (`remaining` - 1) <= 0 THEN 0 ELSE `status` END
+            WHERE `code` = p_code;
+
+            -- Trả về giá trị của voucher
+            SET p_result = v_value;
+        ELSE
+            -- Voucher đã hết hoặc không còn hoạt động
+            SET p_result = 0;
+        END IF;
+    END IF;
+END$$
+
+DELIMITER ;

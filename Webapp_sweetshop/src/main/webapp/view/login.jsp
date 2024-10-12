@@ -6,74 +6,167 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Login | E-Shopper</title>
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/font-awesome.min.css" rel="stylesheet">
-    <link href="../assets/css/prettyPhoto.css" rel="stylesheet">
-    <link href="../assets/css/price-range.css" rel="stylesheet">
-    <link href="../assets/css/animate.css" rel="stylesheet">
-    <link href="../assets/css/main.css" rel="stylesheet">
-    <link href="../assets/css/responsive.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-    <script src="../assets/js/html5shiv.js"></script>
-    <script src="../assets/js/respond.min.js"></script>
-    <![endif]-->
-    <link rel="shortcut icon" href="../assets/image/ico/favicon.ico">
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/image/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/image/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/image/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="../assets/image/ico/apple-touch-icon-57-precomposed.png">
-</head><!--/head-->
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
+        .login-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-header h2 {
+            margin-bottom: 0;
+        }
+
+        .login-form .form-label {
+            font-weight: 600;
+        }
+
+        /* Updated button class from btn-custom to btn-login */
+        .btn-login {
+            background-color: #ffc107;
+            border: none;
+            transition: background-color 0.3s;
+            color: #fff; /* Ensure text is visible */
+        }
+
+        .btn-login:hover {
+            background-color: #e0a800;
+            color: #fff; /* Maintain text color on hover */
+        }
+
+        #username:focus, #password:focus {
+            box-shadow: none;
+            border-color: #ffc107;
+        }
+
+        .messages {
+            min-height: 1.5rem;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        /* Optional: Style for the "Forgot password?" link */
+        .login-form a {
+            font-size: 0.9rem;
+            color: #ffc107;
+            text-decoration: none;
+        }
+
+        .login-form a:hover {
+            text-decoration: underline;
+            color: #e0a800;
+        }
+    </style>
+</head>
 <body>
+<jsp:include page="header.jsp" flush="true"/>
 
-<jsp:include page="header.jsp" flush="true" />
+<section class="d-flex justify-content-center" style="margin-top: 32px">
+    <div class="login-container">
+        <div class="login-header">
+            <h2>Login</h2>
+        </div>
+        <div class="messages text-center ${mess != null ? "text-success" : (message != null ? "text-danger" : "")} mb-3" id="messages">
+            ${mess != null ? mess : message}
+        </div>
 
-<section id="form"><!--form-->
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-1">
-                <div class="login-form"><!--login form-->
-                    <h2>Login to your account</h2>
-                    <form action="login" method="post">
-                        <input type="text" name="username" placeholder="Enter username or email ..." />
-                        <input type="password" name="password" placeholder="Enter password ..."/>
-                        <button type="submit" name="btnLogin" class="btn btn-default">Login</button>
-                    </form>
-                </div><!--/login form-->
+        <form action="login" method="post" class="login-form" onsubmit="return checkLogin(event)">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username or Email</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" class="form-control" value="${username == null ? "" : username}" id="username"
+                           name="username"
+                           placeholder="Enter your username or email">
+                </div>
             </div>
-            <div class="col-sm-1">
-                <h2 class="or">OR</h2>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" class="form-control" value="${password == null ? "" : password}"
+                           id="password" name="password"
+                           placeholder="Enter your password">
+                </div>
             </div>
-            <div class="col-sm-4">
-                <div class="signup-form"><!--sign up form-->
-                    <h2>New User Signup!</h2>
-                    <form action="login" method="post">
-                        <input type="text" placeholder="Name"/>
-                        <input type="email" placeholder="Email Address"/>
-                        <input type="password" placeholder="Password"/>
-                        <button type="submit" name="btnSignup" class="btn btn-default">Signup</button>
-                    </form>
-                </div><!--/sign up form-->
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <a href="#" class="text-decoration-none">Forgot password?</a>
             </div>
+            <!-- Updated button class -->
+            <button type="submit" name="btnLogin" value="btnLogin"
+                    class="btn-login w-100 p-2" style="border-radius: 5px">Submit
+            </button>
+        </form>
+        <div class="login-footer">
+            <p class="mt-4">Don't have an account? <a href="/login?action=register">Register</a></p>
         </div>
     </div>
-</section><!--/form-->
+</section>
 
-<jsp:include page="footer.jsp" flush="true" />
+<jsp:include page="footer.jsp" flush="true"/>
 
-<script src="../assets/js/jquery.js"></script>
-<script src="../assets/js/price-range.js"></script>
-<script src="../assets/js/jquery.scrollUp.min.js"></script>
-<script src="../assets/js/bootstrap.min.js"></script>
-<script src="../assets/js/jquery.prettyPhoto.js"></script>
-<script src="../assets/js/main.js"></script>
+<!-- Bootstrap JS and dependencies Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76A28Yd8uWAtIcH4n9t+K37CRvW0OZZ9N4L9M+0KfE11cMFA9hB7UwPbmdLM/5d" crossorigin="anonymous">
+</script>
+<script>
+    function checkLogin(event) {
+        const messageDiv = document.getElementById('messages');
+
+        if (!messageDiv) {
+            console.error("Element with ID 'messages' not found.");
+            return false;
+        }
+
+        let valid = true;
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        console.log("Username:", username);
+        console.log("Password:", password);
+
+        if (username === "" || password === "") {
+            valid = false;
+        }
+
+        if (!valid) {
+            messageDiv.textContent = 'You must input both username and password!';
+            event.preventDefault();
+            return false;
+        } else {
+            return true;
+        }
+    }
+</script>
 </body>
 </html>

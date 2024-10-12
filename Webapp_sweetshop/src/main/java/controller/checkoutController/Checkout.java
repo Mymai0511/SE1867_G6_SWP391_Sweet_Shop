@@ -23,6 +23,7 @@ import java.util.List;
 
 @WebServlet(name = "checkout", value = "/checkout")
 public class Checkout extends HttpServlet {
+    String errorMessage = "";
     String idPd = null;
     String quantity = null;
 
@@ -47,35 +48,63 @@ public class Checkout extends HttpServlet {
         request.setAttribute("product", ProductProcess.INSTANCE);
         request.setAttribute("listPD", listProductDetails);
         request.setAttribute("location", locations);
-        request.getRequestDispatcher("/page/cakeMain/Checkout.jsp").forward(request, response);
+        request.getRequestDispatcher("/view/checkout.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = SessionRepo.getUser(request,response);
-        String name = request.getParameter("name");
-        String phone = request.getParameter("phone");
-        String email = request.getParameter("email");
-        String village = request.getParameter("village");
-        String location = request.getParameter("location");
-        String district = request.getParameter("district");
-        String country = request.getParameter("country");
-        String shipAddress = village + ", " + location + "," + district + "," + country;
-        String voucher = request.getParameter("voucher");
-        String price = request.getParameter("pice");
-        float p = 0.0f;
-        if (price == null || price.equals("")) {
-            p = (float) 0.0;
-        } else {
-            p = Float.parseFloat(price);
-        }
-        float totalPrice = p * Float.parseFloat(voucher) / 100;
-        if (request.getParameter("btnPlaceOrder") != null) {
-            if (user == null) {
-                String id = UserProcess.Instance.addAndReturnId( new User());
-                String idOrder = OrderProcess.INSTANCE.create(name, phone, email, shipAddress, voucher, id);
-//                String idOD = OrderDetailProcess.INSTANCE.create();
+        try {
+            User user = SessionRepo.getUser(request, response);
+            String firstName = request.getParameter("firstName");
+            String lastName = request.getParameter("lastName");
+            String fullName = firstName + " " + lastName;
+            String phone = request.getParameter("phone");
+            String email = request.getParameter("email");
+            String village = request.getParameter("village");
+            String location = request.getParameter("location");
+            String district = request.getParameter("district");
+            String country = request.getParameter("country");
+            String shipAddress = village + ", " + location + "," + district + "," + country;
+            String voucher = request.getParameter("voucher").isEmpty() ? null : VoucherProcess.INSTANCE.useVoucher(request.getParameter("voucher"));
+            String price = request.getParameter("pice");
+            float p;
+            if (price == null || price.equals("")) {
+                p = (float) 0.0;
+            } else {
+                price = price.replace(",", ".");
+                p = Float.parseFloat(price);
             }
+            float totalPrice = p - (p * Float.parseFloat(voucher == null ? "0" : voucher) / 100);
+            if (request.getParameter("btnPlaceOrder") != null) {
+                if (user == null) {
+                    String idUser = UserProcess.Instance.addAndReturnId(new User());
+                    if (idUser != null) {
+                        String idOrder = OrderProcess.INSTANCE.create(fullName, phone, email, shipAddress, voucher, idUser);
+                        if (idOrder != null) {
+                            String idOD = OrderDetailProcess.INSTANCE.createReturnID(totalPrice, quantity, idOrder, idPd);
+                            if (idOD == null) {
+                                errorMessage = "Cannot buy product!";
+                                request.setAttribute("errorMessage", errorMessage);
+                                doGet(request, response);
+                            } else {
+                                response.sendRedirect(request.getContextPath() + "/home?message=Buy product successfully!");
+                            }
+                        } else {
+                            errorMessage = "Cannot buy product!";
+                            request.setAttribute("errorMessage", errorMessage);
+                            doGet(request, response);
+                        }
+                    } else {
+                        errorMessage = "Cannot buy product!";
+                        request.setAttribute("errorMessage", errorMessage);
+                        doGet(request, response);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            errorMessage = "The system error!";
+            request.setAttribute("errorMessage", errorMessage);
+            doGet(request, response);
         }
     }
 }

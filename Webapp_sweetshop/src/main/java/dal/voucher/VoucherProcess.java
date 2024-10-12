@@ -3,9 +3,8 @@ package dal.voucher;
 import dal.DAO;
 import model.Voucher;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.lang.reflect.Type;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +37,30 @@ public class VoucherProcess extends DAO {
         return vouchers;
     }
 
-    public static void main(String[] args) {
-        String codeVoucher = "|";
-        for (Voucher voucher : VoucherProcess.INSTANCE.read()) {
-            codeVoucher += voucher.getCode() + "|";
+    /**
+     * use voucher
+     *
+     * @param code code voucher
+     * @return 0 if voucher not exist or remaining is 0 or status is 0 else return 1
+     */
+    public String useVoucher (String code) {
+        String exist;
+        String sql = "{CALL use_voucher(?, ?)}";
+        try {
+            CallableStatement ps = connection.prepareCall(sql);
+            ps.setString(1, code);
+            ps.registerOutParameter(2, Types.INTEGER);
+            ps.execute();
+            exist = ps.getString(2);
+        } catch (SQLException e) {
+            status = e.getMessage();
+            exist = "0";
         }
-        System.out.println(codeVoucher);
+        return exist;
+    }
+
+    public static void main(String[] args) {
+        String exist = VoucherProcess.INSTANCE.useVoucher("123asd");
+        System.out.println(exist);
     }
 }

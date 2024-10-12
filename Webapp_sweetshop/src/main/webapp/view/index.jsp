@@ -80,7 +80,7 @@
                             </ul>
 
                             <div class="card-body d-flex justify-content-center">
-                                <button class="btn btn-outline-warning ">View detail</button>
+                                <a href="./viewdetail?id=${product.id}" class="btn btn-outline-warning ">View detail</a>
                             </div>
                         </div>
                     </div>

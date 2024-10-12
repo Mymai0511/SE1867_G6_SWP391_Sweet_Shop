@@ -4,6 +4,7 @@ import dal.DAO;
 import model.User;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,8 +105,47 @@ public class UserProcess extends DAO {
             cs.setDate(7, User.getDob());
             cs.setString(8, User.getAvatar());
             cs.setString(9, User.getAddress());
-            cs.setInt(10, User.getStatus());
-            cs.setInt(11, User.getRole());
+            cs.setInt(10, 0);
+            cs.setInt(11, 1);
+            boolean hasResult = cs.execute();
+            if (hasResult) {
+                ResultSet rs = cs.getResultSet();
+                if (rs.next()) {
+                    id = rs.getString("newUserID");
+                }
+                rs.close();
+            }
+            cs.close();
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+        return id;
+    }
+
+    /**
+     * Create new user and return id after add
+     *
+     * @param username
+     * @param password
+     * @param email
+     * @return new id of user after add and null if add not success
+     */
+    public String addAndReturnId(String username, String password, String email) {
+        String sql = "{CALL insertUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String id = null;
+        try{
+            CallableStatement cs = this.connection.prepareCall(sql);
+            cs.setString(1, username);
+            cs.setString(2, password);
+            cs.setString(3, null);
+            cs.setBoolean(4, true);
+            cs.setString(5, email);
+            cs.setString(6, null);
+            cs.setDate(7, null);
+            cs.setString(8, null);
+            cs.setString(9, null);
+            cs.setInt(10, 0);
+            cs.setInt(11, 1);
             boolean hasResult = cs.execute();
             if (hasResult) {
                 ResultSet rs = cs.getResultSet();
@@ -160,7 +200,6 @@ public class UserProcess extends DAO {
 //        return user;
 //    }
 
-
     //sửa lại hàm này hoặc viết thêm 1 hàm : lấy ra tài khoản có status = 1
     public User loadUser(String nameOrEmail, String password) {
         User user = null;
@@ -193,8 +232,6 @@ public class UserProcess extends DAO {
         }
         return user;
     }
-
-
 
 //    public void update(User user) {
 //        String sql = "UPDATE [post] " +
@@ -243,9 +280,6 @@ public class UserProcess extends DAO {
         System.out.println("Role: " + User.getRole());
             System.out.println("-------------------------");
     }
-
-
-
 }
 
 
