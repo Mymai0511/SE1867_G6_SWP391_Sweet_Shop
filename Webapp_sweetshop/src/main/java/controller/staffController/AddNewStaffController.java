@@ -29,7 +29,7 @@ public class AddNewStaffController extends HttpServlet {
 
     @Override
     public void init() {
-        staffProcess = new StaffProcess(); // Load danh sách staff ban đầu
+        staffProcess = new StaffProcess();
     }
 
     //xác định thư mục nơi sẽ lưu trữ ảnh đại diện

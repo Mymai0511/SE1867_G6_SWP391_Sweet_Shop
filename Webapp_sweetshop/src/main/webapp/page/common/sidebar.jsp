@@ -41,13 +41,13 @@
         </div>
 
         <ul class="sidebar-nav">
-            <li class="sidebar-item">
+            <li class="sidebar-item pa">
                 <a class="sidebar-link" href="#">
                     <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboards</span>
                 </a>
             </li>
 
-            <li class="sidebar-item ">
+            <li class="sidebar-item pa">
                 <a data-bs-target="#icons" data-bs-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="layout"></i> <span class="align-middle">Manager Products</span>
                 </a>
@@ -57,7 +57,7 @@
                 </ul>
             </li>
 
-            <li class="sidebar-item ">
+            <li class="sidebar-item pa">
                 <a data-bs-target="#order" data-bs-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="list"></i> <span class="align-middle">Manager Orders</span>
                 </a>
@@ -67,17 +67,17 @@
                 </ul>
             </li>
 
-            <li class="sidebar-item ">
+            <li class="sidebar-item pa">
                 <a data-bs-target="#form-plugins" data-bs-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Manager Customers</span>
                 </a>
-                <ul id="form-plugins" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Customers</a></li>
+                <ul id="form-plugins" class="sidebar-dropdown list-unstyled collapse  " data-bs-parent="#sidebar">
+                    <li class="sidebar-item "><a class="sidebar-link" href="/getcustomer">List Customers</a></li>
                     <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Customer</a></li>
                 </ul>
             </li>
 
-            <li class="sidebar-item ">
+            <li class="sidebar-item pa">
                 <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manager Staffs</span>
                 </a>
@@ -86,7 +86,7 @@
                     <li class="sidebar-item"><a class="sidebar-link" href="/addstaff">Add New Staff</a></li>
                 </ul>
             </li>
-            <li class="sidebar-item ">
+            <li class="sidebar-item pa">
                 <a data-bs-target="#shipper" data-bs-toggle="collapse" class="sidebar-link collapsed">
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Manager Shippers</span>
                 </a>
