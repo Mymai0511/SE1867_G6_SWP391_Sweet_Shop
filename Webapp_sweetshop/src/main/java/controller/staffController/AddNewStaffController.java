@@ -12,8 +12,10 @@ import jakarta.servlet.http.Part;
 import until.UploadFile;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.util.Base64;
 import java.util.List;
 
 @WebServlet(name = "AddNewStaffController", value = {"/addstaff"})
@@ -38,7 +40,7 @@ public class AddNewStaffController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("page/admin/add-new-staff.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class AddNewStaffController extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("password", password);
             request.setAttribute("repeatPassword", repeatPassword);
-            request.setAttribute("fullName", fullName);
+            request.setAttribute("myName", fullName);
             request.setAttribute("genderParam", genderParam);
             request.setAttribute("email", email);
             request.setAttribute("phone", phone);
@@ -72,30 +74,38 @@ public class AddNewStaffController extends HttpServlet {
             // Check password
             if (!password.equals(repeatPassword)) {
                 request.setAttribute("message", "Passwords do not match.");
-                request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
                 return;
             }
 
-//            // Check file avatar
-//            // phần tệp từ request HTTP với tên "profilePic"
-//            Part filePart = request.getPart("profilePic");
-//            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-//
-//            //file có bị null hay không or kích thước bằng 0
-//            if (filePart == null || filePart.getSize() == 0) {
-//                request.setAttribute("message", "No file uploaded.");
-//                request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
-//                return;
-//            }
-//
-//            // kiểm tra định dạng tệp
-//            String fileExtension = getFileExtension(fileName);
-//            if (!fileExtension.equalsIgnoreCase("jpg") && !fileExtension.equalsIgnoreCase("jpeg")) {
-//                request.setAttribute("message", "File must be a JPG image.");
-//                request.getRequestDispatcher("/page/admin/add_new_staff.jsp").forward(request, response);
-//                return;
-//            }
-//
+            // Check file avatar
+            // phần tệp từ request HTTP với tên "profilePic"
+            Part filePart = request.getPart("profilePic");
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+            //file có bị null hay không or kích thước bằng 0
+            if (filePart == null || filePart.getSize() == 0) {
+                request.setAttribute("message", "No file uploaded.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // kiểm tra định dạng tệp
+            String fileExtension = getFileExtension(fileName);
+            if (!fileExtension.equalsIgnoreCase("jpg") && !fileExtension.equalsIgnoreCase("jpeg")) {
+                request.setAttribute("message", "File must be a JPG image.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // Chuyển đổi ảnh sang Base64
+            String base64Image;
+            try (InputStream inputStream = filePart.getInputStream()) {
+                byte[] imageBytes = new byte[(int) filePart.getSize()];
+                inputStream.read(imageBytes);
+                base64Image = Base64.getEncoder().encodeToString(imageBytes);
+            }
+
 //            // upload file dùng class UploadFile cho quá trình tải file lên.
 //            UploadFile uploadFile = new UploadFile();//Lấy phần tệp từ yêu cầu
 //            List<String> imgStaff = uploadFile.fileUpload(request, response);//Lấy tên tệp
@@ -107,6 +117,9 @@ public class AddNewStaffController extends HttpServlet {
 
             // Tạo một đối tượng Staff mới và thiết lập các thuộc tính của nó
             Staff newStaff = new Staff();
+            newStaff.setAvatar(base64Image
+
+            );
             newStaff.setUsername(username);
             newStaff.setPassword(password);
             newStaff.setFullName(fullName);
@@ -133,7 +146,7 @@ public class AddNewStaffController extends HttpServlet {
                 request.removeAttribute("username");
                 request.removeAttribute("password");
                 request.removeAttribute("repeatPassword");
-                request.removeAttribute("fullName");
+                request.removeAttribute("myName");
                 request.removeAttribute("genderParam");
                 request.removeAttribute("email");
                 request.removeAttribute("phone");

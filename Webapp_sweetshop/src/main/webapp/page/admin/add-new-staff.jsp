@@ -82,7 +82,7 @@
                                                     <div class="mb-3">
                                                         <label for="fullname">Full Name:</label>
                                                         <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Full Name"
-                                                               value="${fullname != null ? fullname : ''}" oninput="validateField('fullname')">
+                                                               value="${myName != null ? myName : ''}" oninput="validateField('fullname')">
                                                         <div id="fullnameError" class="text-danger" style="display: none;"></div>
                                                     </div>
 
@@ -119,7 +119,7 @@
                                                         </div>
 
                                                         <!-- Input file ẩn -->
-                                                        <input type="file" id="file-upload" name="file-upload" accept=".jpg"
+                                                        <input type="file" id="file-upload" name="profilePic" accept=".jpg"
                                                                style="display: none;" onchange="handleImageUpload(event)">
 
                                                         <!-- Thông báo lỗi nếu có -->

@@ -148,7 +148,7 @@
                                     <tbody id="staffBody">
                                     <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
                                         <tr class="staffRow">
-                                            <td><img src="../../assets/image/avatars/avatar.jpg" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                            <td><img src="data:image/png;base64,${staff.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
                                             <td>${staff.fullName}</td>
                                             <td>${staff.dob}</td>
                                             <td>${staff.email}</td>
