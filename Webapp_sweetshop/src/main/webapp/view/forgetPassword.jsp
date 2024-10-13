@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Forget password</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for Icons -->
@@ -94,41 +94,29 @@
 <section class="d-flex justify-content-center" style="margin-top: 32px">
     <div class="login-container">
         <div class="login-header">
-            <h2>Login</h2>
+            <h2>Find your account</h2>
         </div>
         <div class="messages text-center ${mess != null ? "text-success" : (message != null ? "text-danger" : "")} mb-3" id="messages">
             ${mess != null ? mess : message}
         </div>
 
-        <form action="login" method="post" class="login-form" onsubmit="return checkLogin(event)">
+        <form action="forget_password" method="post" class="login-form" onsubmit="return checkEmailForget(event)" novalidate>
             <div class="mb-3">
-                <label for="username" class="form-label">Username or Email</label>
+                <label for="email" class="form-label">Email</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" class="form-control" value="${username == null ? "" : username}" id="username"
-                           name="username"
-                           placeholder="Enter your username or email">
+                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    <input type="email" class="form-control" value="${email == null ? "" : email}" id="email" name="email"
+                           placeholder="Enter your email">
                 </div>
+                <!-- Thông báo lỗi cho Email -->
+                <span class="error-message text-danger" id="emailError"></span>
             </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input type="password" class="form-control" value="${password == null ? "" : password}"
-                           id="password" name="password"
-                           placeholder="Enter your password">
-                </div>
-            </div>
-            <div class="d-flex justify-content-center align-items-center mb-3">
-                <a href="/forget_password" class="text-decoration-none">Forgot password?</a>
-            </div>
-            <!-- Updated button class -->
-            <button type="submit" name="btnLogin" value="btnLogin"
+            <button type="submit" name="btnForget" value="btnForget"
                     class="btn-login w-100 p-2" style="border-radius: 5px">Submit
             </button>
         </form>
         <div class="login-footer">
-            <p class="mt-4">Don't have an account? <a href="/login?action=register">Register</a></p>
+            <p class="mt-4">Already have an account? <a href="/login">Login</a></p>
         </div>
     </div>
 </section>
@@ -140,32 +128,41 @@
         integrity="sha384-w76A28Yd8uWAtIcH4n9t+K37CRvW0OZZ9N4L9M+0KfE11cMFA9hB7UwPbmdLM/5d" crossorigin="anonymous">
 </script>
 <script>
-    function checkLogin(event) {
-        const messageDiv = document.getElementById('messages');
+    function checkEmailForget(event) {
+        let isValid = true;
 
-        if (!messageDiv) {
-            console.error("Element with ID 'messages' not found.");
-            return false;
+        const email = document.getElementById("email");
+        const emailError = document.getElementById("emailError");
+
+        function showError(inputElement, errorElement, message) {
+            inputElement.classList.add("is-invalid");
+            errorElement.textContent = message;
         }
 
-        let valid = true;
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        console.log("Username:", username);
-        console.log("Password:", password);
-
-        if (username === "" || password === "") {
-            valid = false;
+        function clearError(inputElement, errorElement) {
+            inputElement.classList.remove("is-invalid");
+            errorElement.textContent = "";
         }
 
-        if (!valid) {
-            messageDiv.textContent = 'You must input both username and password!';
+        clearError(email, emailError);
+
+        if (email.value.trim() === "") {
+            showError(email, emailError, "You must enter the email!");
+            isValid = false;
+        } else {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value.trim())) {
+                showError(email, emailError, "Invalid email format!");
+                isValid = false;
+            }
+        }
+
+        if (!isValid) {
             event.preventDefault();
             return false;
-        } else {
-            return true;
         }
+
+        return true;
     }
 </script>
 </body>
