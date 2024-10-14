@@ -37,7 +37,7 @@ public class LoginController extends HttpServlet {
         try {
             if (req.getParameter("btnLogin") != null) {
                 login(req, resp);
-            }else if (req.getParameter("btnRegister") != null) {
+            } else if (req.getParameter("btnRegister") != null) {
                 register(req, resp);
             } else {
                 req.setAttribute("message", "Error system!");
@@ -100,16 +100,25 @@ public class LoginController extends HttpServlet {
         String password = request.getParameter("password").trim();
         String email = request.getParameter("email").trim();
 
-        String uID = UserProcess.Instance.addAndReturnId(username, DataEncryptionSHA256.hashPassword(password), email);
-        if (uID == null) {
-            request.setAttribute("message", "Create new account not success!");
+        User user = UserProcess.Instance.findByEmail(email);
+        if (user == null) {
+            String uID = UserProcess.Instance.addAndReturnId(username, DataEncryptionSHA256.hashPassword(password), email);
+            if (uID == null) {
+                request.setAttribute("message", "Create new account not success!");
+                request.setAttribute("username", username);
+                request.setAttribute("password", password);
+                request.setAttribute("email", email);
+                request.getRequestDispatcher("view/register.jsp").forward(request, response);
+            } else {
+                request.setAttribute("mess", "Create new account successful!");
+                request.getRequestDispatcher("view/login.jsp").forward(request, response);
+            }
+        } else {
+            request.setAttribute("message", "Email is exist!");
             request.setAttribute("username", username);
             request.setAttribute("password", password);
             request.setAttribute("email", email);
             request.getRequestDispatcher("view/register.jsp").forward(request, response);
-        } else {
-            request.setAttribute("mess","Create new account successful!");
-            request.getRequestDispatcher("view/login.jsp").forward(request, response);
         }
     }
 }
