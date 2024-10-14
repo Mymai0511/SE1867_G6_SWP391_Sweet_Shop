@@ -123,6 +123,8 @@
                                         <ul class="dropdown-menu" aria-labelledby="sortDropdown">
                                             <li><a class="dropdown-item" href="#">Name Ascending</a></li>
                                             <li><a class="dropdown-item" href="#">Name Descending</a></li>
+                                            <li><a class="dropdown-item" href="#">Phone Ascending</a></li>
+                                            <li><a class="dropdown-item" href="#">Phone Descending</a></li>
                                             <li><a class="dropdown-item" href="#">Date of Birth (Oldest First)</a></li>
                                             <li><a class="dropdown-item" href="#">Date of Birth (Youngest First)</a></li>
                                         </ul>
@@ -134,58 +136,68 @@
                             </div>
 
                             <div class="card-body">
-                                <table id="staffTable" class="table table-striped" style="width:100%">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Date Of Birth</th>
-                                        <th>Email</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="staffBody">
-                                    <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
-                                        <tr class="staffRow">
-                                            <td><img src="data:image/png;base64,${staff.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
-                                            <td>${staff.fullName}</td>
-                                            <td>${staff.dob}</td>
-                                            <td>${staff.email}</td>
-                                            <td>
-                                                        <span class="badge ${staff.status == 1 ? 'bg-primary' : 'bg-danger'}">
-                                                                ${staff.status == 1 ? 'Active' : 'Disable'}
-                                                        </span>
-                                            </td>
-                                            <td>
-                                                <a href="#" class="text-primary me-2" title="Edit">
-                                                    <i class="align-middle" data-feather="edit"></i>
-                                                </a>
-                                                <a href="#" class="text-danger" title="Delete">
-                                                    <i class="align-middle" data-feather="trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                    </tbody>
-                                </table>
+                                <!-- Check if staffs is empty -->
+                                <c:choose>
+                                    <c:when test="${not empty requestScope.staffs}">
+                                        <table id="staffTable" class="table table-striped" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Name</th>
+                                                <th>Date Of Birth</th>
+                                                <th>Phone</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="staffBody">
+                                            <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
+                                                <tr class="staffRow">
+                                                    <td><img src="data:image/png;base64,${staff.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                                    <td>${staff.fullName}</td>
+                                                    <td>${staff.dob}</td>
+                                                    <td>${staff.phone}</td>
+                                                    <td>
+                                                <span class="badge ${staff.status == 1 ? 'bg-primary' : 'bg-danger'}">
+                                                        ${staff.status == 1 ? 'Active' : 'Disabled'}
+                                                </span>
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" class="text-primary me-2" title="Edit">
+                                                            <i class="align-middle" data-feather="edit"></i>
+                                                        </a>
+                                                        <a href="#" class="text-danger" title="Delete">
+                                                            <i class="align-middle" data-feather="trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                        </table>
 
-                                <!-- Pagination Controls -->
-                                <div id="paginationControls" class="pagination mt-4 d-flex justify-content-end align-items-center">
-                                    <button id="prevButton" class="btn btn-secondary me-2" onclick="changePage(-1)">Previous</button>
-<%--                                    <span id="pageInfo" class="page-info me-3">1</span>--%>
-                                    <div id="pageNumbers" class="d-flex me-2">
-                                        <!-- Page numbers will be generated here -->
-                                    </div>
-                                    <button id="nextButton" class="btn btn-secondary" onclick="changePage(1)">Next</button>
-                                </div>
-
+                                        <!-- Pagination Controls -->
+                                        <div id="paginationControls" class="pagination mt-4 d-flex justify-content-end align-items-center">
+                                            <button id="prevButton" class="btn btn-secondary me-2" onclick="changePage(-1)">Previous</button>
+                                            <div id="pageNumbers" class="d-flex me-2">
+                                                <!-- Page numbers will be generated here -->
+                                            </div>
+                                            <button id="nextButton" class="btn btn-secondary" onclick="changePage(1)">Next</button>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <!-- Message for empty staff list -->
+                                        <div class="alert alert-info text-center">
+                                            No staff members found. Please add new staff.
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
+
 
         <jsp:include page="../common/footer.jsp"></jsp:include>
     </div>

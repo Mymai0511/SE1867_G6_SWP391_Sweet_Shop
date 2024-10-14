@@ -9,17 +9,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import until.UploadFile;
-import java.io.File;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.time.format.DateTimeParseException;
 import java.util.Base64;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.logging.Logger;
+import until.UploadFile;
+import java.io.File;
 
 @WebServlet(name = "AddNewStaffController", value = {"/addstaff"})
-
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
@@ -28,13 +33,15 @@ import java.util.List;
 public class AddNewStaffController extends HttpServlet {
 
     private StaffProcess staffProcess;
+    private static final int ROLE_STAFF = 2;
+    private static final int MAX_FILE_SIZE = 1024 * 1024 * 10; // 10MB
+    private static final Logger logger = Logger.getLogger(AddNewStaffController.class.getName());
 
     @Override
     public void init() {
         staffProcess = new StaffProcess();
     }
 
-    //xác định thư mục nơi sẽ lưu trữ ảnh đại diện
     private static final String UPLOAD_DIRECTORY = "assets/avatar";
 
     @Override
@@ -71,26 +78,24 @@ public class AddNewStaffController extends HttpServlet {
             request.setAttribute("address", address);
             request.setAttribute("statusParam", statusParam);
 
-            // Check password
-            if (!password.equals(repeatPassword)) {
-                request.setAttribute("message", "Passwords do not match.");
-                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
-                return;
-            }
-
             // Check file avatar
-            // phần tệp từ request HTTP với tên "profilePic"
             Part filePart = request.getPart("profilePic");
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-            //file có bị null hay không or kích thước bằng 0
-            if (filePart == null || filePart.getSize() == 0) {
+            // Kiểm tra kích thước file
+            if (filePart.getSize() == 0) {
                 request.setAttribute("message", "No file uploaded.");
                 request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
                 return;
             }
 
-            // kiểm tra định dạng tệp
+            if (filePart.getSize() > MAX_FILE_SIZE) {
+                request.setAttribute("message", "File size exceeds the maximum limit of 10MB.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra định dạng tệp
             String fileExtension = getFileExtension(fileName);
             if (!fileExtension.equalsIgnoreCase("jpg") && !fileExtension.equalsIgnoreCase("jpeg")) {
                 request.setAttribute("message", "File must be a JPG image.");
@@ -99,73 +104,135 @@ public class AddNewStaffController extends HttpServlet {
             }
 
             // Chuyển đổi ảnh sang Base64
-            String base64Image;
-            try (InputStream inputStream = filePart.getInputStream()) {
-                byte[] imageBytes = new byte[(int) filePart.getSize()];
-                inputStream.read(imageBytes);
-                base64Image = Base64.getEncoder().encodeToString(imageBytes);
+            String base64Image = null;
+            try (InputStream inputStream = filePart.getInputStream();
+                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+                // Đọc dữ liệu từ inputStream và ghi vào outputStream
+                byte[] buffer = new byte[1024]; // Sử dụng bộ đệm 1024 bytes
+                int bytesRead;
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, bytesRead); // Ghi dữ liệu vào outputStream
+                }
+
+                // Chuyển đổi mảng byte sang Base64
+                base64Image = Base64.getEncoder().encodeToString(outputStream.toByteArray());
+
+            } catch (IOException e) {
+                request.setAttribute("message", "Error reading the image file.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
             }
 
-//            // upload file dùng class UploadFile cho quá trình tải file lên.
-//            UploadFile uploadFile = new UploadFile();//Lấy phần tệp từ yêu cầu
-//            List<String> imgStaff = uploadFile.fileUpload(request, response);//Lấy tên tệp
 
-            // check các giá trị khác và thêm nhân viên vào cơ sở dữ liệu
+            // Kiểm tra username, email và phone
+            if (staffProcess.isUsernameTaken(username)) {
+                request.setAttribute("message", "Username already taken.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            if (staffProcess.isEmailTaken(email)) {
+                request.setAttribute("message", "Email already in use.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            if (staffProcess.isPhoneTaken(phone)) {
+                request.setAttribute("message", "Phone number already in use.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra độ dài mật khẩu
+            if (password.length() < 6) {
+                request.setAttribute("message", "Password must be at least 6 characters long.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // Check password
+            if (!password.equals(repeatPassword)) {
+                request.setAttribute("message", "Passwords do not match.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra định dạng email
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                request.setAttribute("message", "Invalid email format.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra định dạng số điện thoại
+            if (!phone.matches("^0\\d{9}$")) {
+                request.setAttribute("message", "Invalid phone number format.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra ngày sinh
+            LocalDate birthDate = null;
+            try {
+                birthDate = LocalDate.parse(dobParam);
+            } catch (DateTimeParseException e) {
+                request.setAttribute("message", "Invalid date format.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+            LocalDate today = LocalDate.now();
+            if (Period.between(birthDate, today).getYears() < 0) {
+                request.setAttribute("message", "Staff must be at least 0 years old.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            if (username.isEmpty() || password.isEmpty() || repeatPassword.isEmpty() || fullName.isEmpty() ||
+                    genderParam.isEmpty() || email.isEmpty() || phone.isEmpty() || dobParam.isEmpty() || address.isEmpty()) {
+                request.setAttribute("message", "All fields are required.");
+                request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+                return;
+            }
+
+            // Chuyển đổi giới tính và trạng thái
             boolean gender = "Male".equalsIgnoreCase(genderParam);
             int status = "Active".equalsIgnoreCase(statusParam) ? 1 : 0;
-            Date dob = Date.valueOf(dobParam);
 
-            // Tạo một đối tượng Staff mới và thiết lập các thuộc tính của nó
+            // Tạo đối tượng Staff mới
             Staff newStaff = new Staff();
-            newStaff.setAvatar(base64Image
-
-            );
+            newStaff.setAvatar(base64Image);
             newStaff.setUsername(username);
             newStaff.setPassword(password);
             newStaff.setFullName(fullName);
             newStaff.setGender(gender);
             newStaff.setEmail(email);
             newStaff.setPhone(phone);
-            newStaff.setDob(dob);
+            newStaff.setDob(Date.valueOf(birthDate));
             newStaff.setAddress(address);
             newStaff.setStatus(status);
-            newStaff.setRole(2); // Role for staff is 2
+            newStaff.setRole(ROLE_STAFF);
 
-//            newStaff.setAvatar(imgStaff.get(0));// tải 1 ảnh nen lay image dau tien
-
-            // Thiết lập thời gian hiện tại cho createdAt và updatedAt
-            java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+            Date currentDate = new Date(System.currentTimeMillis());
             newStaff.setCreatedAt(currentDate);
             newStaff.setUpdatedAt(currentDate);
 
-            // thêm nhân viên vào cơ sở dữ liệu
+            // Thêm Staff vào cơ sở dữ liệu
             boolean addSuccess = staffProcess.add(newStaff);
 
             if (addSuccess) {
-                // Nếu thêm thành công, xóa các thuộc tính đã thiết lập
-                request.removeAttribute("username");
-                request.removeAttribute("password");
-                request.removeAttribute("repeatPassword");
-                request.removeAttribute("myName");
-                request.removeAttribute("genderParam");
-                request.removeAttribute("email");
-                request.removeAttribute("phone");
-                request.removeAttribute("dobParam");
-                request.removeAttribute("address");
-                request.removeAttribute("statusParam");
                 request.setAttribute("message", "Staff added successfully!");
             } else {
                 request.setAttribute("message", "Failed to add staff.");
             }
 
         } catch (Exception ex) {
-            ex.printStackTrace();
-            request.setAttribute("message", "An error occurred: " + ex.getMessage());
+            logger.severe("Error in AddNewStaffController: " + ex.getMessage());
+            request.setAttribute("message", "An unexpected error occurred. Please try again.");
         }
         request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
     }
 
-    // Method to get file extension
     private String getFileExtension(String fileName) {
         int lastIndexOfDot = fileName.lastIndexOf('.');
         if (lastIndexOfDot > 0 && lastIndexOfDot < fileName.length() - 1) {

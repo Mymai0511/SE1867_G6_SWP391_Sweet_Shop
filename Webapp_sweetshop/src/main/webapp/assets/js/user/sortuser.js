@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const sortDobOldest = document.querySelector('.dropdown-menu li:nth-child(3) a');
     const sortDobYoungest = document.querySelector('.dropdown-menu li:nth-child(4) a');
 
+    02
+
     // Hàm sắp xếp theo cột
     function sortTable(columnIndex, isAscending, isDate = false) {
         const rowsArray = Array.from(tbody.querySelectorAll('tr'));

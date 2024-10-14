@@ -195,11 +195,15 @@ public class StaffProcess extends DAO {
         return exists("role = 2 AND id = ? AND status = 1", id);
     }
 
-    public boolean isEmailUsed(String email) {
+    public boolean isUsernameTaken(String username) {
+        return exists("username = ?", username);
+    }
+
+    public boolean isEmailTaken(String email) {
         return exists("email = ?", email);
     }
 
-    public boolean isPhoneUsed(String phone) {
+    public boolean isPhoneTaken(String phone) {
         return exists("phone = ?", phone);
     }
 
