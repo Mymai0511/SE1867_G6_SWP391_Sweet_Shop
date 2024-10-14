@@ -4,14 +4,15 @@ import dal.DAO;
 import model.User;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserProcess extends DAO {
     public static UserProcess Instance = new UserProcess();
 
-    private UserProcess() {}
+    private UserProcess() {
+    }
 
     public final List<User> UserList = new ArrayList<>();
 
@@ -94,7 +95,7 @@ public class UserProcess extends DAO {
     public String addAndReturnId(User User) {
         String sql = "{CALL insertUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         String id = null;
-        try{
+        try {
             CallableStatement cs = this.connection.prepareCall(sql);
             cs.setString(1, User.getUsername());
             cs.setString(2, User.getPassword());
@@ -133,7 +134,7 @@ public class UserProcess extends DAO {
     public String addAndReturnId(String username, String password, String email) {
         String sql = "{CALL insertUser(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
         String id = null;
-        try{
+        try {
             CallableStatement cs = this.connection.prepareCall(sql);
             cs.setString(1, username);
             cs.setString(2, password);
@@ -265,21 +266,86 @@ public class UserProcess extends DAO {
         User User = UserProcess.Instance.loadUser("admin", "12345");
 
         // In ra thông tin của từng nhân viên trong danh sách
-            System.out.println("ID: " + User.getId());
-            System.out.println("Username: " + User.getUsername());
-            System.out.println("Full Name: " + User.getFullName());
-            System.out.println("Gender: " + (User.isGender() ? "Male" : "Female"));
-            System.out.println("Email: " + User.getEmail());
-            System.out.println("Phone: " + User.getPhone());
-            System.out.println("DOB: " + User.getDob());
-            System.out.println("Avatar: " + User.getAvatar());
-            System.out.println("Address: " + User.getAddress());
-            System.out.println("Status: " + User.getStatus());
-            System.out.println("Created At: " + User.getCreatedAt());
-            System.out.println("Updated At: " + User.getUpdatedAt());
+        System.out.println("ID: " + User.getId());
+        System.out.println("Username: " + User.getUsername());
+        System.out.println("Full Name: " + User.getFullName());
+        System.out.println("Gender: " + (User.isGender() ? "Male" : "Female"));
+        System.out.println("Email: " + User.getEmail());
+        System.out.println("Phone: " + User.getPhone());
+        System.out.println("DOB: " + User.getDob());
+        System.out.println("Avatar: " + User.getAvatar());
+        System.out.println("Address: " + User.getAddress());
+        System.out.println("Status: " + User.getStatus());
+        System.out.println("Created At: " + User.getCreatedAt());
+        System.out.println("Updated At: " + User.getUpdatedAt());
         System.out.println("Role: " + User.getRole());
-            System.out.println("-------------------------");
+        System.out.println("-------------------------");
     }
+
+    public User findByEmail(String email) {
+        User user = null;
+        String sql = "select * from user where email = ?";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1,email);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setFullName(rs.getString("fName"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setDob(rs.getDate("dob"));
+                user.setAvatar(rs.getString("avatar"));
+                user.setAddress(rs.getString("address"));
+                user.setStatus(rs.getInt("status"));
+                user.setCreatedAt(rs.getDate("createdAt"));
+                user.setUpdatedAt(rs.getDate("updatedAt"));
+                user.setRole(rs.getInt("role"));
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+        return user;
+    }
+
+    public User updateUser(User user) {
+        User u = null;
+        String sql = "" +
+                "UPDATE shopcake.user " +
+                "SET username = ?, password = ?, fName = ?, gender = ?, email = ?, phone = ?, " +
+                "dob = ?, avatar = ?, address = ?, status = ?, updatedAt = ?, role = ? " +
+                "WHERE id = ?";
+
+        try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getFullName());
+            ps.setBoolean(4, user.isGender());
+            ps.setString(5, user.getEmail());
+            ps.setString(6, user.getPhone());
+            ps.setDate(7, new java.sql.Date(user.getDob().getTime()));
+            ps.setString(8, user.getAvatar());
+            ps.setString(9, user.getAddress());
+            ps.setInt(10, user.getStatus());
+            ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(12, user.getRole());
+            ps.setInt(13, user.getId());
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                u = user;
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+
+        return u;
+    }
+
 }
 
 

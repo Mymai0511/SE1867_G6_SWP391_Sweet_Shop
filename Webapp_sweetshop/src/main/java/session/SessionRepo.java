@@ -10,6 +10,8 @@ public class SessionRepo {
 
     private SessionRepo() {}
 
+
+    // user
     public static User getUser(HttpServletRequest request, HttpServletResponse response) {
         return (User) request.getSession().getAttribute("user");
     }
@@ -18,6 +20,25 @@ public class SessionRepo {
         request.getSession().setAttribute("user", user);
     }
 
+    public static void removeUser(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().removeAttribute("user");
+    }
+
+    //user find by email
+    public static User getUserFindByEmail(HttpServletRequest request, HttpServletResponse response) {
+        return (User) request.getSession().getAttribute("userFindByEmail");
+    }
+
+    public static void setUserFindByEmail(HttpServletRequest request, HttpServletResponse response, User user) {
+        request.getSession().setAttribute("userFindByEmail", user);
+    }
+
+
+    public static void removeUserFindByEmail(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().removeAttribute("userFindByEmail");
+    }
+
+    // search
     public static String getSearch(HttpServletRequest request, HttpServletResponse response) {
         return (String) request.getSession().getAttribute("search");
     }
@@ -26,6 +47,7 @@ public class SessionRepo {
         request.getSession().setAttribute("search", search);
     }
 
+    // sort
     public static String getSort(HttpServletRequest request, HttpServletResponse response) {
         return (String) request.getSession().getAttribute("sort");
     }
