@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Admin
-  Date: 9/28/2024
-  Time: 1:31 PM
-  To change this template use File | Settings | File Templates.
---%>
+<%-- Created by IntelliJ IDEA. User: Admin Date: 10/14/2024 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -12,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forget password</title>
+    <title>OTP Verification</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for Icons -->
@@ -26,7 +20,7 @@
             flex-direction: column;
         }
 
-        .login-container {
+        .otp-container {
             background-color: #ffffff;
             padding: 2rem;
             border-radius: 15px;
@@ -35,33 +29,32 @@
             max-width: 500px;
         }
 
-        .login-header {
+        .otp-header {
             text-align: center;
             margin-bottom: 1.5rem;
         }
 
-        .login-header h2 {
+        .otp-header h2 {
             margin-bottom: 0;
         }
 
-        .login-form .form-label {
+        .otp-form .form-label {
             font-weight: 600;
         }
 
-        /* Updated button class from btn-custom to btn-login */
-        .btn-login {
+        .btn-verify {
             background-color: #ffc107;
             border: none;
             transition: background-color 0.3s;
-            color: #fff; /* Ensure text is visible */
+            color: #fff;
         }
 
-        .btn-login:hover {
+        .btn-verify:hover {
             background-color: #e0a800;
-            color: #fff; /* Maintain text color on hover */
+            color: #fff;
         }
 
-        #username:focus, #password:focus {
+        #otp:focus {
             box-shadow: none;
             border-color: #ffc107;
         }
@@ -70,21 +63,9 @@
             min-height: 1.5rem;
         }
 
-        .login-footer {
+        .otp-footer {
             text-align: center;
             margin-top: 1.5rem;
-        }
-
-        /* Optional: Style for the "Forgot password?" link */
-        .login-form a {
-            font-size: 0.9rem;
-            color: #ffc107;
-            text-decoration: none;
-        }
-
-        .login-form a:hover {
-            text-decoration: underline;
-            color: #e0a800;
         }
     </style>
 </head>
@@ -92,32 +73,32 @@
 <jsp:include page="header.jsp" flush="true"/>
 
 <section class="d-flex justify-content-center" style="margin-top: 32px">
-    <div class="login-container">
-        <div class="login-header">
-            <h2>Find your account</h2>
-            <p class="text-muted">Please enter your email to find account!</p>
+    <div class="otp-container">
+        <div class="otp-header">
+            <h2>OTP Verification</h2>
+            <p class="text-muted">Please enter the OTP sent to your email</p>
         </div>
         <div class="messages text-center ${mess != null ? "text-success" : (message != null ? "text-danger" : "")} mb-3" id="messages">
             ${mess != null ? mess : message}
         </div>
 
-        <form action="forget_password" method="post" class="login-form" onsubmit="return checkEmailForget(event)" novalidate>
+        <form action="check_otp" method="post" class="otp-form" onsubmit="return checkOtp(event)" novalidate>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="otp" class="form-label">OTP Code</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                    <input type="email" class="form-control" value="${email == null ? "" : email}" id="email" name="email"
-                           placeholder="Enter your email">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <input type="text" class="form-control" id="otp" name="otp"
+                           placeholder="Enter your OTP" maxlength="6">
                 </div>
-                <!-- Thông báo lỗi cho Email -->
-                <span class="error-message text-danger" id="emailError"></span>
+                <!-- OTP error message -->
+                <span class="error-message text-danger" id="otpError"></span>
             </div>
-            <button type="submit" name="btnForget" value="btnForget"
-                    class="btn-login w-100 p-2" style="border-radius: 5px">Submit
+            <button type="submit" name="btnVerifyOtp" value="btnVerifyOtp"
+                    class="btn-verify w-100 p-2" style="border-radius: 5px">Verify OTP
             </button>
         </form>
-        <div class="login-footer">
-            <p class="mt-4">Already have an account? <a href="/login">Login</a></p>
+        <div class="otp-footer">
+            <p class="mt-4">Didn't receive the OTP? <a href="/check_otp">Resend OTP</a></p>
         </div>
     </div>
 </section>
@@ -129,11 +110,11 @@
         integrity="sha384-w76A28Yd8uWAtIcH4n9t+K37CRvW0OZZ9N4L9M+0KfE11cMFA9hB7UwPbmdLM/5d" crossorigin="anonymous">
 </script>
 <script>
-    function checkEmailForget(event) {
+    function checkOtp(event) {
         let isValid = true;
 
-        const email = document.getElementById("email");
-        const emailError = document.getElementById("emailError");
+        const otp = document.getElementById("otp");
+        const otpError = document.getElementById("otpError");
 
         function showError(inputElement, errorElement, message) {
             inputElement.classList.add("is-invalid");
@@ -145,17 +126,14 @@
             errorElement.textContent = "";
         }
 
-        clearError(email, emailError);
+        clearError(otp, otpError);
 
-        if (email.value.trim() === "") {
-            showError(email, emailError, "You must enter the email!");
+        if (otp.value.trim() === "") {
+            showError(otp, otpError, "You must enter the OTP!");
             isValid = false;
-        } else {
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email.value.trim())) {
-                showError(email, emailError, "Invalid email format!");
-                isValid = false;
-            }
+        } else if (otp.value.trim().length !== 6 || isNaN(otp.value.trim())) {
+            showError(otp, otpError, "OTP must be a 6-digit number!");
+            isValid = false;
         }
 
         if (!isValid) {

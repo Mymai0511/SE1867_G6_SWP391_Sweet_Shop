@@ -109,6 +109,8 @@
                            name="username"
                            placeholder="Enter your username or email">
                 </div>
+                <!-- Username error message -->
+                <span class="error-message text-danger" id="usernameError"></span>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
@@ -118,6 +120,8 @@
                            id="password" name="password"
                            placeholder="Enter your password">
                 </div>
+                <!-- Password error message -->
+                <span class="error-message text-danger" id="passwordError"></span>
             </div>
             <div class="d-flex justify-content-center align-items-center mb-3">
                 <a href="/forget_password" class="text-decoration-none">Forgot password?</a>
@@ -141,31 +145,38 @@
 </script>
 <script>
     function checkLogin(event) {
-        const messageDiv = document.getElementById('messages');
+        const username = document.getElementById("username");
+        const password = document.getElementById("password");
+        const usernameError = document.getElementById("usernameError");
+        const passwordError = document.getElementById("passwordError");
 
-        if (!messageDiv) {
-            console.error("Element with ID 'messages' not found.");
-            return false;
+        let isValid = true;
+
+        // Clear previous errors
+        usernameError.textContent = "";
+        passwordError.textContent = "";
+        username.classList.remove("is-invalid");
+        password.classList.remove("is-invalid");
+
+        // Validate username
+        if (username.value.trim() === "") {
+            usernameError.textContent = "Please enter your username or email!";
+            username.classList.add("is-invalid");
+            isValid = false;
         }
 
-        let valid = true;
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        console.log("Username:", username);
-        console.log("Password:", password);
-
-        if (username === "" || password === "") {
-            valid = false;
+        // Validate password
+        if (password.value.trim() === "") {
+            passwordError.textContent = "Please enter your password!";
+            password.classList.add("is-invalid");
+            isValid = false;
         }
 
-        if (!valid) {
-            messageDiv.textContent = 'You must input both username and password!';
+        if (!isValid) {
             event.preventDefault();
-            return false;
-        } else {
-            return true;
         }
+
+        return isValid;
     }
 </script>
 </body>

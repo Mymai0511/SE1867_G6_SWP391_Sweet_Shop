@@ -47,12 +47,17 @@ public class SendEmail {
             System.out.println("Error at :" + e.getMessage());
         }
     }
+//    public static void main(String[] args) {
+//        SendEmail.sendMail("toantthe172722@fpt.edu.vn", "Your verification code",
+//                "<div>" +
+//                        "<p style=\"font-size:14px;\">Your confirmation code:</p>" +
+//                        "<h1 style=\"background-color:#e6f7ff;padding:16px 0;font-size:40px;line-height:140%;text-align:center;letter-spacing:0.04em\">9308</h1>" +
+//                        "<p style=\"font-size:14px;\">If you received this email by mistake, just ignore it.</p>" +
+//                        "</div>");
+//    }
     public static void main(String[] args) {
-        SendEmail.sendMail("toantthe172722@fpt.edu.vn", "Your verification code",
-                "<div>" +
-                        "<p style=\"font-size:14px;\">Your confirmation code:</p>" +
-                        "<h1 style=\"background-color:#e6f7ff;padding:16px 0;font-size:40px;line-height:140%;text-align:center;letter-spacing:0.04em\">9308</h1>" +
-                        "<p style=\"font-size:14px;\">If you received this email by mistake, just ignore it.</p>" +
-                        "</div>");
+        int i = 100;
+        String a = "100";
+        System.out.println(a.equals(i + "") ? "YES" : "NO");
     }
 }
