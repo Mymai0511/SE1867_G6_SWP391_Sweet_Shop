@@ -16,10 +16,11 @@ import java.io.IOException;
 public class CheckOTP extends HttpServlet {
 
     int otp = 0;
+    User user = null;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User user = SessionRepo.getUserFindByEmail(request, response);
+        user = SessionRepo.getUserFindByEmail(request, response);
         if (user == null) {
             response.sendRedirect(request.getContextPath() + "/forget_password?message=Enter again your email!");
         } else {
@@ -36,12 +37,16 @@ public class CheckOTP extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String otpInput = request.getParameter("otp");
-        if (otpInput != null && otpInput.length() == 6 && otpInput.matches("^[0-9]{6}$") && otpInput.equals(otp + "")) {
-            response.sendRedirect(request.getContextPath() + "/change_password");
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/forget_password?message=Enter again your email!");
         } else {
-            request.setAttribute("message", "Invalid otp.Enter again!");
-            request.getRequestDispatcher("view/check_otp.jsp").forward(request, response);
+            String otpInput = request.getParameter("otp");
+            if (otpInput != null && otpInput.length() == 6 && otpInput.matches("^[0-9]{6}$") && otpInput.equals(otp + "")) {
+                response.sendRedirect(request.getContextPath() + "/change_password");
+            } else {
+                request.setAttribute("message", "Invalid otp.Enter again!");
+                request.getRequestDispatcher("view/check_otp.jsp").forward(request, response);
+            }
         }
     }
 }

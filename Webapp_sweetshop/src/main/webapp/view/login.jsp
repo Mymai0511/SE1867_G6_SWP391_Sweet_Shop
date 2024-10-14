@@ -78,7 +78,7 @@
         /* Optional: Style for the "Forgot password?" link */
         .login-form a {
             font-size: 0.9rem;
-            color: #ffc107;
+            color: #076aff;
             text-decoration: none;
         }
 

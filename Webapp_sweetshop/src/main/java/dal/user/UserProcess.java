@@ -4,7 +4,7 @@ import dal.DAO;
 import model.User;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -311,6 +311,41 @@ public class UserProcess extends DAO {
         }
         return user;
     }
+
+    public User updateUser(User user) {
+        User u = null;
+        String sql = "" +
+                "UPDATE shopcake.user " +
+                "SET username = ?, password = ?, fName = ?, gender = ?, email = ?, phone = ?, " +
+                "dob = ?, avatar = ?, address = ?, status = ?, updatedAt = ?, role = ? " +
+                "WHERE id = ?";
+
+        try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getFullName());
+            ps.setBoolean(4, user.isGender());
+            ps.setString(5, user.getEmail());
+            ps.setString(6, user.getPhone());
+            ps.setDate(7, new java.sql.Date(user.getDob().getTime()));
+            ps.setString(8, user.getAvatar());
+            ps.setString(9, user.getAddress());
+            ps.setInt(10, user.getStatus());
+            ps.setTimestamp(11, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(12, user.getRole());
+            ps.setInt(13, user.getId());
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                u = user;
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+
+        return u;
+    }
+
 }
 
 

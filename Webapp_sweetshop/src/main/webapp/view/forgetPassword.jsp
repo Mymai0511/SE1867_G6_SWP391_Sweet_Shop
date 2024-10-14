@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forget password</title>
+    <title>Find account</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for Icons -->
@@ -61,7 +61,7 @@
             color: #fff; /* Maintain text color on hover */
         }
 
-        #username:focus, #password:focus {
+        #email:focus {
             box-shadow: none;
             border-color: #ffc107;
         }
