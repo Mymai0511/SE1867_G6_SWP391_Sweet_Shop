@@ -1,38 +1,41 @@
-package dal.staff;
+package dal.Customer;
 
 import dal.DAO;
-import model.Staff;
+import model.Customer;
 
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StaffProcess extends DAO {
+public class CustomerProcess extends DAO {
 
-    public StaffProcess() {
+    public CustomerProcess() {
         // Initialization can be done if needed
     }
 
-    public boolean add(Staff staff) {
-        if (staff == null) {
-            throw new IllegalArgumentException("Staff object cannot be null");
+    public boolean add(Customer customer) {
+        if (customer == null) {
+            throw new IllegalArgumentException("Customer object cannot be null");
         }
         String sql = "INSERT INTO user (username, password, fName, gender, email, phone, dob, avatar, address, status, createdAt, updatedAt, role) " +
                 "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
-            ps.setString(1, staff.getUsername());
-            ps.setString(2, staff.getPassword());
-            ps.setString(3, staff.getFullName());
-            ps.setBoolean(4, staff.isGender());
-            ps.setString(5, staff.getEmail());
-            ps.setString(6, staff.getPhone());
-            ps.setDate(7, staff.getDob());
-            ps.setString(8, staff.getAvatar());
-            ps.setString(9, staff.getAddress());
-            ps.setInt(10, staff.getStatus());
-            ps.setDate(11, staff.getCreatedAt());
-            ps.setDate(12, staff.getUpdatedAt());
-            ps.setInt(13, staff.getRole());
+            ps.setString(1, customer.getUsername());
+            ps.setString(2, customer.getPassword());
+            ps.setString(3, customer.getFullName());
+            ps.setBoolean(4, customer.isGender());
+            ps.setString(5, customer.getEmail());
+            ps.setString(6, customer.getPhone());
+            ps.setDate(7, customer.getDob());
+            ps.setString(8, customer.getAvatar());
+            ps.setString(9, customer.getAddress());
+            ps.setInt(10, customer.getStatus());
+            ps.setDate(11, customer.getCreatedAt());
+            ps.setDate(12, customer.getUpdatedAt());
+            ps.setInt(13, customer.getRole());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -42,25 +45,25 @@ public class StaffProcess extends DAO {
         }
     }
 
-    public boolean updateStaff(Staff staff) {
-        if (searchStaffById(String.valueOf(staff.getId()))) {
+    public boolean updateCustomer(Customer customer) {
+        if (searchCustomerById(String.valueOf(customer.getId()))) {
             String sql = "UPDATE user SET username = ?, password = ?, fName = ?, gender = ?, email = ?, " +
                     "phone = ?, dob = ?, avatar = ?, address = ?, status = ?, updatedAt = ?, role = ? " +
-                    "WHERE id = ? AND role = 2";
+                    "WHERE id = ? AND role = 1";
             try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
-                ps.setString(1, staff.getUsername());
-                ps.setString(2, staff.getPassword());
-                ps.setString(3, staff.getFullName());
-                ps.setBoolean(4, staff.isGender());
-                ps.setString(5, staff.getEmail());
-                ps.setString(6, staff.getPhone());
-                ps.setDate(7, staff.getDob());
-                ps.setString(8, staff.getAvatar());
-                ps.setString(9, staff.getAddress());
-                ps.setInt(10, staff.getStatus());
-                ps.setDate(11, new java.sql.Date(System.currentTimeMillis()));
-                ps.setInt(12, staff.getRole());
-                ps.setInt(13, staff.getId());
+                ps.setString(1, customer.getUsername());
+                ps.setString(2, customer.getPassword());
+                ps.setString(3, customer.getFullName());
+                ps.setBoolean(4, customer.isGender());
+                ps.setString(5, customer.getEmail());
+                ps.setString(6, customer.getPhone());
+                ps.setDate(7, customer.getDob());
+                ps.setString(8, customer.getAvatar());
+                ps.setString(9, customer.getAddress());
+                ps.setInt(10, customer.getStatus());
+                ps.setDate(11, new Date(System.currentTimeMillis()));
+                ps.setInt(12, customer.getRole());
+                ps.setInt(13, customer.getId());
 
                 return ps.executeUpdate() > 0;
             } catch (SQLException e) {
@@ -70,8 +73,8 @@ public class StaffProcess extends DAO {
         return false;
     }
 
-    public boolean lockStaff(String id) {
-        String sql = "UPDATE user SET status = 0 WHERE role = 2 AND id = ? AND status = 1";
+    public boolean lockCustomer(String id) {
+        String sql = "UPDATE user SET status = 0 WHERE role = 1 AND id = ? AND status = 1";
         try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
             ps.setString(1, id);
             return ps.executeUpdate() > 0;
@@ -86,14 +89,14 @@ public class StaffProcess extends DAO {
      *
      * @param condition Điều kiện SQL cho câu lệnh WHERE, ví dụ: "AND status = ?".
      * @param params Các tham số được sử dụng để thay thế cho các dấu ? trong điều kiện.
-     * @return Trả về danh sách các đối tượng Staff thỏa mãn điều kiện.
+     * @return Trả về danh sách các đối tượng Customer thỏa mãn điều kiện.
      */
-    private List<Staff> getStaffByCondition(String condition, Object... params) {
+    private List<Customer> getCustomerByCondition(String condition, Object... params) {
         // Tạo danh sách để lưu trữ các nhân viên thỏa mãn điều kiện
-        List<Staff> staffList = new ArrayList<>();
+        List<Customer> customerList = new ArrayList<>();
 
-        // Tạo câu lệnh SQL để lấy các nhân viên có vai trò là 2 (role = 2) và điều kiện bổ sung
-        String sql = "SELECT * FROM user WHERE role = 2 " + condition + ";";
+        // Tạo câu lệnh SQL để lấy các nhân viên có vai trò là 1 (role = 1) và điều kiện bổ sung
+        String sql = "SELECT * FROM user WHERE role = 1 " + condition + ";";
 
         // Sử dụng try-with-resources để tự động đóng PreparedStatement và ResultSet sau khi sử dụng
         try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
@@ -104,10 +107,10 @@ public class StaffProcess extends DAO {
 
             // Thực thi câu lệnh SQL và nhận kết quả dưới dạng ResultSet
             try (ResultSet rs = ps.executeQuery()) {
-                // Duyệt qua từng bản ghi trong ResultSet và tạo đối tượng Staff tương ứng
+                // Duyệt qua từng bản ghi trong ResultSet và tạo đối tượng Customer tương ứng
                 while (rs.next()) {
-                    // Thêm đối tượng Staff được tạo vào danh sách
-                    staffList.add(createStaffFromResultSet(rs));
+                    // Thêm đối tượng Customer được tạo vào danh sách
+                    customerList.add(createCustomerFromResultSet(rs));
                 }
             }
         } catch (SQLException e) {
@@ -116,34 +119,34 @@ public class StaffProcess extends DAO {
         }
 
         // Trả về danh sách các nhân viên thỏa mãn điều kiện đã cho
-        return staffList;
+        return customerList;
     }
 
 
-    public List<Staff> getAllStaff() {
-        return getStaffByCondition("");
+    public List<Customer> getAllCustomer() {
+        return getCustomerByCondition("");
     }
 
-    public List<Staff> getStaffActive() {
-        return getStaffByCondition("AND status = 1");
+    public List<Customer> getCustomerActive() {
+        return getCustomerByCondition("AND status = 1");
     }
 
-    public List<Staff> getStaffDisable() {
-        return getStaffByCondition("AND status = 0");
+    public List<Customer> getCustomerDisable() {
+        return getCustomerByCondition("AND status = 0");
     }
 
-    public List<Staff> searchStaff(String keyword) {
+    public List<Customer> searchCustomer(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
-            return getAllStaff(); // Hoặc có thể trả về danh sách rỗng
+            return getAllCustomer(); // Hoặc có thể trả về danh sách rỗng
         }
-        return getStaffByCondition(
+        return getCustomerByCondition(
                 "AND (fName LIKE ? OR phone LIKE ?) ORDER BY username ASC",
                 "%" + keyword.trim() + "%",
                 "%" + keyword.trim() + "%"
         );
     }
 
-    public List<Staff> searchAndFilterStaff(String search, String status) {
+    public List<Customer> searchAndFilterCustomer(String search, String status) {
         // Tạo điều kiện SQL và danh sách tham số
         StringBuilder condition = new StringBuilder();
         List<Object> params = new ArrayList<>();
@@ -163,32 +166,32 @@ public class StaffProcess extends DAO {
         }
 
         // Gọi lại phương thức đã có với điều kiện mới
-        return getStaffByCondition(condition.toString(), params.toArray());
+        return getCustomerByCondition(condition.toString(), params.toArray());
     }
 
 
-    public Staff getStaffById(String id) {
-        List<Staff> staffs = getStaffByCondition("AND id = ?", id);
-        return staffs.isEmpty() ? null : staffs.get(0);
+    public Customer getCustomerById(String id) {
+        List<Customer> customers = getCustomerByCondition("AND id = ?", id);
+        return customers.isEmpty() ? null : customers.get(0);
     }
 
-    private Staff createStaffFromResultSet(ResultSet rs) throws SQLException {
-        Staff staff = new Staff();
-        staff.setId(rs.getInt("id"));
-        staff.setUsername(rs.getString("username"));
-        staff.setPassword(rs.getString("password"));
-        staff.setFullName(rs.getString("fName"));
-        staff.setGender(rs.getBoolean("gender"));
-        staff.setEmail(rs.getString("email"));
-        staff.setPhone(rs.getString("phone"));
-        staff.setDob(rs.getDate("dob"));
-        staff.setAvatar(rs.getString("avatar"));
-        staff.setAddress(rs.getString("address"));
-        staff.setStatus(rs.getInt("status"));
-        staff.setCreatedAt(rs.getDate("createdAt"));
-        staff.setUpdatedAt(rs.getDate("updatedAt"));
-        staff.setRole(rs.getInt("role"));
-        return staff;
+    private Customer createCustomerFromResultSet(ResultSet rs) throws SQLException {
+        Customer customer = new Customer();
+        customer.setId(rs.getInt("id"));
+        customer.setUsername(rs.getString("username"));
+        customer.setPassword(rs.getString("password"));
+        customer.setFullName(rs.getString("fName"));
+        customer.setGender(rs.getBoolean("gender"));
+        customer.setEmail(rs.getString("email"));
+        customer.setPhone(rs.getString("phone"));
+        customer.setDob(rs.getDate("dob"));
+        customer.setAvatar(rs.getString("avatar"));
+        customer.setAddress(rs.getString("address"));
+        customer.setStatus(rs.getInt("status"));
+        customer.setCreatedAt(rs.getDate("createdAt"));
+        customer.setUpdatedAt(rs.getDate("updatedAt"));
+        customer.setRole(rs.getInt("role"));
+        return customer;
     }
 
     /**
@@ -221,12 +224,12 @@ public class StaffProcess extends DAO {
     }
 
 
-    public boolean searchStaffById(String id) {
-        return exists("role = 2 AND id = ?", id);
+    public boolean searchCustomerById(String id) {
+        return exists("role = 1 AND id = ?", id);
     }
 
-    public boolean isActiveStaff(String id) {
-        return exists("role = 2 AND id = ? AND status = 1", id);
+    public boolean isActiveCustomer(String id) {
+        return exists("role = 1 AND id = ? AND status = 1", id);
     }
 
     public boolean isUsernameTaken(String username) {
@@ -242,10 +245,10 @@ public class StaffProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        StaffProcess staffProcess = new StaffProcess();
+        CustomerProcess customerProcess = new CustomerProcess();
 
-        for (Staff staff : staffProcess.searchAndFilterStaff("mai", "0")) {
-            System.out.println(staff);
+        for (Customer customer : customerProcess.getAllCustomer()) {
+            System.out.println(customer);
         }
     }
 }

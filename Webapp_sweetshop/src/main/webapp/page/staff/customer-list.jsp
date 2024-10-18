@@ -14,8 +14,8 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../../assets/image/icons/icon-48x48.png" />
-    <link rel="canonical" href="/staff-list.jsp" />
-    <title>Staff List</title>
+    <link rel="canonical" href="/customer-list.jsp" />
+    <title>Customer List</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet">
     <link class="js-stylesheet" href="../../assets/css/light.css" rel="stylesheet">
 
@@ -107,7 +107,7 @@
                         <div class="card">
                             <div class="card-header pb-0 d-flex align-items-center justify-content-between">
                                 <!-- Combined form for search and status -->
-                                <form class="d-flex align-items-center w-100" action="/getstaff" method="post">
+                                <form class="d-flex align-items-center w-100" action="/getcustomer" method="post">
                                     <!-- Left side: Search input -->
 
                                     <div class="left-side col-4 me-3">
@@ -148,7 +148,7 @@
                                         </div>
 
                                         <!-- Add New Staff Button -->
-                                        <a class="btn btn-success me-3" href="/addstaff">Add New Staff</a>
+                                        <a class="btn btn-success me-3" href="/addcustomer">Add New Customer</a>
                                     </div>
                                 </form>
                             </div>
@@ -156,8 +156,8 @@
                             <div class="card-body">
                                 <!-- Check if staffs is empty -->
                                 <c:choose>
-                                    <c:when test="${not empty requestScope.staffs}">
-                                        <table id="staffTable" class="table table-striped" style="width:100%">
+                                    <c:when test="${not empty requestScope.customers}">
+                                        <table id="userTable" class="table table-striped" style="width:100%">
                                             <thead>
                                             <tr>
                                                 <th>#</th>
@@ -168,16 +168,16 @@
                                                 <th>Action</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="staffBody">
-                                            <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
+                                            <tbody id="customerBody">
+                                            <c:forEach var="customer" items="${requestScope.customers}" varStatus="loopStatus">
                                                 <tr class="staffRow">
-                                                    <td><img src="data:image/png;base64,${staff.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
-                                                    <td>${staff.fullName}</td>
-                                                    <td>${staff.dob}</td>
-                                                    <td>${staff.phone}</td>
+                                                    <td><img src="data:image/png;base64,${customer.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                                    <td>${customer.fullName}</td>
+                                                    <td>${customer.dob}</td>
+                                                    <td>${customer.phone}</td>
                                                     <td>
-                                                <span class="badge ${staff.status == 1 ? 'bg-primary' : 'bg-danger'}">
-                                                        ${staff.status == 1 ? 'Active' : 'Disabled'}
+                                                <span class="badge ${customer.status == 1 ? 'bg-primary' : 'bg-danger'}">
+                                                        ${customer.status == 1 ? 'Active' : 'Disabled'}
                                                 </span>
                                                     </td>
                                                     <td>
@@ -205,7 +205,7 @@
                                     <c:otherwise>
                                         <!-- Message for empty staff list -->
                                         <div class="alert alert-info text-center">
-                                            No staff members found.
+                                            No customer members found.
                                         </div>
                                     </c:otherwise>
                                 </c:choose>

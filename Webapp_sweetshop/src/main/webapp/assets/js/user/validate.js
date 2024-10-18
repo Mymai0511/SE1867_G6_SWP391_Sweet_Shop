@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Kiểm tra và hiển thị thông báo lỗi khi người dùng nhập từng giá trị
-    const fields = ['fullname', 'dob', 'address', 'mobno', 'email', 'uname', 'pass', 'rpass'];
+    const fields = ['fullname', 'dob', 'address', 'mobno', 'email', 'uname'];
     fields.forEach(field => {
         const input = document.getElementById(field);
         input.addEventListener('input', function () {
@@ -57,7 +57,7 @@ function handleImageUpload(event) {
 
 function validateForm() {
     let isValid = true;
-    const fields = ['fullname', 'dob', 'address', 'mobno', 'email', 'uname', 'pass', 'rpass'];
+    const fields = ['fullname', 'dob', 'address', 'mobno', 'email', 'uname'];
 
     fields.forEach(field => {
         const fieldValid = validateField(field);
@@ -144,29 +144,29 @@ function validateField(field) {
                 errorDisplay.style.display = 'none';
             }
             break;
-
-        case 'pass':
-            // Kiểm tra độ dài và bắt đầu bằng space
-            if (value.length < 6 || value.startsWith(' ')) {
-                errorDisplay.textContent = 'Password must be at least 6 characters and not start with a space.';
-                errorDisplay.style.display = 'block';
-                isValid = false;
-            } else {
-                errorDisplay.style.display = 'none';
-            }
-            break;
-
-        case 'rpass':
-            // Kiểm tra xem mật khẩu xác nhận có khớp với mật khẩu không
-            const pass = document.getElementById('pass').value.trim();
-            if (value !== pass) {
-                errorDisplay.textContent = 'Repeat password must match the password.';
-                errorDisplay.style.display = 'block';
-                isValid = false;
-            } else {
-                errorDisplay.style.display = 'none';
-            }
-            break;
+        //
+        // case 'pass':
+        //     // Kiểm tra độ dài và bắt đầu bằng space
+        //     if (value.length < 6 || value.startsWith(' ')) {
+        //         errorDisplay.textContent = 'Password must be at least 6 characters and not start with a space.';
+        //         errorDisplay.style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         errorDisplay.style.display = 'none';
+        //     }
+        //     break;
+        //
+        // case 'rpass':
+        //     // Kiểm tra xem mật khẩu xác nhận có khớp với mật khẩu không
+        //     const pass = document.getElementById('pass').value.trim();
+        //     if (value !== pass) {
+        //         errorDisplay.textContent = 'Repeat password must match the password.';
+        //         errorDisplay.style.display = 'block';
+        //         isValid = false;
+        //     } else {
+        //         errorDisplay.style.display = 'none';
+        //     }
+        //     break;
     }
 
     return isValid;

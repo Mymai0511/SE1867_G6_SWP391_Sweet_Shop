@@ -1,34 +1,32 @@
-package controller.staffController;
+package controller.customerController;
 
+import dal.Customer.CustomerProcess;
 import dal.staff.StaffProcess;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Staff;
+import model.Customer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(name = "GetStaffController", value = {"/getstaff"})
-public class GetStaffController extends HttpServlet {
-    private StaffProcess staffProcess;
+@WebServlet(name = "GetCustomerController", value = {"/getcustomer"})
+public class GetCustomerController extends HttpServlet {
+    private CustomerProcess customerProcess;
 
     @Override
     public void init() {
-        staffProcess = new StaffProcess();
+        customerProcess = new CustomerProcess();
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<Staff> staffList = staffProcess.getAllStaff();
-//        String status = "all";
-//        request.setAttribute("status", status);
-        request.setAttribute("staffs", staffList);
-        request.getRequestDispatcher("page/admin/staff-list.jsp").forward(request, response);
+        List<Customer> customerList = customerProcess.getAllCustomer();
+        request.setAttribute("customers", customerList);
+        request.getRequestDispatcher("page/staff/customer-list.jsp").forward(request, response);
     }
 
     @Override
@@ -38,28 +36,28 @@ public class GetStaffController extends HttpServlet {
         String search = request.getParameter("search");
         String status = request.getParameter("status");
 
-        // Khởi tạo StaffProcess để thao tác với database
-        StaffProcess staffProcess = new StaffProcess();
+        // Khởi tạo CustomerProcess để thao tác với database
+        CustomerProcess customerProcess = new CustomerProcess();
 
-        // Danh sách nhân viên để trả về
-        List<Staff> staffList;
+        // Danh sách khách hàng để trả về
+        List<Customer> customerList;
 
         // Xử lý tìm kiếm và lọc theo trạng thái
         if (status == null || status.equals("all")) {
             // Nếu trạng thái là "all", tìm theo từ khóa search
-            staffList = staffProcess.searchStaff(search);
+            customerList = customerProcess.searchCustomer(search);
         } else {
             // Nếu có trạng thái cụ thể, lọc theo trạng thái và từ khóa search
             String statusValue = status.equals("active") ? "1" : "0";
-            staffList = staffProcess.searchAndFilterStaff(search, statusValue);
+            customerList = customerProcess.searchAndFilterCustomer(search, statusValue);
         }
 
-        // Đặt danh sách nhân viên vào request scope
-        request.setAttribute("staffs", staffList);
+        // Đặt danh sách khách hàng vào request scope
+        request.setAttribute("customers", customerList);
         request.setAttribute("search", search);
         request.setAttribute("status", status);
 
         // Chuyển hướng tới trang JSP để hiển thị kết quả
-        request.getRequestDispatcher("page/admin/staff-list.jsp").forward(request, response); // Chuyển hướng về trang danh sách staff
+        request.getRequestDispatcher("page/staff/customer-list.jsp").forward(request, response); // Chuyển hướng về trang danh sách staff
     }
 }

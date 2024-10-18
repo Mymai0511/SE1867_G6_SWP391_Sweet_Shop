@@ -73,7 +73,7 @@
                 </a>
                 <ul id="form-plugins" class="sidebar-dropdown list-unstyled collapse  " data-bs-parent="#sidebar">
                     <li class="sidebar-item "><a class="sidebar-link" href="/getcustomer">List Customers</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Customer</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/addcustomer">Add New Customer</a></li>
                 </ul>
             </li>
 

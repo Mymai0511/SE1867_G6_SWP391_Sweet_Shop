@@ -14,8 +14,8 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../../assets/image/icons/icon-48x48.png" />
-    <link rel="canonical" href="/add-new-staff.jsp" />
-    <title>Add New Staff</title>
+    <link rel="canonical" href="/add-new-customer.jsp" />
+    <title>Add New Customer</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet">
     <link class="js-stylesheet" href="../../assets/css/light.css" rel="stylesheet">
 
@@ -75,7 +75,7 @@
                                         <c:if test="${not empty message}">
                                             <div class="alert alert-info">${message}</div>
                                         </c:if>
-                                        <form id="staffForm" enctype="multipart/form-data" method="POST" action="/addstaff">
+                                        <form id="customerForm" enctype="multipart/form-data" method="POST" action="/addcustomer">
                                             <div class="row">
                                                 <div class="col-md-8">
                                                     <!-- Các trường đầu vào của bạn ở đây -->
