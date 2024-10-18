@@ -1,41 +1,43 @@
-package controller.staffController;
+package controller.auth;
 
+import dal.Customer.CustomerProcess;
 import dal.staff.StaffProcess;
-import model.Staff;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import jakarta.servlet.http.*;
+import model.Customer;
+import model.Staff;
+import model.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.sql.Date;
-import java.time.format.DateTimeParseException;
-import java.util.Base64;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeParseException;
+import java.util.Base64;
 import java.util.logging.Logger;
 
-@WebServlet(name = "UpdateStaffController", value = {"/updatestaff"})
+@WebServlet(name = "ProfileController", value = {"/updateprofile"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
-public class UpdateStaffController extends HttpServlet {
+public class ProfileController extends HttpServlet {
 
+    private CustomerProcess customerProcess;
     private StaffProcess staffProcess;
-    private static final int ROLE_STAFF = 2;
+//    private static final int ROLE_CUSTOMER = 1;
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 10; // 10MB
-    private static final Logger logger = Logger.getLogger(AddNewStaffController.class.getName());
+    private static final Logger logger = Logger.getLogger(ProfileController.class.getName());
 
     @Override
     public void init() {
+        customerProcess = new CustomerProcess();
         staffProcess = new StaffProcess();
     }
 
@@ -44,51 +46,25 @@ public class UpdateStaffController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy ID của nhân viên từ tham số yêu cầu
-        String staffId = request.getParameter("id");
+        // Lấy session hiện tại
+        HttpSession session = request.getSession(false); // false để không tạo session mới
 
-        // Kiểm tra nếu ID không hợp lệ (null hoặc rỗng)
-        if (staffId == null || staffId.trim().isEmpty()) {
-            // Nếu ID rỗng, chuyển hướng đến trang danh sách với thông báo lỗi
-            response.sendRedirect("getstaff?error=Invalid staff ID");
-            return; // Dừng việc xử lý thêm
-        }
+        // Kiểm tra nếu người dùng đã đăng nhập
+        if (session != null) {
+            User user = (User) session.getAttribute("loggedInUser");
 
-        try {
-            StaffProcess staffProcess = new StaffProcess();
-
-            // Tìm nhân viên với ID đã cho
-            Staff staff = staffProcess.getStaffById(staffId);
-
-            // Kiểm tra sự tồn tại của nhân viên
-            if (staff == null) {
-                // Nếu không tìm thấy nhân viên, chuyển hướng đến trang danh sách với thông báo lỗi
-                response.sendRedirect("getstaff?error=Staff not found");
+            if (user != null) {
+                // Nếu người dùng đã đăng nhập, thêm thông tin người dùng vào request
+                request.setAttribute("user", user);
+                // Chuyển tiếp đến trang hồ sơ
+                request.getRequestDispatcher("view/userProfile.jsp").forward(request, response);
             } else {
-                // Set các thuộc tính cần thiết cho request để gửi đến controller
-                request.setAttribute("staffId", staff.getId());
-                request.setAttribute("myName", staff.getFullName());
-                request.setAttribute("dob", staff.getDob());
-
-                // Chuyển boolean gender thành chuỗi (Male/Female)
-                request.setAttribute("gender", staff.isGender() ? "Male" : "Female");
-
-                request.setAttribute("email", staff.getEmail());
-                request.setAttribute("phone", staff.getPhone());
-                request.setAttribute("address", staff.getAddress());
-
-                // Set status là một integer, bạn có thể kiểm tra giá trị status tại đây
-                request.setAttribute("status", staff.getStatus());
-                request.setAttribute("uname", staff.getUsername());
-                request.setAttribute("avatar", staff.getAvatar());
-
-
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                // Nếu không tìm thấy thông tin người dùng trong session, chuyển hướng đến trang đăng nhập
+                response.sendRedirect("login.jsp?message=Please log in first.");
             }
-        } catch (Exception e) {
-            // Bắt bất kỳ lỗi nào xảy ra và chuyển hướng đến trang danh sách với thông báo lỗi
-            e.printStackTrace();
-            response.sendRedirect("getstaff?error=An unexpected error occurred while locking the staff");
+        } else {
+            // Nếu không có session, chuyển hướng đến trang đăng nhập
+            response.sendRedirect("login.jsp?message=Please log in first.");
         }
     }
 
@@ -98,7 +74,7 @@ public class UpdateStaffController extends HttpServlet {
         try {
             // Process normal fields
             String username = request.getParameter("uname").trim();
-            String fullName = request.getParameter("fullname").trim();
+            String fullName = request.getParameter("myname").trim();
             String genderParam = request.getParameter("gender").trim();
             String email = request.getParameter("email").trim();
             String phone = request.getParameter("mobno").trim();
@@ -123,13 +99,13 @@ public class UpdateStaffController extends HttpServlet {
             // Kiểm tra kích thước file
             if (filePart.getSize() == 0) {
                 request.setAttribute("message", "No file uploaded.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
             if (filePart.getSize() > MAX_FILE_SIZE) {
                 request.setAttribute("message", "File size exceeds the maximum limit of 10MB.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
@@ -137,7 +113,7 @@ public class UpdateStaffController extends HttpServlet {
             String fileExtension = getFileExtension(fileName);
             if (!fileExtension.equalsIgnoreCase("jpg") && !fileExtension.equalsIgnoreCase("jpeg")) {
                 request.setAttribute("message", "File must be a JPG image.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
@@ -158,41 +134,41 @@ public class UpdateStaffController extends HttpServlet {
 
             } catch (IOException e) {
                 request.setAttribute("message", "Error reading the image file.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
 
             // Kiểm tra username, email và phone
-            if (staffProcess.isUsernameTaken(username)) {
+            if (customerProcess.isUsernameTaken(username)) {
                 request.setAttribute("message", "Username already taken.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
-            if (staffProcess.isEmailTaken(email)) {
+            if (customerProcess.isEmailTaken(email)) {
                 request.setAttribute("message", "Email already in use.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
-            if (staffProcess.isPhoneTaken(phone)) {
+            if (customerProcess.isPhoneTaken(phone)) {
                 request.setAttribute("message", "Phone number already in use.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra định dạng email
             if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
                 request.setAttribute("message", "Invalid email format.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
             // Kiểm tra định dạng số điện thoại
             if (!phone.matches("^0\\d{9}$")) {
                 request.setAttribute("message", "Invalid phone number format.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
@@ -202,20 +178,20 @@ public class UpdateStaffController extends HttpServlet {
                 birthDate = LocalDate.parse(dobParam);
             } catch (DateTimeParseException e) {
                 request.setAttribute("message", "Invalid date format.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
             LocalDate today = LocalDate.now();
             if (Period.between(birthDate, today).getYears() < 0) {
                 request.setAttribute("message", "Staff must be at least 0 years old.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
             if (username.isEmpty() || fullName.isEmpty() || genderParam.isEmpty() ||
                     email.isEmpty() || phone.isEmpty() || dobParam.isEmpty() || address.isEmpty()) {
                 request.setAttribute("message", "All fields are required.");
-                request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
+                request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
                 return;
             }
 
@@ -223,38 +199,38 @@ public class UpdateStaffController extends HttpServlet {
             boolean gender = "Male".equalsIgnoreCase(genderParam);
             int status = "Active".equalsIgnoreCase(statusParam) ? 1 : 0;
 
-            // Tạo đối tượng Staff mới
-            Staff newStaff = new Staff();
-            newStaff.setAvatar(base64Image);
-            newStaff.setUsername(username);
-            newStaff.setPassword("null");
-            newStaff.setFullName(fullName);
-            newStaff.setGender(gender);
-            newStaff.setEmail(email);
-            newStaff.setPhone(phone);
-            newStaff.setDob(Date.valueOf(birthDate));
-            newStaff.setAddress(address);
-            newStaff.setStatus(status);
-            newStaff.setRole(ROLE_STAFF);
+            // Tạo đối tượng Customer mới
+            Customer newCustomer = new Customer();
+            newCustomer.setAvatar(base64Image);
+            newCustomer.setUsername(username);
+            newCustomer.setPassword("null");
+            newCustomer.setFullName(fullName);
+            newCustomer.setGender(gender);
+            newCustomer.setEmail(email);
+            newCustomer.setPhone(phone);
+            newCustomer.setDob(Date.valueOf(birthDate));
+            newCustomer.setAddress(address);
+            newCustomer.setStatus(status);
+//            newCustomer.setRole(ROLE);
 
             Date currentDate = new Date(System.currentTimeMillis());
-            newStaff.setCreatedAt(currentDate);
-            newStaff.setUpdatedAt(currentDate);
+            newCustomer.setCreatedAt(currentDate);
+            newCustomer.setUpdatedAt(currentDate);
 
             // Thêm Staff vào cơ sở dữ liệu
-            boolean addSuccess = staffProcess.add(newStaff);
+            boolean addSuccess = customerProcess.add(newCustomer);
 
             if (addSuccess) {
-                request.setAttribute("message", "Staff added successfully!");
+                request.setAttribute("message", "Customer added successfully!");
             } else {
-                request.setAttribute("message", "Failed to add staff.");
+                request.setAttribute("message", "Failed to add customer.");
             }
 
         } catch (Exception ex) {
-            logger.severe("Error in AddNewStaffController: " + ex.getMessage());
+            logger.severe("Error in AddNewCustomerController: " + ex.getMessage());
             request.setAttribute("message", "An unexpected error occurred. Please try again.");
         }
-        request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/staff/add-new-customer.jsp").forward(request, response);
     }
 
     private String getFileExtension(String fileName) {

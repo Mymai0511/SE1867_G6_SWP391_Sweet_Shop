@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" href="../../assets/image/icons/icon-48x48.png" />
     <link rel="canonical" href="/add-new-staff.jsp" />
-    <title>Add New Staff</title>
+    <title>Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet">
     <link class="js-stylesheet" href="../../assets/css/light.css" rel="stylesheet">
 
@@ -75,7 +75,7 @@
                                         <c:if test="${not empty message}">
                                             <div class="alert alert-info">${message}</div>
                                         </c:if>
-                                        <form id="staffForm" enctype="multipart/form-data" method="POST" action="/addstaff">
+                                        <form id="staffForm" enctype="multipart/form-data" method="POST" action="/updateprofile">
                                             <div class="row">
                                                 <div class="col-md-8">
                                                     <!-- Các trường đầu vào của bạn ở đây -->
@@ -108,7 +108,7 @@
                                                 <div class="col-md-4">
                                                     <div class="text-center">
                                                         <!-- Hình ảnh hiện tại -->
-                                                        <img id="previewImage" alt="Avatar" src="../../assets/image/avatars/avatar.jpg"
+                                                        <img id="previewImage" alt="Avatar" src="data:image/png;base64,${avatar}"
                                                              class="rounded-circle img-responsive mt-2" width="128" height="128" />
 
                                                         <div class="mt-2">
@@ -166,11 +166,11 @@
                                                 <div class="mb-3">
                                                     <label class="form-label" for="uname">User Name:</label>
                                                     <input type="text" class="form-control" id="uname" name="uname" placeholder="User Name"
-                                                           value="${username != null ? username : ''}" oninput="validateField('uname')">
+                                                           value="${uname != null ? uname : ''}" oninput="validateField('uname')">
                                                     <div id="unameError" class="text-danger" style="display: none;"></div>
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary" onclick="return validateForm(event);">Save</button>
+                                            <button type="submit" class="btn btn-primary" onclick="return validateForm(event);">Update Profile</button>
                                         </form>
                                     </div>
                                 </div>

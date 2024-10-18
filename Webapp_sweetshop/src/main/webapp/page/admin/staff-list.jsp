@@ -193,7 +193,7 @@
                                                     </td>
                                                     <td>
                                                         <!-- Update Customer Form -->
-                                                        <form action="/updatestaff" method="post" style="display: inline-block; margin-right: 8px;">
+                                                        <form action="/updatestaff" method="get" style="display: inline-block; margin-right: 8px;">
                                                             <input type="hidden" name="id" value="${staff.id}" />
                                                             <button type="submit" class="btn btn-link text-primary p-0" title="Edit" style="border: none;">
                                                                 <i class="align-middle" data-feather="edit"></i>
@@ -236,6 +236,7 @@
                     </div>
                 </div>
             </div>
+
         </main>
 
 

@@ -108,7 +108,7 @@
                                                 <div class="col-md-4">
                                                     <div class="text-center">
                                                         <!-- Hình ảnh hiện tại -->
-                                                        <img id="previewImage" alt="Avatar" src="../../assets/image/avatars/avatar.jpg"
+                                                        <img id="previewImage" alt="Avatar" src=src="data:image/png;base64,${avatar}"
                                                              class="rounded-circle img-responsive mt-2" width="128" height="128" />
 
                                                         <div class="mt-2">
@@ -166,7 +166,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label" for="uname">User Name:</label>
                                                     <input type="text" class="form-control" id="uname" name="uname" placeholder="User Name"
-                                                           value="${username != null ? username : ''}" oninput="validateField('uname')">
+                                                           value="${uname != null ? uname : ''}" oninput="validateField('uname')">
                                                     <div id="unameError" class="text-danger" style="display: none;"></div>
                                                 </div>
                                             </div>

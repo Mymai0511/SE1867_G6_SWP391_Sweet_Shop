@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.User;
 import session.SessionRepo;
 import until.DataEncryptionSHA256;
@@ -65,6 +66,10 @@ public class LoginController extends HttpServlet {
         User user = UserProcess.Instance.loadUser(username, DataEncryptionSHA256.hashPassword(password));
 
         if (user != null) {
+            // Lưu thông tin người dùng vào session
+            HttpSession session = request.getSession();
+            session.setAttribute("loggedInUser", user); // Lưu đối tượng User vào session
+
             SessionRepo.setUser(request, response, user);
             switch (user.getRole()) {
                 case (2): // role staff
