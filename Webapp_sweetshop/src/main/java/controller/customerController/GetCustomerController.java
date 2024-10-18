@@ -24,6 +24,19 @@ public class GetCustomerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Lấy message và error từ tham số yêu cầu
+        String message = request.getParameter("message");
+        String error = request.getParameter("error");
+
+        // Đặt message và error vào request scope
+        if (message != null && !message.trim().isEmpty()) {
+            request.setAttribute("message", message);
+        }
+
+        if (error != null && !error.trim().isEmpty()) {
+            request.setAttribute("error", error);
+        }
+
         List<Customer> customerList = customerProcess.getAllCustomer();
         request.setAttribute("customers", customerList);
         request.getRequestDispatcher("page/staff/customer-list.jsp").forward(request, response);

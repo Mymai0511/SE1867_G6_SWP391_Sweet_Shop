@@ -21,13 +21,13 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.logging.Logger;
 
-@WebServlet(name = "AddNewStaffController", value = {"/addstaff"})
+@WebServlet(name = "UpdateStaffController", value = {"/updatestaff"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
-public class AddNewStaffController extends HttpServlet {
+public class UpdateStaffController extends HttpServlet {
 
     private StaffProcess staffProcess;
     private static final int ROLE_STAFF = 2;

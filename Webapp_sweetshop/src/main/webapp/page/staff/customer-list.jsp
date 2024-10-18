@@ -105,6 +105,17 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
+                            <!-- Phần hiển thị thông báo -->
+                            <c:if test="${not empty param.error}">
+                                <div class="alert alert-danger text-center">
+                                        ${param.error}
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty param.message}">
+                                <div class="alert alert-success text-center">
+                                        ${param.message}
+                                </div>
+                            </c:if>
                             <div class="card-header pb-0 d-flex align-items-center justify-content-between">
                                 <!-- Combined form for search and status -->
                                 <form class="d-flex align-items-center w-100" action="/getcustomer" method="post">
@@ -181,12 +192,23 @@
                                                 </span>
                                                     </td>
                                                     <td>
-                                                        <a href="#" class="text-primary me-2" title="Edit">
-                                                            <i class="align-middle" data-feather="edit"></i>
-                                                        </a>
-                                                        <a href="#" class="text-danger" title="Delete">
-                                                            <i class="align-middle" data-feather="trash"></i>
-                                                        </a>
+                                                        <!-- Update Customer Form -->
+                                                        <form action="/updatecustomer" method="post" style="display: inline-block; margin-right: 8px;">
+                                                            <input type="hidden" name="id" value="${customer.id}" />
+                                                            <button type="submit" class="btn btn-link text-primary p-0" title="Edit" style="border: none;">
+                                                                <i class="align-middle" data-feather="edit"></i>
+                                                            </button>
+                                                        </form>
+
+                                                        <!-- Delete Customer Form -->
+                                                        <c:if test="${customer.status == 1}">
+                                                        <form action="/deletecustomer" method="post" style="display: inline-block;" onsubmit="return confirmDelete();">
+                                                            <input type="hidden" name="id" value="${customer.id}" />
+                                                            <button type="submit" class="btn btn-link text-danger p-0" title="Delete" style="border: none;">
+                                                                <i class="align-middle" data-feather="trash"></i>
+                                                            </button>
+                                                        </form>
+                                                        </c:if>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -221,6 +243,10 @@
     </div>
 </div>
 <script>
+    // Function to show a confirmation delete
+    function confirmDelete() {
+        return confirm("Are you sure you want to lock this customer?");
+    }
     function setStatus(status) {
         document.getElementById('currentStatus').value = status;
         document.forms[0].submit(); // Gửi form
