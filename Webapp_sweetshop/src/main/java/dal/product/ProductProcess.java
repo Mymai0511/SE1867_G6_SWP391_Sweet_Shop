@@ -53,7 +53,7 @@ public class ProductProcess extends DAO {
                 "WHERE p.status = ? ");
         // Nếu có điều kiện tìm kiếm
         if (searchName != null && !searchName.isEmpty()) {
-            sql.append("AND p.name LIKE ?");
+            sql.append("AND p.name LIKE ? or p.id = ? or p.description like ? ");
         }
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql.toString());
@@ -61,6 +61,8 @@ public class ProductProcess extends DAO {
             // Thiết lập tham số tìm kiếm
             if (searchName != null && !searchName.isEmpty()) {
                 ps.setString(2, "%" + searchName + "%");
+                ps.setString(3, searchName);
+                ps.setString(4, "%" + searchName + "%");
             }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -81,20 +83,22 @@ public class ProductProcess extends DAO {
                 + "JOIN productDetail pd ON p.id = pd.productID WHERE p.status = ? ");
         // Nếu có tìm kiếm theo tên
         if (searchName != null && !searchName.isEmpty()) {
-            query.append("and p.name LIKE ? ");
+            query.append("and p.name LIKE ? or p.id = ? or p.description like ? ");
         }
         // Nhóm theo productID để lấy giá trị min
         query.append("GROUP BY p.id ");
         // Thêm điều kiện sắp xếp theo giá trị min
         query.append("ORDER BY minPrice ");
         query.append(sortByMinPriceAsc);
-        query.append(" LIMIT ? OFFSET ?");
+        query.append(" LIMIT ? OFFSET ? ");
         try {
             PreparedStatement ps = this.connection.prepareStatement(query.toString());
             ps.setString(1, "1");
             int paramIndex = 2;
             // Thiết lập tham số tìm kiếm tên
             if (searchName != null && !searchName.isEmpty()) {
+                ps.setString(paramIndex++, "%" + searchName + "%");
+                ps.setString(paramIndex++, searchName);
                 ps.setString(paramIndex++, "%" + searchName + "%");
             }
             ps.setInt(paramIndex++, limit);
@@ -131,13 +135,15 @@ public class ProductProcess extends DAO {
         );
         // Nếu có điều kiện tìm kiếm
         if (searchName != null && !searchName.isEmpty()) {
-            sql.append("WHERE p.name LIKE ?");
+            sql.append("WHERE p.name LIKE ? or p.id = ? or p.description like ? ");
         }
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql.toString());
             // Thiết lập tham số tìm kiếm
             if (searchName != null && !searchName.isEmpty()) {
                 ps.setString(1, "%" + searchName + "%");
+                ps.setString(2, searchName);
+                ps.setString(3, "%" + searchName + "%");
             }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -149,6 +155,15 @@ public class ProductProcess extends DAO {
         return 0;
     }
 
+    /**
+     * get full product by page
+     *
+     * @param searchName
+     * @param limit
+     * @param offset
+     * @param sortByMinPriceAsc
+     * @return
+     */
     public List<Product> getFullProductsByPage(String searchName, int limit, int offset, String sortByMinPriceAsc) {
         List<Product> productList = new ArrayList<>();
         StringBuilder query = new StringBuilder(
@@ -158,7 +173,7 @@ public class ProductProcess extends DAO {
         );
         // Nếu có tìm kiếm theo tên
         if (searchName != null && !searchName.isEmpty()) {
-            query.append("WHERE p.name LIKE ? ");
+            query.append("WHERE p.name LIKE ? or p.id = ? or p.description like ? ");
         }
         // Nhóm theo productID để lấy giá trị min
         query.append("GROUP BY p.id ");
@@ -172,6 +187,8 @@ public class ProductProcess extends DAO {
             int paramIndex = 1;
             // Thiết lập tham số tìm kiếm tên
             if (searchName != null && !searchName.isEmpty()) {
+                ps.setString(paramIndex++, "%" + searchName + "%");
+                ps.setString(paramIndex++, searchName );
                 ps.setString(paramIndex++, "%" + searchName + "%");
             }
             // Thiết lập limit và offset
@@ -246,7 +263,72 @@ public class ProductProcess extends DAO {
             ps.setInt(2, Integer.parseInt(idUpdate));
             ps.executeUpdate();
         } catch (SQLException e) {
-            status = e.getMessage();
+            this.status = e.getMessage();
         }
+    }
+
+    /**
+     * get product by name product
+     *
+     * @param productName name product
+     * @return product found else null
+     */
+    public Product getProductByName(String productName) {
+        String sql = "select * from `product` where name = ?";
+        Product product = null;
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, productName);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setIngredient(rs.getString("ingredient"));
+                product.setDescription(rs.getString("description"));
+                product.setStatus(rs.getInt("status"));
+                product.setCreatedAt(rs.getDate("createdAt"));
+                product.setUpdatedAt(rs.getDate("updatedAt"));
+                product.setCategoryID(rs.getInt("categoryID"));
+            }
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
+        return product;
+    }
+
+    /**
+     * create new product
+     *
+     * @param productName name product
+     * @param productIngredient ingredient product
+     * @param productDescription description product
+     * @param productStatus status product
+     * @param productCategory id category
+     * @return id product if create is success else null
+     */
+    public String create(String productName, String productIngredient, String productDescription, String productStatus, String productCategory) {
+        String id = null;
+        String sql = "{CALL insertProduct(?, ?, ?, ?, ?)}";
+        try {
+            CallableStatement cs = this.connection.prepareCall(sql);
+            cs.setString(1, productName);
+            cs.setString(2, productIngredient);
+            cs.setString(3, productDescription);
+            cs.setString(4, productStatus);
+            cs.setString(5, productCategory);
+            boolean hasResult = cs.execute();
+            if (hasResult) {
+                ResultSet rs = cs.getResultSet();
+                if (rs.next()) {
+                    id = rs.getString("newProductID");
+                }
+                rs.close();
+            }
+            cs.close();
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
+        return id;
     }
 }
