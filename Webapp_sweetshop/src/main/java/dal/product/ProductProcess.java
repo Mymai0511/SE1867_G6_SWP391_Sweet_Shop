@@ -118,6 +118,85 @@ public class ProductProcess extends DAO {
         return productList;
     }
 
+    /**
+     *
+     * @param searchName
+     * @return
+     */
+    public int getFullTotalProducts(String searchName) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT COUNT(DISTINCT p.id) AS total " +
+                        "FROM product p " +
+                        "LEFT JOIN productDetail pd ON p.id = pd.productID "
+        );
+        // Nếu có điều kiện tìm kiếm
+        if (searchName != null && !searchName.isEmpty()) {
+            sql.append("WHERE p.name LIKE ?");
+        }
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql.toString());
+            // Thiết lập tham số tìm kiếm
+            if (searchName != null && !searchName.isEmpty()) {
+                ps.setString(1, "%" + searchName + "%");
+            }
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+        return 0;
+    }
+
+    public List<Product> getFullProductsByPage(String searchName, int limit, int offset, String sortByMinPriceAsc) {
+        List<Product> productList = new ArrayList<>();
+        StringBuilder query = new StringBuilder(
+                "SELECT p.*, COALESCE(MIN(pd.price), 0) AS minPrice " +
+                        "FROM product p " +
+                        "LEFT JOIN productDetail pd ON p.id = pd.productID "
+        );
+        // Nếu có tìm kiếm theo tên
+        if (searchName != null && !searchName.isEmpty()) {
+            query.append("WHERE p.name LIKE ? ");
+        }
+        // Nhóm theo productID để lấy giá trị min
+        query.append("GROUP BY p.id ");
+        // Thêm điều kiện sắp xếp theo giá trị min
+        query.append("ORDER BY minPrice ");
+        query.append(sortByMinPriceAsc.equalsIgnoreCase("asc") ? "ASC " : "DESC ");
+        // Thêm điều kiện phân trang
+        query.append("LIMIT ? OFFSET ?");
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(query.toString());
+            int paramIndex = 1;
+            // Thiết lập tham số tìm kiếm tên
+            if (searchName != null && !searchName.isEmpty()) {
+                ps.setString(paramIndex++, "%" + searchName + "%");
+            }
+            // Thiết lập limit và offset
+            ps.setInt(paramIndex++, limit);
+            ps.setInt(paramIndex, offset);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Product product = new Product();
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setIngredient(rs.getString("ingredient"));
+                product.setDescription(rs.getString("description"));
+                product.setStatus(rs.getInt("status"));
+                product.setCreatedAt(rs.getDate("createdAt"));
+                product.setUpdatedAt(rs.getDate("updatedAt"));
+                product.setCategoryID(rs.getInt("categoryID"));
+                productList.add(product);
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+
+        return productList;
+    }
 
     /**
      * get product by id product
@@ -151,5 +230,23 @@ public class ProductProcess extends DAO {
 
     public static void main(String[] args) {
         System.out.println(ProductProcess.INSTANCE.getProductById("1"));
+    }
+
+    /**
+     * update status product
+     *
+     * @param idUpdate id product need to update
+     * @param status status need to change
+     */
+    public void updateStatusProduct(String idUpdate, String status) {
+        String sql = "update `product` set status = ? where id = ?";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, status);
+            ps.setInt(2, Integer.parseInt(idUpdate));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
     }
 }

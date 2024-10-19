@@ -1,10 +1,11 @@
-package controller.productController;
+package controller.staffController;
 
 import dal.category.CategoryProcess;
 import dal.media.MediaProcess;
 import dal.product.ProductProcess;
 import dal.productDetail.ProductDetailProcess;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,13 +17,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@WebServlet(name = "list_product", value = "/view_list_product")
 public class HomePage extends HttpServlet {
-
     // Số sản phẩm mỗi trang
-    private static final int LIMIT = 12;
-
+    private static final int LIMIT = 10;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        if (request.getParameter("action") != null && request.getParameter("action").equals("update")) {
+            String idUpdate = request.getParameter("id");
+            String status = request.getParameter("status");
+            ProductProcess.INSTANCE.updateStatusProduct(idUpdate, status);
+        }
+
         List<Product> productList = new ArrayList<>();
         int page = 1;
         String pageParam = request.getParameter("page");
@@ -67,15 +74,16 @@ public class HomePage extends HttpServlet {
             }
         }
 
-        int totalProducts = ProductProcess.INSTANCE.getTotalProducts(findByName);
+        int totalProducts = ProductProcess.INSTANCE.getFullTotalProducts(findByName);
         int totalPages = (int) Math.ceil((double) totalProducts / LIMIT);
         // Đảm bảo trang hiện tại không vượt quá tổng số trang
         if (page > totalPages) page = totalPages;
         // 2. Tính OFFSET
         int offset = (page - 1) * LIMIT;
         // 3. Lấy danh sách sản phẩm cho trang hiện tại
-        List<Product> products = ProductProcess.INSTANCE.getProductsByPage(findByName, LIMIT, offset, sort);
+        List<Product> products = ProductProcess.INSTANCE.getFullProductsByPage(findByName, LIMIT, offset, sort);
         // 4. Thiết lập các thuộc tính để chuyển sang JSP
+        request.setAttribute("limit", LIMIT);
         request.setAttribute("products", products);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);
@@ -84,12 +92,10 @@ public class HomePage extends HttpServlet {
         request.setAttribute("category", CategoryProcess.INSTANCE);
         request.setAttribute("media", MediaProcess.INSTANCE);
         request.setAttribute("productList", productList);
-        request.getRequestDispatcher("view/index.jsp").forward(request, response);
+        request.getRequestDispatcher("page/staff/home_page.jsp").forward(request, response);
     }
 
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
-
 }
