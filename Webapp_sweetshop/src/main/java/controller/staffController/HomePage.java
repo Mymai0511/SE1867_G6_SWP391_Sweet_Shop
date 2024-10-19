@@ -23,6 +23,13 @@ public class HomePage extends HttpServlet {
     private static final int LIMIT = 10;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        if (request.getParameter("action") != null && request.getParameter("action").equals("update")) {
+            String idUpdate = request.getParameter("id");
+            String status = request.getParameter("status");
+            ProductProcess.INSTANCE.updateStatusProduct(idUpdate, status);
+        }
+
         List<Product> productList = new ArrayList<>();
         int page = 1;
         String pageParam = request.getParameter("page");
@@ -76,6 +83,7 @@ public class HomePage extends HttpServlet {
         // 3. Lấy danh sách sản phẩm cho trang hiện tại
         List<Product> products = ProductProcess.INSTANCE.getFullProductsByPage(findByName, LIMIT, offset, sort);
         // 4. Thiết lập các thuộc tính để chuyển sang JSP
+        request.setAttribute("limit", LIMIT);
         request.setAttribute("products", products);
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages);

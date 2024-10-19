@@ -231,4 +231,22 @@ public class ProductProcess extends DAO {
     public static void main(String[] args) {
         System.out.println(ProductProcess.INSTANCE.getProductById("1"));
     }
+
+    /**
+     * update status product
+     *
+     * @param idUpdate id product need to update
+     * @param status status need to change
+     */
+    public void updateStatusProduct(String idUpdate, String status) {
+        String sql = "update `product` set status = ? where id = ?";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, status);
+            ps.setInt(2, Integer.parseInt(idUpdate));
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+    }
 }

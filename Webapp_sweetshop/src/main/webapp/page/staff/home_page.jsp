@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>List product</title>
 </head>
 <body>
 
@@ -47,19 +47,24 @@
         <jsp:include page="sidebar.jsp"/>
     </div>
     <div class="col-md-9">
+        <div class="d-flex justify-content-center mt-3">
+            <a href="./add_new_product" class="btn btn-success d-flex justify-content-center align-items-center;lkjbvc">
+                New Product
+            </a>
+        </div>
         <c:choose>
             <c:when test="${not empty products}">
                 <main class="container">
-                    <h3 class="p-2">
+                    <h5 style="padding-bottom: 0; margin-bottom: 0">
                         <b>Sort by</b>
-                    </h3>
+                    </h5>
                     <div class="filter-sort__list-filter d-flex p-2">
                         <c:set var="search" value="${sessionScope.search}"/>
                         <c:set var="sort" value="${sessionScope.sort}"/>
                         <a class="btn d-flex ${sort.equalsIgnoreCase("ASC") ? "bg-warning " : ""}"
                            href="./view_list_product?sort=ASC&search1=${search}"
                            style="background-color: #f0efef; margin-right: 10px;">
-                            <div class="icon">
+                            <div class="icon d-flex justify-content-center align-items-center">
                                 <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                     <path
                                             d="M320 224H416c17.67 0 32-14.33 32-32s-14.33-32-32-32h-95.1c-17.67 0-32 14.33-32 32S302.3 224 320 224zM320 352H480c17.67 0 32-14.33 32-32s-14.33-32-32-32h-159.1c-17.67 0-32 14.33-32 32S302.3 352 320 352zM320 96h32c17.67 0 31.1-14.33 31.1-32s-14.33-32-31.1-32h-32c-17.67 0-32 14.33-32 32S302.3 96 320 96zM544 416h-223.1c-17.67 0-32 14.33-32 32s14.33 32 32 32H544c17.67 0 32-14.33 32-32S561.7 416 544 416zM192.4 330.7L160 366.1V64.03C160 46.33 145.7 32 128 32S96 46.33 96 64.03v302L63.6 330.7c-6.312-6.883-14.94-10.38-23.61-10.38c-7.719 0-15.47 2.781-21.61 8.414c-13.03 11.95-13.9 32.22-1.969 45.27l87.1 96.09c12.12 13.26 35.06 13.26 47.19 0l87.1-96.09c11.94-13.05 11.06-33.31-1.969-45.27C224.6 316.8 204.4 317.7 192.4 330.7z">
@@ -70,7 +75,7 @@
                         </a>
                         <a class="btn d-flex ${sort.equalsIgnoreCase("DESC") ? "bg-warning " : ""}"
                            href="./view_list_product?sort=DESC&search1=${search}" style="background-color: #f0efef;">
-                            <div class="icon">
+                            <div class="icon d-flex justify-content-center align-items-center">
                                 <svg height="15" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                     <path
                                             d="M416 288h-95.1c-17.67 0-32 14.33-32 32s14.33 32 32 32H416c17.67 0 32-14.33 32-32S433.7 288 416 288zM544 32h-223.1c-17.67 0-32 14.33-32 32s14.33 32 32 32H544c17.67 0 32-14.33 32-32S561.7 32 544 32zM352 416h-32c-17.67 0-32 14.33-32 32s14.33 32 32 32h32c17.67 0 31.1-14.33 31.1-32S369.7 416 352 416zM480 160h-159.1c-17.67 0-32 14.33-32 32s14.33 32 32 32H480c17.67 0 32-14.33 32-32S497.7 160 480 160zM192.4 330.7L160 366.1V64.03C160 46.33 145.7 32 128 32S96 46.33 96 64.03v302L63.6 330.7c-6.312-6.883-14.94-10.38-23.61-10.38c-7.719 0-15.47 2.781-21.61 8.414c-13.03 11.95-13.9 32.22-1.969 45.27l87.1 96.09c12.12 13.26 35.06 13.26 47.19 0l87.1-96.09c11.94-13.05 11.06-33.31-1.969-45.27C224.6 316.8 204.4 317.7 192.4 330.7z">
@@ -91,7 +96,7 @@
                         <span class="col-md-2 text-center"><b>Action</b></span>
                     </div>
                     <div class="row">
-                        <c:set var="i" value="1"/>
+                        <c:set var="i" value="${(currentPage - 1) * limit + 1}"/>
                         <c:forEach var="product" items="${products}">
                             <div class="row align-items-center mb-2 p-2 border rounded bg-white"
                                  onclick="window.location.href='./view_list_product?id=${product.id}'"
@@ -120,7 +125,7 @@
                                     </c:choose>
                                 </span>
                                 <span class="col-md-2 text-center">
-                                    <a href="./view_list_product?id=${product.id}&action=update&type=${product.status == 1 ? "0" : "1"}"
+                                    <a href="./view_list_product?id=${product.id}&action=update&status=${product.status == 1 ? "0" : "1"}"
                                        class="btn btn-outline-${ product.status == 1 ? "danger" : "success"} btn-sm">
                                             ${product.status == 1 ? "Diable" : "Active"}
                                     </a>
