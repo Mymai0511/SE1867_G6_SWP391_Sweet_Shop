@@ -132,7 +132,7 @@ public class ProductDetailProcess extends DAO {
                 ps.setString(3, productID);
                 ps.addBatch();
             }
-            ps.executeUpdate();
+            ps.executeBatch();
         } catch (SQLException e) {
             this.status = e.getMessage();
         }

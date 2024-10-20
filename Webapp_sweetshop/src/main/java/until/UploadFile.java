@@ -1,102 +1,74 @@
 package until;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.File;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.util.Base64;
+import java.util.Collection;
 
 /**
  *
- * @author trantoan
+ * @author
  */
 public class UploadFile {
+    private static final long serialVersionUID = 1L;
+    private static final long MAX_TOTAL_SIZE = 10 * 1024 * 1024; // 10MB
 
-    //lưu đường dẫn tới thư mục mà các tệp được tải lên sẽ được lưu trữ
-    private String UPLOAD_DIRECTORY;
-
-    //xác định vị trí lưu tệp, kiểm tra và lưu các tệp đã được tải lên
-    public List<String> fileUpload(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-//        // Get the real path to the "build/web" directory
-//        String realPath = request.getServletContext().getRealPath("");
-//        // Navigate to the "web/uploadFiles" directory
-//        Path uploadPath = Paths.get(realPath).getParent().getParent().resolve("webapp/assets/image/avatar-user");
-//
-//
-//        //Lưu trữ đường dẫn dưới dạng string
-//        UPLOAD_DIRECTORY = uploadPath.toString();
-
-        // Đường dẫn mặc định đến thư mục avatar
-        // Thay đổi đường dẫn này theo cấu trúc thư mục của bạn
-//        String UPLOAD_DIRECTORY = "D:/Semester_5/SWP_1867AI/Project/Sweet_Shop/Webapp_sweetshop/src/main/webapp/assets/app/image/avatar";
-
-        Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
-        //Tạo thư mục nếu không tồn tại
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
-        }
-
-        //danh sách để lưu tên của các tệp đã tải lên
-        List<String> uploadedFileNames = new ArrayList<>();
-
-        try {
-            // Vòng lặp để xử lý từng file
-            for (Part part : request.getParts()) {
-                // Kiểm tra và lưu file
-                if (part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
-                    String fileName = extractFileName(part);// Lấy tên của file sau khi được xử lý tính duy nhất
-                    if (fileName != null && !fileName.isEmpty()) {
-                        // Lưu tập tin vào thư mục đã chỉ định
-                         // File.separator: "/" cung cấp dấu phân cách đường dẫn hệ thống phù hợp với hệ điều hành
-                        part.write(UPLOAD_DIRECTORY + File.separator + fileName);
-                        // Thêm tên file vào danh sách các file đã được lưu
-                        uploadedFileNames.add(fileName);
-                    }
+    /**
+     * process all file after upload
+     *
+     * @param fileParts file user upload from local
+     * @param imageFile name tag input
+     * @return String image after convert with format '...;...'
+     * @throws IOException exception error
+     */
+    public static String processFileParts(Collection<Part> fileParts, String imageFile) throws IOException {
+        long totalSize = 0;
+        StringBuilder base64Images = new StringBuilder();
+        for (Part filePart : fileParts) {
+            if (filePart.getName().equals(imageFile)) {
+                String contentType = filePart.getContentType();
+                try (InputStream inputStream = filePart.getInputStream()) {
+                    // Gọi phương thức convertImageToBase64 với các tham số mới
+                    String base64Image = convertImageToBase64(inputStream, contentType, totalSize);
+                    base64Images.append(base64Image).append(";");
+                    // Cập nhật tổng kích thước
+                    totalSize += filePart.getSize();
                 }
             }
-        } catch (ServletException | IOException e) {
-            System.out.println("===========================");
-            System.out.println("Error at upload file: " + e.getMessage());
-            e.printStackTrace(); // Changed from e.getStackTrace() to e.printStackTrace() for proper error logging
         }
-        return uploadedFileNames;
+        return base64Images.toString();
     }
 
-    //xử lý các tên file để đảm bảo tính duy nhất
-    private String extractFileName(Part part) {
-        //- lấy tiêu đề "content-disposition": chứa thông tin về loại nội dung, tên tệp...
-        //- "content-disposition" thường có nhiều phần được phân tách bằng dấu chấm phẩy (;).
-        //- dựa vào (;) tách các phần này thành một mảng chuỗi (items).
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {//Tìm Tên Tệp
-                // Xử lại bỏ (= và ") để lấy tên file ban đầu
-                String originalFileName = s.substring(s.indexOf("=") + 2, s.length() - 1);
-                // Tạo một chuỗi duy nhất (UUID) để thêm vào tên tập tin
-                String uniqueID = UUID.randomUUID().toString();
-
-                // Tách tên tệp và phần mở rộng của nó
-                String fileExtension = "";// phần mo rộng sau dấu "."
-                int dotIndex = originalFileName.lastIndexOf('.');//vị trí dấu "."
-                if (dotIndex != -1) {
-                    fileExtension = originalFileName.substring(dotIndex); //phần mở rộng
-                    originalFileName = originalFileName.substring(0, dotIndex);// tên file
-                }
-
-                // Kết hợp tên tập tin ban đầu với UUID để tạo ra tên tập tin duy nhất
-                return originalFileName + "_" + uniqueID + fileExtension;
-            }
+    /**
+     * convert image to string using base64
+     *
+     * @param inputStream file image
+     * @param contentType type file input
+     * @param totalSize total size file get from local server
+     * @return String after convert from image
+     * @throws IOException
+     */
+     public static String convertImageToBase64(InputStream inputStream, String contentType, long totalSize) throws IOException {
+        // Kiểm tra nếu contentType không phải là ảnh
+        if (contentType == null || !contentType.startsWith("image/")) {
+            throw new IOException("File is not an image.");
         }
-        return "";
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        long currentSize = 0;
+        // Đọc dữ liệu từ inputStream và ghi vào outputStream
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            currentSize += bytesRead;
+            if (currentSize + totalSize > MAX_TOTAL_SIZE) {
+                throw new IOException("Total file size exceeds 10MB.");
+            }
+            outputStream.write(buffer, 0, bytesRead);
+        }
+        // Chuyển đổi mảng byte thành chuỗi Base64
+        return Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }
 }

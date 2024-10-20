@@ -95,8 +95,8 @@
                                  style="cursor: pointer;">
                                 <span class="col-md-1 text-center">${i}</span>
                                 <span class="col-md-2 text-center">
-                                    <img src="assets/image/product/${media.getTop1MediaByProductID(product.id).image}"
-                                         alt="${product.name}" class="img-fluid" style="height: 50px; object-fit: contain;"/>
+                                    <img src="data:image/png;base64,${media.getTop1MediaByProductID(product.id).image}"
+                                         alt="${product.name}" class="img-fluid" style="width: 100%; object-fit: contain;"/>
                                 </span>
                                 <span class="col-md-2 text-center">${product.name}</span>
                                 <span class="col-md-2 text-center">

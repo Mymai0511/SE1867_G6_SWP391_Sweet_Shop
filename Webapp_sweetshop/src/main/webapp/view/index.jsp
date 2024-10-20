@@ -63,7 +63,7 @@
                 <c:forEach var="product" items="${products}">
                     <div class="col-sm-6 col-xs-12 col-md-6 col-lg-3 p-2">
                         <div class="card p-1">
-                            <img src="assets/image/product/${media.getTop1MediaByProductID(product.id).image}" class="card-img-top" alt="..."
+                            <img src="data:image/png;base64,${media.getTop1MediaByProductID(product.id).image}" class="card-img-top" alt="..."
                                  style="height: 250px; object-fit: contain;"/>
                             <div class="card-body">
                                 <h5 class="card-title">${product.name}</h5>

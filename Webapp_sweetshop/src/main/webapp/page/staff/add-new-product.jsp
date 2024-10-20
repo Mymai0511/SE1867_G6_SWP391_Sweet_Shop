@@ -84,53 +84,54 @@
                                 </select>
                                 <span class="error-message" id="categoryError"></span>
                             </div>
+                            <div class="mb-3">
+                                <label for="imageFile" class="form-label">Choose images:</label>
+                                <input type="file" name="imageFile" id="imageFile" accept="image/*" multiple class="form-control">
+                                <span class="error-message" id="imageFileError"></span>
+                            </div>
 
                             <div class="product_detail p-2 border-custom mb-3">
                                 <h5 class="text-warning">Product Details</h5>
-                                <c:set var="i" value="0" />
                                 <div id="pd">
-                                    <div class="p-2 row mb-3 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-6 col-sm-12 mb-2 mb-md-0">
-                                            <label class="form-label">Price <span style="color: red">*</span></label>
-                                            <div class="input-group">
-                                                <input type="number" name="productPrice" value="${productSize != null && productPrice[i] != null && !productPrice[i].equals("") ? productPrice[i] : ""}" step="0.01" class="form-control" placeholder="Enter price">
-                                                <span class="input-group-text">vnd</span>
+                                    <c:forEach var="i" begin="0" end="${loop == null ? 0 : loop}">
+                                        <div class="p-2 row mb-3 d-flex justify-content-between align-items-center">
+                                            <div class="col-md-6 col-sm-12 mb-2 mb-md-0">
+                                                <label class="form-label">Price <span style="color: red">*</span></label>
+                                                <div class="input-group">
+                                                    <input type="number" name="productPrice" value="${productSize != null && productPrice[i] != null && !productPrice[i].equals("") ? productPrice[i] : ""}" step="0.01" class="form-control" placeholder="Enter price">
+                                                    <span class="input-group-text">vnd</span>
+                                                </div>
+                                                <span class="error-message priceError"></span>
                                             </div>
-                                            <span class="error-message priceError"></span>
-                                        </div>
 
-                                        <div class="col-md-6 col-sm-12">
-                                            <label class="form-label">Size <span style="color: red">*</span></label>
-                                            <select name="productSize" class="form-select">
-                                                <option value="" disabled selected>Select a size</option>
-                                                <option value="Small" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Small") ? "selected" : ""}>Small</option>
-                                                <option value="Medium" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Medium") ? "selected" : ""}>Medium</option>
-                                                <option value="Large" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Large") ? "selected" : ""}>Large</option>
-                                                <option value="Extra Large" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Extra Large") ? "selected" : ""}>Extra Large</option>
-                                            </select>
-                                            <span class="error-message sizeError"></span>
+                                            <div class="col-md-6 col-sm-12">
+                                                <label class="form-label">Size <span style="color: red">*</span></label>
+                                                <select name="productSize" class="form-select">
+                                                    <option value="" disabled selected>Select a size</option>
+                                                    <option value="Small" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Small") ? "selected" : ""}>Small</option>
+                                                    <option value="Medium" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Medium") ? "selected" : ""}>Medium</option>
+                                                    <option value="Large" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Large") ? "selected" : ""}>Large</option>
+                                                    <option value="Extra Large" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Extra Large") ? "selected" : ""}>Extra Large</option>
+                                                </select>
+                                                <span class="error-message sizeError"></span>
+                                            </div>
                                         </div>
-                                        <c:set var="i" value="${i + 1}" />
-                                    </div>
+                                    </c:forEach>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <button type="button" class="btn btn-warning text-light" onclick="addMoreProductDetail()">Add More Details</button>
+                                    <button type="button" class="btn btn-warning text-light" onclick="addMoreProductDetail()">+</button>
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="ingredient" class="form-label">Ingredient <span style="color: red">*</span></label>
-                                <textarea class="form-control" id="ingredient" name="productIngredient" rows="3" placeholder="Enter ingredients">
-                                    ${productIngredient == null || productIngredient.equals("") ? "" : productIngredient}
-                                </textarea>
+                                <textarea class="form-control" id="ingredient" name="productIngredient" rows="3" placeholder="Enter ingredients">${productIngredient == null || productIngredient.equals("") ? "" : productIngredient}</textarea>
                                 <span class="error-message" id="ingredientError"></span>
                             </div>
 
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description <span style="color: red">*</span></label>
-                                <textarea class="form-control" id="description" name="productDescription" rows="3" placeholder="Enter description">
-                                    ${productDescription == null || productDescription.equals("") ? "" : productDescription}
-                                </textarea>
+                                <textarea class="form-control" id="description" name="productDescription" rows="3" placeholder="Enter description">${productDescription == null || productDescription.equals("") ? "" : productDescription}</textarea>
                                 <span class="error-message" id="descriptionError"></span>
                             </div>
 
@@ -142,7 +143,14 @@
                                 </select>
                                 <span class="error-message" id="statusError"></span>
                             </div>
-                            <button type="submit" class="btn btn-warning w-100">Add Product</button>
+                            <div class="d-flex">
+                                <div class="w-100" style="padding-right: 12px">
+                                    <a href="./view_list_product" class="btn btn-danger w-100">Cancel</a>
+                                </div>
+                                <div class="w-100" style="padding-left: 12px">
+                                    <button type="submit" class="btn btn-warning w-100">Add Product</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -178,6 +186,8 @@
         const ingredientError = document.getElementById('ingredientError');
         const descriptionInput = document.getElementById('description');
         const descriptionError = document.getElementById('descriptionError');
+        const imageFileInput = document.getElementById('imageFile'); // Thêm biến này
+        const imageFileError = document.getElementById('imageFileError'); // Thêm thẻ để hiển thị lỗi cho file
 
         // Lấy tất cả các phần tử chi tiết sản phẩm
         const productDetails = document.querySelectorAll('#pd > .row');
@@ -187,6 +197,7 @@
         clearError(categoryInput, categoryError);
         clearError(ingredientInput, ingredientError);
         clearError(descriptionInput, descriptionError);
+        clearError(imageFileInput, imageFileError); // Xóa lỗi cho file
 
         // Kiểm tra từng trường
         if (!nameInput.value.trim()) {
@@ -209,6 +220,12 @@
             isValid = false;
         }
 
+        // Kiểm tra xem đã chọn ít nhất một tệp hình ảnh hay chưa
+        if (imageFileInput.files.length === 0) {
+            showError(imageFileInput, imageFileError, 'Please choose at least one image file');
+            isValid = false;
+        }
+
         // Kiểm tra từng chi tiết sản phẩm
         productDetails.forEach((detail, index) => {
             const priceInput = detail.querySelector('input[name="productPrice"]');
@@ -221,10 +238,11 @@
             clearError(sizeInput, sizeError);
 
             if (!priceInput.value.trim()) {
+                priceInput.innerHTML="";
                 showError(priceInput, priceError, `Please enter the price`);
                 isValid = false;
             } else if (priceInput.value < 1000) {
-                showError(priceInput, priceError, `Price must be grater than 1000vnd`);
+                showError(priceInput, priceError, `Price must be greater than 1000 VND`);
                 isValid = false;
             }
             if (!sizeInput.value) {
@@ -240,7 +258,6 @@
 
         return isValid;
     }
-
 
     function addMoreProductDetail() {
         const detailSection = `<div class="p-2 row mb-3 d-flex justify-content-between align-items-center">
