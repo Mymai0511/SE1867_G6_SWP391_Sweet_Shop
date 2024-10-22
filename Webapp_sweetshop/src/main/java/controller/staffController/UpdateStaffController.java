@@ -65,30 +65,31 @@ public class UpdateStaffController extends HttpServlet {
                 // Nếu không tìm thấy nhân viên, chuyển hướng đến trang danh sách với thông báo lỗi
                 response.sendRedirect("getstaff?error=Staff not found");
             } else {
-                // Set các thuộc tính cần thiết cho request để gửi đến controller
-                request.setAttribute("staffId", staff.getId());
-                request.setAttribute("myName", staff.getFullName());
-                request.setAttribute("dob", staff.getDob());
+//                // Set các thuộc tính cần thiết cho request để gửi đến controller
+//                request.setAttribute("staffId", staff.getId());
+//                request.setAttribute("myName", staff.getFullName());
+//                request.setAttribute("dob", staff.getDob());
+//
+//                // Chuyển boolean gender thành chuỗi (Male/Female)
+//                request.setAttribute("gender", staff.isGender() ? "Male" : "Female");
+//
+//                request.setAttribute("email", staff.getEmail());
+//                request.setAttribute("phone", staff.getPhone());
+//                request.setAttribute("address", staff.getAddress());
+//
+//                // Set status là một integer, bạn có thể kiểm tra giá trị status tại đây
+//                request.setAttribute("status", staff.getStatus());
+//                request.setAttribute("uname", staff.getUsername());
+//                request.setAttribute("avatar", staff.getAvatar());
 
-                // Chuyển boolean gender thành chuỗi (Male/Female)
-                request.setAttribute("gender", staff.isGender() ? "Male" : "Female");
 
-                request.setAttribute("email", staff.getEmail());
-                request.setAttribute("phone", staff.getPhone());
-                request.setAttribute("address", staff.getAddress());
-
-                // Set status là một integer, bạn có thể kiểm tra giá trị status tại đây
-                request.setAttribute("status", staff.getStatus());
-                request.setAttribute("uname", staff.getUsername());
-                request.setAttribute("avatar", staff.getAvatar());
-
-
+                request.setAttribute("staff", staff);
                 request.getRequestDispatcher("/page/admin/update-staff.jsp").forward(request, response);
             }
         } catch (Exception e) {
             // Bắt bất kỳ lỗi nào xảy ra và chuyển hướng đến trang danh sách với thông báo lỗi
             e.printStackTrace();
-            response.sendRedirect("getstaff?error=An unexpected error occurred while locking the staff");
+            response.sendRedirect("getstaff?error=  An unexpected error occurred while view the staff");
         }
     }
 
@@ -254,7 +255,7 @@ public class UpdateStaffController extends HttpServlet {
             logger.severe("Error in AddNewStaffController: " + ex.getMessage());
             request.setAttribute("message", "An unexpected error occurred. Please try again.");
         }
-        request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/admin/edit-staff.jsp").forward(request, response);
     }
 
     private String getFileExtension(String fileName) {

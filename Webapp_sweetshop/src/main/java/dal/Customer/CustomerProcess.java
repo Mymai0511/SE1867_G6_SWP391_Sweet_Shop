@@ -73,8 +73,19 @@ public class CustomerProcess extends DAO {
         return false;
     }
 
-    public boolean lockCustomer(String id) {
+    public boolean changeToDisable(String id) {
         String sql = "UPDATE user SET status = 0 WHERE role = 1 AND id = ? AND status = 1";
+        try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
+            ps.setString(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean changeToActive(String id) {
+        String sql = "UPDATE user SET status = 1 WHERE role = 1 AND id = ? AND status = 0";
         try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
             ps.setString(1, id);
             return ps.executeUpdate() > 0;

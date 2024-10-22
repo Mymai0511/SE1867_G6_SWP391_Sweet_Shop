@@ -200,14 +200,26 @@
                                                             </button>
                                                         </form>
 
-                                                        <!-- Delete Customer Form -->
+                                                        <!-- Change Status Form -->
                                                         <c:if test="${customer.status == 1}">
-                                                        <form action="/deletecustomer" method="post" style="display: inline-block;" onsubmit="return confirmDelete();">
-                                                            <input type="hidden" name="id" value="${customer.id}" />
-                                                            <button type="submit" class="btn btn-link text-danger p-0" title="Delete" style="border: none;">
-                                                                <i class="align-middle" data-feather="trash"></i>
-                                                            </button>
-                                                        </form>
+                                                            <!-- Form to Deactivate Customer -->
+                                                            <form action="/changecustomerstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to deactivate this customer?');">
+                                                                <input type="hidden" name="id" value="${customer.id}" />
+                                                                <input type="hidden" name="status" value="1" />
+                                                                <button type="submit" class="btn btn-link text-warning p-0" title="Deactivate" style="border: none;">
+                                                                    <i class="align-middle" data-feather="user-x"></i>
+                                                                </button>
+                                                            </form>
+                                                        </c:if>
+                                                        <c:if test="${customer.status == 0}">
+                                                            <!-- Form to Activate Customer -->
+                                                            <form action="/changecustomerstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to activate this customer?');">
+                                                                <input type="hidden" name="id" value="${customer.id}" />
+                                                                <input type="hidden" name="status" value="0" />
+                                                                <button type="submit" class="btn btn-link text-success p-0" title="Activate" style="border: none;">
+                                                                    <i class="align-middle" data-feather="user-check"></i>
+                                                                </button>
+                                                            </form>
                                                         </c:if>
                                                     </td>
                                                 </tr>

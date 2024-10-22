@@ -182,7 +182,7 @@
                                             <tbody id="staffBody">
                                             <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
                                                 <tr class="staffRow">
-                                                    <td><img src="data:image/png;base64,${staff.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                                    <td><img src="data:image/jpg;base64,${staff.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
                                                     <td>${staff.fullName}</td>
                                                     <td>${staff.dob}</td>
                                                     <td>${staff.phone}</td>
@@ -192,24 +192,37 @@
                                                 </span>
                                                     </td>
                                                     <td>
-                                                        <!-- Update Customer Form -->
-                                                        <form action="/updatestaff" method="get" style="display: inline-block; margin-right: 8px;">
+                                                        <!-- Update Staff Form -->
+                                                        <form action="/editstaff" method="post" style="display: inline-block; margin-right: 8px;">
                                                             <input type="hidden" name="id" value="${staff.id}" />
                                                             <button type="submit" class="btn btn-link text-primary p-0" title="Edit" style="border: none;">
                                                                 <i class="align-middle" data-feather="edit"></i>
                                                             </button>
                                                         </form>
 
-                                                        <!-- Delete Customer Form -->
+                                                        <!-- Change Status Form -->
                                                         <c:if test="${staff.status == 1}">
-                                                            <form action="/deletestaff" method="post" style="display: inline-block;" onsubmit="return confirmDelete();">
+                                                            <!-- Form to Deactivate Staff -->
+                                                            <form action="/changestaffstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to deactivate this staff member?');">
                                                                 <input type="hidden" name="id" value="${staff.id}" />
-                                                                <button type="submit" class="btn btn-link text-danger p-0" title="Delete" style="border: none;">
-                                                                    <i class="align-middle" data-feather="trash"></i>
+                                                                <input type="hidden" name="status" value="1" />
+                                                                <button type="submit" class="btn btn-link text-warning p-0" title="Deactivate" style="border: none;">
+                                                                    <i class="align-middle" data-feather="user-x"></i>
+                                                                </button>
+                                                            </form>
+                                                        </c:if>
+                                                        <c:if test="${staff.status == 0}">
+                                                            <!-- Form to Activate Staff -->
+                                                            <form action="/changestaffstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to activate this staff member?');">
+                                                                <input type="hidden" name="id" value="${staff.id}" />
+                                                                <input type="hidden" name="status" value="0" />
+                                                                <button type="submit" class="btn btn-link text-success p-0" title="Activate" style="border: none;">
+                                                                    <i class="align-middle" data-feather="user-check"></i>
                                                                 </button>
                                                             </form>
                                                         </c:if>
                                                     </td>
+
                                                 </tr>
                                             </c:forEach>
                                             </tbody>

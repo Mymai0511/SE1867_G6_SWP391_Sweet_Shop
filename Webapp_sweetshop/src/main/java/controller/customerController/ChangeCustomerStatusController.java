@@ -10,8 +10,8 @@ import model.Customer;
 
 import java.io.IOException;
 
-@WebServlet (name = "DeleteCustomerController", value = {"/deletecustomer"})
-public class DeleteCustomerController extends HttpServlet {
+@WebServlet (name = "ChangeCustomerStatusController", value = {"/changecustomerstatus"})
+public class ChangeCustomerStatusController extends HttpServlet {
 
 
     private CustomerProcess customerProcess;
@@ -32,7 +32,7 @@ public class DeleteCustomerController extends HttpServlet {
             throws ServletException, IOException {
         // Lấy ID của khách hàng từ tham số yêu cầu
         String customerId = request.getParameter("id");
-
+        String status = request.getParameter("status");
         // Kiểm tra nếu ID không hợp lệ (null hoặc rỗng)
         if (customerId == null || customerId.trim().isEmpty()) {
             // Nếu ID rỗng, chuyển hướng đến trang danh sách với thông báo lỗi
@@ -42,31 +42,32 @@ public class DeleteCustomerController extends HttpServlet {
 
         try {
             CustomerProcess customerProcess = new CustomerProcess();
-
             // Tìm khách hàng với ID đã cho
             Customer customer = customerProcess.getCustomerById(customerId);
-
             // Kiểm tra sự tồn tại của khách hàng
             if (customer == null) {
                 // Nếu không tìm thấy khách hàng, chuyển hướng đến trang danh sách với thông báo lỗi
                 response.sendRedirect("getcustomer?error=Customer not found");
             } else {
-                // Nếu tìm thấy khách hàng, tiến hành khóa khách hàng
-                boolean result = customerProcess.lockCustomer(customerId);
-
+                boolean result = false;
+                if (status.equals("1")) {
+                     result = customerProcess.changeToDisable(customerId);
+                } else {
+                     result = customerProcess.changeToActive(customerId);
+                }
                 // Kiểm tra kết quả khóa khách hàng
                 if (result) {
                     // Nếu khóa thành công, chuyển hướng đến trang danh sách khách hàng với thông báo thành công
-                    response.sendRedirect("getcustomer?message=Customer locked successfully");
+                    response.sendRedirect("getcustomer?message=Customer change status successfully");
                 } else {
                     // Nếu khóa thất bại, chuyển hướng đến trang danh sách với thông báo lỗi
-                    response.sendRedirect("getcustomer?error=Failed to lock customer");
+                    response.sendRedirect("getcustomer?error=Failed to change status customer");
                 }
             }
         } catch (Exception e) {
             // Bắt bất kỳ lỗi nào xảy ra và chuyển hướng đến trang danh sách với thông báo lỗi
             e.printStackTrace();
-            response.sendRedirect("getcustomer?error=An unexpected error occurred while locking the customer");
+            response.sendRedirect("getcustomer?error=An unexpected error occurred while change status the customer");
         }
     }
 }

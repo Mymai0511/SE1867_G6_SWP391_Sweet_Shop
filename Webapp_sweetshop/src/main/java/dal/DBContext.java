@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  *
  * @author FPT University - PRJ30X
  */
-public class DBContext {
+ public class DBContext {
 
     protected Connection connection;
 

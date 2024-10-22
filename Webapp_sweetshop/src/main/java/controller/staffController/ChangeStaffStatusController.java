@@ -12,8 +12,8 @@ import model.Staff;
 
 import java.io.IOException;
 
-@WebServlet (name = "DeleteStaffController", value = {"/deletestaff"})
-public class DeleteStaffController extends HttpServlet {
+@WebServlet (name = "ChangeStaffStatusController", value = {"/changestaffstatus"})
+public class ChangeStaffStatusController extends HttpServlet {
 
 
     private StaffProcess staffProcess;
@@ -34,14 +34,13 @@ public class DeleteStaffController extends HttpServlet {
             throws ServletException, IOException {
         // Lấy ID của nhân viên từ tham số yêu cầu
         String staffId = request.getParameter("id");
-
+        String status = request.getParameter("status");
         // Kiểm tra nếu ID không hợp lệ (null hoặc rỗng)
         if (staffId == null || staffId.trim().isEmpty()) {
             // Nếu ID rỗng, chuyển hướng đến trang danh sách với thông báo lỗi
             response.sendRedirect("getstaff?error=Invalid staff ID");
             return; // Dừng việc xử lý thêm
         }
-
         try {
             StaffProcess staffProcess = new StaffProcess();
 
@@ -54,8 +53,12 @@ public class DeleteStaffController extends HttpServlet {
                 response.sendRedirect("getstaff?error=Staff not found");
             } else {
                 // Nếu tìm thấy nhân viên, tiến hành khóa nhân viên
-                boolean result = staffProcess.lockStaff(staffId);
-
+                boolean result = false;
+                if (status.equals("1")) {
+                    result = staffProcess.changeToDisable(staffId);
+                } else {
+                    result = staffProcess.changeToActive(staffId);
+                }
                 // Kiểm tra kết quả khóa nhân viên
                 if (result) {
                     // Nếu khóa thành công, chuyển hướng đến trang danh sách nhân viên với thông báo thành công
