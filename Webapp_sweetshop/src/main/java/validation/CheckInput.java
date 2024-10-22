@@ -31,6 +31,4 @@ public class CheckInput {
         }
         return number;
     }
-
-
 }

@@ -114,4 +114,27 @@ public class ProductDetailProcess extends DAO {
         }
         return productDetailList;
     }
+
+    /**
+     * insert new productDetail
+     *
+     * @param productPrice list price
+     * @param productSize list size
+     * @param productID id product
+     */
+    public void create(String[] productPrice, String[] productSize, String productID) {
+        String sql = "INSERT INTO productDetail (price, size, productID) VALUES (?, ?, ?) ; ";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            for (int i = 0; i < productPrice.length; i++) {
+                ps.setString(1, productPrice[i]);
+                ps.setString(2, productSize[i]);
+                ps.setString(3, productID);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
+    }
 }

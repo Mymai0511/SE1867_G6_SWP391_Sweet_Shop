@@ -197,38 +197,29 @@
 <script>
     function checkform(event) {
         let valid = true; // Khởi tạo valid là true
-
         // Kiểm tra tên
         valid &= checkField("firstName", "Tên không được để trống!");
-
         // Kiểm tra họ
         valid &= checkField("lastName", "Họ không được để trống!");
-
         // Kiểm tra số điện thoại
         valid &= checkPhoneField("phoneNumber");
-
         // Kiểm tra email
         valid &= checkField("email", "Email không được để trống!");
-
         // Kiểm tra làng/xã
         valid &= checkField("village", "Làng không được để trống!");
-
         // Kiểm tra ghi chú
         valid &= checkField("orderNotes", "Ghi chú không được để trống!");
-
         // Kiểm tra voucher (nếu cần)
         let voucher = validateInput(document.getElementById("voucher").value);
         if (voucher != "") {
             valid &= checkValid(document.getElementById("voucher"), checkVoucher(voucher), "Voucher không tồn tại!");
         }
-
         if (!valid) {
             event.preventDefault();
             return false;
         }
         return true;
     }
-
 
     function checkVoucher(voucher) {
         let check = false;
@@ -250,7 +241,6 @@
         const field = document.getElementById(fieldId);
         const value = field.value.trim();
         let valid = true;
-
         // Check if the field is empty
         if (validateInput(value) === false) {
             valid = checkValid(field, false, "The phone number is not null!");
@@ -261,7 +251,6 @@
             field.classList.remove("is-invalid");
             removeExistingError(field);
         }
-
         return valid;
     }
 
@@ -269,7 +258,6 @@
         let valid = true;
         // Remove existing error messages
         removeExistingError(field);
-
         if (input == null || input === "" || input == false) {
             field.classList.add("is-invalid");
             let error = document.createElement("span");

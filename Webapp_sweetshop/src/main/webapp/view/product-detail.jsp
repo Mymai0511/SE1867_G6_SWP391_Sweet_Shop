@@ -205,7 +205,7 @@
                 <div class="container">
                     <c:forEach items="${mediaList}" var="img">
                         <div class="mySlides">
-                            <img src="assets/image/product/${img.image}" style="width:100%">
+                            <img src="data:image/png;base64,${img.image}" style="width:100%">
                         </div>
                     </c:forEach>
                     <a class="prev text-decoration-none" onclick="plusSlides(-1)">&#10094;</a>
@@ -213,7 +213,7 @@
                     <div class="thumbnail-row">
                         <c:forEach items="${mediaList}" var="img" varStatus="status">
                             <div class="column">
-                                <img class="demo cursor" src="assets/image/product/${img.image}" style="width:100%"
+                                <img class="demo cursor" src="data:image/png;base64,${img.image}" style="width:100%"
                                      onclick="currentSlide(${status.index + 1})" alt="Thumbnail">
                             </div>
                         </c:forEach>

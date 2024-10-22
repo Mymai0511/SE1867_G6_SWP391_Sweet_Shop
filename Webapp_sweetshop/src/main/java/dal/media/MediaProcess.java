@@ -12,7 +12,29 @@ public class MediaProcess extends DAO {
 
     private MediaProcess() {};
 
-    public void add(Media media) {}
+    /**
+     * insert image
+     *
+     * @param images String image and thí split by ";"
+     */
+    public void add(String images, String postID, String productID) {
+        String[] imagesArray = images.split(";");
+        String sql = "INSERT INTO media (image, postID, productID) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            for (String img : imagesArray) {
+                ps.setString(1, img);
+                ps.setString(2, postID);
+                ps.setString(3, productID);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            ps.close();
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
+    }
+
 
     public void remove(Media media) {}
 
