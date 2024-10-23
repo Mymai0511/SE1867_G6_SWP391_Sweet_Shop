@@ -39,6 +39,8 @@ public class GetStaffController extends HttpServlet {
 
         List<Staff> staffList = staffProcess.getAllStaff();
         request.setAttribute("staffs", staffList);
+
+        request.setAttribute("status", "all");
         request.getRequestDispatcher("page/admin/staff-list.jsp").forward(request, response);
     }
 

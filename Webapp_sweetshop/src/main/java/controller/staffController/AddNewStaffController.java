@@ -52,14 +52,16 @@ public class AddNewStaffController extends HttpServlet {
             throws ServletException, IOException {
         try {
             // Process normal fields
-            String username = request.getParameter("uname").trim();
-            String fullName = request.getParameter("fullname").trim();
-            String genderParam = request.getParameter("gender").trim();
-            String email = request.getParameter("email").trim();
-            String phone = request.getParameter("mobno").trim();
+            String fullName = request.getParameter("myname").trim();
             String dobParam = request.getParameter("dob").trim();
-            String address = request.getParameter("address").trim();
+            String genderParam = request.getParameter("gender").trim();
+            Part filePart = request.getPart("profilePic");
             String statusParam = request.getParameter("status").trim();
+            String phone = request.getParameter("mobno").trim();
+            String address = request.getParameter("address").trim();
+            String email = request.getParameter("email").trim();
+            String username = request.getParameter("uname").trim();
+
 
             // Lưu các giá trị đã nhập lại trong request attributes để gửi về trang JSP nếu gặp lỗi
             request.setAttribute("username", username);
@@ -70,9 +72,10 @@ public class AddNewStaffController extends HttpServlet {
             request.setAttribute("dobParam", dobParam);
             request.setAttribute("address", address);
             request.setAttribute("statusParam", statusParam);
+            request.setAttribute("profilePic", filePart.getSubmittedFileName());
 
             // Check file avatar
-            Part filePart = request.getPart("profilePic");
+
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
             // Kiểm tra kích thước file
@@ -200,6 +203,16 @@ public class AddNewStaffController extends HttpServlet {
             boolean addSuccess = staffProcess.add(newStaff);
 
             if (addSuccess) {
+                request.removeAttribute("username");
+                request.removeAttribute("myName");
+                request.removeAttribute("genderParam");
+                request.removeAttribute("email");
+                request.removeAttribute("phone");
+                request.removeAttribute("dobParam");
+                request.removeAttribute("address");
+                request.removeAttribute("statusParam");
+                request.removeAttribute("profilePic");
+
                 request.setAttribute("message", "Staff added successfully!");
             } else {
                 request.setAttribute("message", "Failed to add staff.");

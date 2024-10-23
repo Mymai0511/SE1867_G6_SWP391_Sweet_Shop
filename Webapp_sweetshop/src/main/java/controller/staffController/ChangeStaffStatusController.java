@@ -61,11 +61,11 @@ public class ChangeStaffStatusController extends HttpServlet {
                 }
                 // Kiểm tra kết quả khóa nhân viên
                 if (result) {
-                    // Nếu khóa thành công, chuyển hướng đến trang danh sách nhân viên với thông báo thành công
-                    response.sendRedirect("getstaff?message=Staff locked successfully");
+                    //  chuyển hướng đến trang danh sách nhân viên với thông báo thành công
+                    response.sendRedirect("getstaff?message=Staff status change successful");
                 } else {
-                    // Nếu khóa thất bại, chuyển hướng đến trang danh sách với thông báo lỗi
-                    response.sendRedirect("getstaff?error=Failed to lock staff");
+                    // chuyển hướng đến trang danh sách với thông báo lỗi
+                    response.sendRedirect("getstaff?error=Change staff status failed");
                 }
             }
         } catch (Exception e) {

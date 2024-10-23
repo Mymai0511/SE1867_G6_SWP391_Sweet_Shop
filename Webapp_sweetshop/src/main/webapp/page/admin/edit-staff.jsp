@@ -201,9 +201,18 @@
                                                 <div class="col-md-4">
                                                     <div class="text-center">
                                                         <!-- Hình ảnh hiện tại -->
-                                                        <img id="previewImage" alt="Avatar" src="data:image/jpeg;base64,${staff.avatar}"
-                                                             class="rounded-circle img-responsive mt-2" width="128" height="128" />
+                                                        <c:choose>
+                                                            <c:when test="${not empty staff.avatar}">
+                                                                <img id="previewImage" alt="Avatar" src="data:image/jpeg;base64,${staff.avatar}"
+                                                                     class="rounded-circle img-responsive mt-2" width="128" height="128" />
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <img id="previewImage" alt="Avatar" src="../../assets/image/avatars/avatar.jpg"
+                                                                     class="rounded-circle img-responsive mt-2" width="128" height="128" />
+                                                            </c:otherwise>
+                                                        </c:choose>
 
+                                                        <!-- Upload Button -->
                                                         <div class="mt-2">
                                                             <!-- Nút bấm Upload để kích hoạt input file -->
                                                             <span class="btn btn-primary" onclick="document.getElementById('file-upload').click();">
@@ -218,6 +227,9 @@
                                                         <!-- Thông báo lỗi nếu có -->
                                                         <small>For best results, use an image at least 128px by 128px in .jpg format</small>
                                                         <div id="fileError" class="text-danger" style="display: none;"></div>
+
+                                                        <!-- Trường ẩn để chứa hình ảnh gốc (chuỗi base64) -->
+                                                        <input type="hidden" name="profilePicOriginal" id="profilePicOriginal" value="${staff.avatar}">
                                                     </div>
                                                 </div>
 
