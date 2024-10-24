@@ -39,6 +39,8 @@ public class GetCustomerController extends HttpServlet {
 
         List<Customer> customerList = customerProcess.getAllCustomer();
         request.setAttribute("customers", customerList);
+        request.setAttribute("status", "all");
+
         request.getRequestDispatcher("page/staff/customer-list.jsp").forward(request, response);
     }
 
