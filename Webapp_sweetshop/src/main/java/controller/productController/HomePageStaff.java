@@ -1,4 +1,4 @@
-package controller.staffController;
+package controller.productController;
 
 import dal.category.CategoryProcess;
 import dal.media.MediaProcess;
@@ -18,12 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "list_product", value = "/view_list_product")
-public class HomePage extends HttpServlet {
+public class HomePageStaff extends HttpServlet {
     // Số sản phẩm mỗi trang
     private static final int LIMIT = 10;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+//        String mess = request.getParameter("mess");
+//        String type = request.getParameter("type");
+//        request.setAttribute("mess", mess == null ? "" : mess);
+//        request.setAttribute("type", type == null ? "" : type);
         if (request.getParameter("action") != null && request.getParameter("action").equals("update")) {
             String idUpdate = request.getParameter("id");
             String status = request.getParameter("status");
@@ -92,7 +95,7 @@ public class HomePage extends HttpServlet {
         request.setAttribute("category", CategoryProcess.INSTANCE);
         request.setAttribute("media", MediaProcess.INSTANCE);
         request.setAttribute("productList", productList);
-        request.getRequestDispatcher("page/staff/home_page.jsp").forward(request, response);
+        request.getRequestDispatcher("page/product/home_page.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

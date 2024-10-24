@@ -39,6 +39,26 @@
         <jsp:include page="sidebar.jsp"/>
     </div>
     <div class="col-md-9">
+        <%
+            String mess = request.getParameter("mess");
+            String type = request.getParameter("type");
+        %>
+
+        <div class="row mt-3">
+            <div class="col-md-9"></div>
+            <%
+                if (mess != null && !mess.equals("")) {
+            %>
+            <div class="col-md-3 alert alert-<%= "success".equals(type) ? "success" : "danger" %> alert-dismissible order-md-last">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <strong><%= "success".equals(type) ? "Success" : "Error" %>!</strong> <%= mess %>
+            </div>
+            <%
+                }
+            %>
+        </div>
+
+
         <div class="d-flex justify-content-center mt-3">
             <a href="./add_new_product" class="btn btn-success d-flex justify-content-center align-items-center">
                 New Product
@@ -91,7 +111,7 @@
                         <c:set var="i" value="${(currentPage - 1) * limit + 1}"/>
                         <c:forEach var="product" items="${products}">
                             <div class="row align-items-center mb-2 p-2 border rounded bg-white"
-                                 onclick="window.location.href='./view_list_product?id=${product.id}'"
+                                 onclick="window.location.href='./update_product?id=${product.id}'"
                                  style="cursor: pointer;">
                                 <span class="col-md-1 text-center">${i}</span>
                                 <span class="col-md-2 text-center">

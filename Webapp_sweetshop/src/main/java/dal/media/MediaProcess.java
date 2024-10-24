@@ -112,6 +112,8 @@ public class MediaProcess extends DAO {
     }
 
     public static void main(String[] args) {
-        System.out.println(MediaProcess.INSTANCE.getTop1MediaByProductID("1"));
+
+        System.out.println(MediaProcess.INSTANCE.getTop1MediaByProductID("1")
+        );
     }
 }

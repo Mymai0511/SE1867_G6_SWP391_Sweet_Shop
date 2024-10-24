@@ -1,4 +1,4 @@
-package controller.staffController;
+package controller.productController;
 
 import dal.category.CategoryProcess;
 import dal.media.MediaProcess;
@@ -26,7 +26,7 @@ public class AddNewProduct extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Category> categoryList = CategoryProcess.INSTANCE.getCatagoryActive();
         request.setAttribute("categoryList", categoryList);
-        request.getRequestDispatcher("/page/staff/add-new-product.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/product/add-new-product.jsp").forward(request, response);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package controller.staffController;
+package controller.productController;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,6 +12,6 @@ import java.io.IOException;
 public class Result extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/page/staff/result.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/product/result.jsp").forward(request, response);
     }
 }
