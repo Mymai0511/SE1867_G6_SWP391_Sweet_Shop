@@ -38,7 +38,6 @@ public class UpdateCustomerController extends HttpServlet {
     public void init() {
         customerProcess = new CustomerProcess();
     }
-    private static final String UPLOAD_DIRECTORY = "assets/avatar";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -62,24 +61,27 @@ public class UpdateCustomerController extends HttpServlet {
             Part filePart = request.getPart("profilePic");
             String profilePicOriginal = request.getParameter("profilePicOriginal");
 
-            // Lấy thông tin nhân viên cũ
+            // Lấy thông tin cũ của nhan vien
             Customer oldCustomer = customerProcess.getCustomerById(id);
             if (oldCustomer == null) {
                 request.setAttribute("message", "Customer not found.");
-                forwardWithCustomer(request, response, id, username, fullName, genderParam, email, phone, dobParam, address, statusParam, profilePicOriginal);
-                return;
-            }
-
-            // Kiểm tra thông tin
-            String validationMessage = validateCustomerInfo(username, email, phone, dobParam, genderParam, address, statusParam, filePart, oldCustomer);
-            if (validationMessage != null) {
-                request.setAttribute("message", validationMessage);
-                forwardWithCustomer(request, response, id, username, fullName, genderParam, email, phone, dobParam, address, statusParam, profilePicOriginal);
+                request.getRequestDispatcher("/getcustomer").forward(request, response);
                 return;
             }
 
             // Chuyển đổi ảnh sang Base64
             String base64Image = uploadAndConvertImage(filePart, profilePicOriginal);
+
+            // Kiểm tra thông tin
+            String validationMessage = validateCustomerInfo(username, email, phone, dobParam,
+                                                            genderParam, address, statusParam, filePart, oldCustomer);
+            if (validationMessage != null) {
+                request.setAttribute("message", validationMessage);
+                forwardWithCustomer(request, response, id, username, fullName, genderParam, email, phone, dobParam,
+                                    address, statusParam, base64Image != null ? base64Image : oldCustomer.getAvatar(),
+                                    oldCustomer.getCreatedAt(), oldCustomer.getUpdatedAt());
+                return;
+            }
 
             // Chuyển đổi giới tính và trạng thái
             boolean gender = "true".equalsIgnoreCase(genderParam);  // true cho Male, false cho Female
@@ -104,22 +106,17 @@ public class UpdateCustomerController extends HttpServlet {
             // Cập nhật thông tin nhân viên trong cơ sở dữ liệu
             boolean updateSuccess = customerProcess.updateCustomer(updateCustomer);
             if (updateSuccess) {
-                // Clear all attributes except the message
-                request.removeAttribute("id");
-                request.removeAttribute("uname");
-                request.removeAttribute("myname");
-                request.removeAttribute("gender");
-                request.removeAttribute("email");
-                request.removeAttribute("mobno");
-                request.removeAttribute("dob");
-                request.removeAttribute("address");
-                request.removeAttribute("status");
-                request.removeAttribute("profilePicOriginal");
+                request.setAttribute("customer", updateCustomer);
                 request.setAttribute("message", "Customer updated successfully!");
                 request.getRequestDispatcher("/page/staff/edit-customer.jsp").forward(request, response);
 
+                return;
             } else {
                 request.setAttribute("message", "Failed to update customer.");
+                forwardWithCustomer(request, response, id, username, fullName, genderParam, email, phone, dobParam, address, statusParam,
+                        base64Image != null ? base64Image : oldCustomer.getAvatar(),
+                        oldCustomer.getCreatedAt(), oldCustomer.getUpdatedAt());
+                return;
             }
         } catch (Exception ex) {
             logger.severe("Error in UpdateCustomerController: " + ex.getMessage());
@@ -196,7 +193,7 @@ public class UpdateCustomerController extends HttpServlet {
 
     private void forwardWithCustomer(HttpServletRequest request, HttpServletResponse response, String id, String username,
                                   String fullName, String gender, String email, String phone, String dob,
-                                  String address, String status, String profilePic) throws ServletException, IOException {
+                                  String address, String status, String profilePic, Date createdAt, Date updatedAt) throws ServletException, IOException {
         Customer customer = new Customer();
         customer.setId(Integer.parseInt(id));
         customer.setUsername(username);
@@ -208,6 +205,8 @@ public class UpdateCustomerController extends HttpServlet {
         customer.setAddress(address);
         customer.setStatus("Active".equalsIgnoreCase(status) ? 1 : 0);
         customer.setAvatar(profilePic); // Sử dụng ảnh hiện tại nếu có
+        customer.setCreatedAt(createdAt);
+        customer.setUpdatedAt(updatedAt);
 
         request.setAttribute("customer", customer);  // Đưa customer vào request attribute
         request.getRequestDispatcher("/page/staff/edit-customer.jsp").forward(request, response);

@@ -66,20 +66,23 @@ public class UpdateStaffController extends HttpServlet {
             Staff oldStaff = staffProcess.getStaffById(id);
             if (oldStaff == null) {
                 request.setAttribute("message", "Staff not found.");
-                forwardWithStaff(request, response, id, username, fullName, genderParam, email, phone, dobParam, address, statusParam, profilePicOriginal);
+                request.getRequestDispatcher("/getstaff").forward(request, response);
                 return;
             }
+            // Chuyển đổi ảnh sang Base64
+            String base64Image = uploadAndConvertImage(filePart, profilePicOriginal);
 
             // Kiểm tra thông tin
             String validationMessage = validateStaffInfo(username, email, phone, dobParam, genderParam, address, statusParam, filePart, oldStaff);
             if (validationMessage != null) {
                 request.setAttribute("message", validationMessage);
-                forwardWithStaff(request, response, id, username, fullName, genderParam, email, phone, dobParam, address, statusParam, profilePicOriginal);
+                forwardWithStaff(request, response, id, username, fullName, genderParam, email, phone,
+                        dobParam, address, statusParam, base64Image != null ? base64Image : oldStaff.getAvatar(),
+                        oldStaff.getCreatedAt(), oldStaff.getUpdatedAt());
                 return;
             }
 
-            // Chuyển đổi ảnh sang Base64
-            String base64Image = uploadAndConvertImage(filePart, profilePicOriginal);
+
 
             // Chuyển đổi giới tính và trạng thái
             boolean gender = "true".equalsIgnoreCase(genderParam);  // true cho Male, false cho Female
@@ -104,9 +107,16 @@ public class UpdateStaffController extends HttpServlet {
             // Cập nhật thông tin nhân viên trong cơ sở dữ liệu
             boolean updateSuccess = staffProcess.updateStaff(updatedStaff);
             if (updateSuccess) {
+                request.setAttribute("staff", updatedStaff);
                 request.setAttribute("message", "Staff updated successfully!");
+                request.getRequestDispatcher("/page/admin/edit-staff.jsp").forward(request, response);
+                return;
             } else {
                 request.setAttribute("message", "Failed to update staff.");
+                forwardWithStaff(request, response, id, username, fullName, genderParam, email, phone,
+                        dobParam, address, statusParam, base64Image != null ? base64Image : oldStaff.getAvatar(),
+                        oldStaff.getCreatedAt(), oldStaff.getUpdatedAt());
+                return;
             }
         } catch (Exception ex) {
             logger.severe("Error in UpdateStaffController: " + ex.getMessage());
@@ -183,7 +193,7 @@ public class UpdateStaffController extends HttpServlet {
 
     private void forwardWithStaff(HttpServletRequest request, HttpServletResponse response, String id, String username,
                                   String fullName, String gender, String email, String phone, String dob,
-                                  String address, String status, String profilePic) throws ServletException, IOException {
+                                  String address, String status, String profilePic, Date createdAt, Date updatedAt) throws ServletException, IOException {
         Staff staff = new Staff();
         staff.setId(Integer.parseInt(id));
         staff.setUsername(username);
@@ -195,6 +205,9 @@ public class UpdateStaffController extends HttpServlet {
         staff.setAddress(address);
         staff.setStatus("Active".equalsIgnoreCase(status) ? 1 : 0);
         staff.setAvatar(profilePic); // Sử dụng ảnh hiện tại nếu có
+        staff.setCreatedAt(createdAt);
+        staff.setUpdatedAt(updatedAt);
+
 
         request.setAttribute("staff", staff);  // Đưa staff vào request attribute
         request.getRequestDispatcher("/page/admin/edit-staff.jsp").forward(request, response);
