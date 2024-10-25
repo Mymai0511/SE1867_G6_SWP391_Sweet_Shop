@@ -1,14 +1,11 @@
 package controller.auth;
 
 import dal.user.UserProcess;
+import jakarta.servlet.http.*;
 import model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 import until.DataEncryptionSHA256;
 
 import java.io.ByteArrayOutputStream;
@@ -106,7 +103,15 @@ public class UpdateProfileController extends HttpServlet {
             // Cập nhật thông tin nhân viên trong cơ sở dữ liệu
             boolean updateSuccess = UserProcess.Instance.updateProfile(updatedUser);
             if (updateSuccess) {
-                request.setAttribute("loggedInUser", updatedUser);
+                // Xóa session cũ
+                HttpSession session = request.getSession();
+                session.invalidate();
+
+                // Tạo session mới
+                session = request.getSession(true); // Khởi tạo session mới
+                session.setAttribute("loggedInUser", updatedUser); // Lưu đối tượng User đã cập nhật vào session mới
+
+                // Cập nhật thông báo và điều hướng đến trang edit-profile
                 request.setAttribute("message", "Profile updated successfully!");
                 request.getRequestDispatcher("/page/auth/edit-profile.jsp").forward(request, response);
                 return;
