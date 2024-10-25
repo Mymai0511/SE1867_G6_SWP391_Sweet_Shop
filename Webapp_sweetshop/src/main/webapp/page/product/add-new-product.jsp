@@ -7,9 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Add New Product</title>
+    <link class="js-stylesheet" href="../../assets/css/light.css" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
+        }
+
+        #sidebar {
+            height: 100% !important;
         }
 
         .product {
@@ -46,13 +51,14 @@
 
 <body style="display: flex; flex-direction: column">
 
-<jsp:include page="header.jsp"/>
+<%--<jsp:include page="header.jsp"/>--%>
 
 <div class="flex: 1; row">
     <div class="col-md-3">
-        <jsp:include page="sidebar.jsp"/>
+        <jsp:include page="../common/sidebar.jsp"/>
     </div>
     <div class="col-md-9">
+        <jsp:include page="../common/navbar.jsp" />
         <div class="container">
             <div class="row mt-3">
                 <div class="col-md-9"></div>
@@ -67,7 +73,7 @@
                 <div class="product p-4">
                     <h3 class="text-center text-warning mb-4">Add New Product</h3>
                     <div class="p-4 border-custom">
-                        <form action="add_new_product" method="post" id="productForm" onsubmit="return validateProductForm(event)" novalidate>
+                        <form action="add_new_product" method="post" id="productForm" enctype="multipart/form-data" onsubmit="return validateProductForm(event)" novalidate>
                             <div class="mb-3">
                                 <label for="name" class="form-label">Product Name <span style="color: red">*</span></label>
                                 <input type="text" class="form-control" id="name" name="productName" placeholder="Enter product name" value="${productName != null && !productName.equals("") ? productName : ""}">
@@ -79,7 +85,7 @@
                                 <select class="form-select" name="productCategory" id="category" required>
                                     <option value="" disabled selected>Select a category</option>
                                     <c:forEach var="c" items="${categoryList}">
-                                        <option value="${c.id}" ${productCategory != null && !productCategory.equals("") && productCategory.equals(c.id) ? "selected" : ""} >${c.name}</option>
+                                        <option value="${c.id}" ${productCategory != null && !productCategory.equals("") && productCategory.equals(c.id + "") ? "selected" : ""} >${c.name}</option>
                                     </c:forEach>
                                 </select>
                                 <span class="error-message" id="categoryError"></span>
@@ -162,6 +168,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+<script src="../../assets/js/user/sidebar.js"></script>
 
 <script>
     function showError(inputElement, errorElement, message) {

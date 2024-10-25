@@ -1,4 +1,4 @@
-package controller.staffController;
+package controller.productController;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -18,7 +18,7 @@ public class UploadImageServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/page/staff/convert-to-base64.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/product/convert-to-base64.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -26,7 +26,7 @@ public class UploadImageServlet extends HttpServlet {
         try {
             String base64Images = processFileParts(fileParts, "imageFile");
             request.setAttribute("base64Images", base64Images);
-            request.getRequestDispatcher("/page/staff/result.jsp").forward(request, response);
+            request.getRequestDispatcher("/page/product/result.jsp").forward(request, response);
         } catch (IOException e) {
             request.setAttribute("mess", e.getMessage());
             doGet(request, response);

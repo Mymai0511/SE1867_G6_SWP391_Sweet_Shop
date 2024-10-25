@@ -1,10 +1,11 @@
-package controller.staffController;
+package controller.productController;
 
 import dal.category.CategoryProcess;
 import dal.media.MediaProcess;
 import dal.product.ProductProcess;
 import dal.productDetail.ProductDetailProcess;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static until.UploadFile.processFileParts;
 
+@MultipartConfig
 @WebServlet(name = "add_new_product", value = "/add_new_product")
 public class AddNewProduct extends HttpServlet {
 
@@ -26,7 +28,7 @@ public class AddNewProduct extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Category> categoryList = CategoryProcess.INSTANCE.getCatagoryActive();
         request.setAttribute("categoryList", categoryList);
-        request.getRequestDispatcher("/page/staff/add-new-product.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/product/add-new-product.jsp").forward(request, response);
     }
 
     @Override

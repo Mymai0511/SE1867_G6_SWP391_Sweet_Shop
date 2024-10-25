@@ -178,7 +178,7 @@ public class ProductProcess extends DAO {
         // Nhóm theo productID để lấy giá trị min
         query.append("GROUP BY p.id ");
         // Thêm điều kiện sắp xếp theo giá trị min
-        query.append("ORDER BY minPrice ");
+        query.append("ORDER BY p.createdAt ");
         query.append(sortByMinPriceAsc.equalsIgnoreCase("asc") ? "ASC " : "DESC ");
         // Thêm điều kiện phân trang
         query.append("LIMIT ? OFFSET ?");
@@ -330,5 +330,21 @@ public class ProductProcess extends DAO {
             this.status = e.getMessage();
         }
         return id;
+    }
+
+    public void update(String pid, String productNameUpdate, String productIngredientUpdate, String productDescriptionUpdate, String productStatusUpdate, String productCategoryUpdate) {
+        String sql = "{CALL updateProduct(?, ?, ?, ?, ?, ?)}";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, pid);
+            ps.setString(2, productNameUpdate);
+            ps.setString(3, productIngredientUpdate);
+            ps.setString(4, productDescriptionUpdate);
+            ps.setString(5, productStatusUpdate);
+            ps.setString(6, productCategoryUpdate);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
     }
 }

@@ -1,4 +1,4 @@
-package controller.staffController;
+package controller.productController;
 
 import dal.category.CategoryProcess;
 import dal.media.MediaProcess;
@@ -18,12 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "list_product", value = "/view_list_product")
-public class HomePage extends HttpServlet {
+public class HomePageStaff extends HttpServlet {
     // Số sản phẩm mỗi trang
     private static final int LIMIT = 10;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+//        String mess = request.getParameter("mess");
+//        String type = request.getParameter("type");
+//        request.setAttribute("mess", mess == null ? "" : mess);
+//        request.setAttribute("type", type == null ? "" : type);
         if (request.getParameter("action") != null && request.getParameter("action").equals("update")) {
             String idUpdate = request.getParameter("id");
             String status = request.getParameter("status");
@@ -42,7 +45,7 @@ public class HomePage extends HttpServlet {
             }
         }
         // 1. Tính tổng số sản phẩm
-        String sort1 = request.getParameter("sort1") == null ? "asc" : request.getParameter("sort1");
+        String sort1 = request.getParameter("sort1") == null ? "desc" : request.getParameter("sort1");
         String search1 = request.getParameter("search1") == null ? "" : request.getParameter("search1");
         String findByName = SessionRepo.getSearch(request, response);
         if (findByName == null) {
@@ -61,14 +64,14 @@ public class HomePage extends HttpServlet {
         String sort = SessionRepo.getSort(request, response);
         if (sort == null) {
             sort = CheckInput.checkInputString(request.getParameter("sort")) == null
-                    ? "asc"
+                    ? "desc"
                     : CheckInput.checkInputString(request.getParameter("sort"));
             SessionRepo.setSort(request, response, sort);
         } else {
             String checkSort = request.getParameter("sort") == null ? sort1 : request.getParameter("sort");
             if (!sort.equals(checkSort)) {
                 sort = CheckInput.checkInputString(request.getParameter("sort")) == null
-                        ? "asc"
+                        ? "desc"
                         : CheckInput.checkInputString(request.getParameter("sort"));
                 SessionRepo.setSort(request, response, sort);
             }
@@ -92,7 +95,7 @@ public class HomePage extends HttpServlet {
         request.setAttribute("category", CategoryProcess.INSTANCE);
         request.setAttribute("media", MediaProcess.INSTANCE);
         request.setAttribute("productList", productList);
-        request.getRequestDispatcher("page/staff/home_page.jsp").forward(request, response);
+        request.getRequestDispatcher("page/product/home_page.jsp").forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

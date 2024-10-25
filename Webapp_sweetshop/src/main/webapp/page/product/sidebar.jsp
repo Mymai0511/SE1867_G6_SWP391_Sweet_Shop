@@ -18,36 +18,24 @@
         <div class="sidebar-user">
             <div class="d-flex justify-content-center">
                 <div class="flex-shrink-0">
-                    <img src="data:image/jpeg;base64,${loggedInUser.avatar}" class="avatar img-fluid rounded me-1" alt="avatar" />
+                    <img src="../../assets/image/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" />
                 </div>
                 <div class="flex-grow-1 ps-2">
                     <a class="sidebar-user-title dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                        ${loggedInUser.fullName != null ? loggedInUser.fullName : ''}
+                        Charles Hall
                     </a>
                     <div class="dropdown-menu dropdown-menu-start">
-                        <a class="dropdown-item" href="/editprofile"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                        <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="settings"></i> Change Password</a>
+                        <a class="dropdown-item" href="pages-settings.html"><i class="align-middle me-1" data-feather="settings"></i> Settings &
+                            Privacy</a>
+                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/logout">Log out</a>
+                        <a class="dropdown-item" href="#">Log out</a>
                     </div>
-                    <!-- Hiển thị role dựa trên giá trị -->
-                    <div class="sidebar-user-subtitle">
-                        <c:choose>
-                            <c:when test="${loggedInUser.role == 2}">
-                                Staff
-                            </c:when>
-                            <c:when test="${loggedInUser.role == 3}">
-                                Shipper
-                            </c:when>
-                            <c:when test="${loggedInUser.role == 4}">
-                                Admin
-                            </c:when>
-                            <c:otherwise>
-                                :>>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+
+                    <div class="sidebar-user-subtitle">Designer</div>
                 </div>
             </div>
         </div>
@@ -64,8 +52,8 @@
                     <i class="align-middle" data-feather="layout"></i> <span class="align-middle">Manager Products</span>
                 </a>
                 <ul id="icons" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item"><a class="sidebar-link" href="/view_list_product">List Products</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="/add_new_product">Add New Products</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Products</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Products</a></li>
                 </ul>
             </li>
 
@@ -91,11 +79,11 @@
 
             <li class="sidebar-item pa">
                 <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manager Staffs</span>
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manager Product</span>
                 </a>
                 <ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                    <li class="sidebar-item"><a class="sidebar-link" href="/getstaff">List Staffs</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="/addstaff">Add New Staff</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/view_list_product">List Product</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/add_new_product">Add New Product</a></li>
                 </ul>
             </li>
             <li class="sidebar-item pa">
