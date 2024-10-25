@@ -18,24 +18,36 @@
         <div class="sidebar-user">
             <div class="d-flex justify-content-center">
                 <div class="flex-shrink-0">
-                    <img src="../../assets/image/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" />
+                    <img src="data:image/jpeg;base64,${loggedInUser.avatar}" class="avatar img-fluid rounded me-1" alt="avatar" />
                 </div>
                 <div class="flex-grow-1 ps-2">
                     <a class="sidebar-user-title dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                        Charles Hall
+                        ${loggedInUser.fullName != null ? loggedInUser.fullName : ''}
                     </a>
                     <div class="dropdown-menu dropdown-menu-start">
-                        <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
-                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+                        <a class="dropdown-item" href="/editprofile"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="pages-settings.html"><i class="align-middle me-1" data-feather="settings"></i> Settings &
-                            Privacy</a>
-                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="settings"></i> Change Password</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Log out</a>
+                        <a class="dropdown-item" href="/logout">Log out</a>
                     </div>
-
-                    <div class="sidebar-user-subtitle">Designer</div>
+                    <!-- Hiển thị role dựa trên giá trị -->
+                    <div class="sidebar-user-subtitle">
+                        <c:choose>
+                            <c:when test="${loggedInUser.role == 2}">
+                                Staff
+                            </c:when>
+                            <c:when test="${loggedInUser.role == 3}">
+                                Shipper
+                            </c:when>
+                            <c:when test="${loggedInUser.role == 4}">
+                                Admin
+                            </c:when>
+                            <c:otherwise>
+                                :>>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
             </div>
         </div>

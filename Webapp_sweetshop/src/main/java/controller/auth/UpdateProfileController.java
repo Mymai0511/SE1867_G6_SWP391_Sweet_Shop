@@ -1,7 +1,7 @@
-package controller.staffController;
+package controller.auth;
 
-import dal.staff.StaffProcess;
-import model.Staff;
+import dal.user.UserProcess;
+import model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import until.DataEncryptionSHA256;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,29 +22,27 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.logging.Logger;
 
-@WebServlet(name = "UpdateStaffController", value = {"/updatestaff"})
+@WebServlet(name = "UpdateProfileController", value = {"/updateprofile"})
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 2, // 2MB
         maxFileSize = 1024 * 1024 * 10, // 10MB
         maxRequestSize = 1024 * 1024 * 50 // 50MB
 )
-public class UpdateStaffController extends HttpServlet {
+public class UpdateProfileController extends HttpServlet {
 
-    private StaffProcess staffProcess;
-    private static final int ROLE_STAFF = 2;
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 10; // 10MB
-    private static final Logger logger = Logger.getLogger(UpdateStaffController.class.getName());
+    private static final Logger logger = Logger.getLogger(UpdateProfileController.class.getName());
 
-    @Override
-    public void init() {
-        staffProcess = new StaffProcess();
-    }
-    private static final String UPLOAD_DIRECTORY = "assets/avatar";
+//    @Override
+//    public void init() {
+//        staffProcess = new UserProcess();
+//    }
+//    private static final String UPLOAD_DIRECTORY = "assets/avatar";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/getstaff").forward(request, response);
+        request.getRequestDispatcher("/page/auth/edit-profile.jsp").forward(request, response);
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -62,23 +61,23 @@ public class UpdateStaffController extends HttpServlet {
             Part filePart = request.getPart("profilePic");
             String profilePicOriginal = request.getParameter("profilePicOriginal");
 
-            // Lấy thông tin nhân viên cũ
-            Staff oldStaff = staffProcess.getStaffById(id);
-            if (oldStaff == null) {
-                request.setAttribute("message", "Staff not found.");
-                request.getRequestDispatcher("/getstaff").forward(request, response);
+            // Lấy thông tin cũ của ng dùng
+            User oldUser = UserProcess.Instance.searchProfile(id);
+            if (oldUser == null) {
+                request.setAttribute("message", "Profile not found.");
+                request.getRequestDispatcher("/page/auth/edit-profile.jsp").forward(request, response);
                 return;
             }
             // Chuyển đổi ảnh sang Base64
             String base64Image = uploadAndConvertImage(filePart, profilePicOriginal);
 
             // Kiểm tra thông tin
-            String validationMessage = validateStaffInfo(username, email, phone, dobParam, genderParam, address, statusParam, filePart, oldStaff);
+            String validationMessage = validateStaffInfo(username, email, phone, dobParam, genderParam, address, statusParam, filePart, oldUser);
             if (validationMessage != null) {
                 request.setAttribute("message", validationMessage);
-                forwardWithStaff(request, response, id, username, fullName, genderParam, email, phone,
-                        dobParam, address, statusParam, base64Image != null ? base64Image : oldStaff.getAvatar(),
-                        oldStaff.getCreatedAt(), oldStaff.getUpdatedAt());
+                forwardWithUser(request, response, id, username, fullName, genderParam, email, phone,
+                        dobParam, address, statusParam, base64Image != null ? base64Image : oldUser.getAvatar(),
+                        oldUser.getCreatedAt(), oldUser.getUpdatedAt());
                 return;
             }
 
@@ -89,57 +88,57 @@ public class UpdateStaffController extends HttpServlet {
             int status = "1".equals(statusParam) ? 1 : 0;
 
             // Tạo đối tượng Staff mới với thông tin đã cập nhật
-            Staff updatedStaff = new Staff();
-            updatedStaff.setId(Integer.parseInt(id));
-            updatedStaff.setAvatar(base64Image != null ? base64Image : oldStaff.getAvatar());
-            updatedStaff.setUsername(username);
-            updatedStaff.setFullName(fullName);
-            updatedStaff.setGender(gender);
-            updatedStaff.setEmail(email);
-            updatedStaff.setPhone(phone);
-            updatedStaff.setDob(Date.valueOf(LocalDate.parse(dobParam)));
-            updatedStaff.setAddress(address);
-            updatedStaff.setStatus(status);
-            updatedStaff.setRole(ROLE_STAFF);
-            updatedStaff.setCreatedAt(oldStaff.getCreatedAt());
-            updatedStaff.setUpdatedAt(new Date(System.currentTimeMillis()));
+            User updatedUser = new User();
+            updatedUser.setId(Integer.parseInt(id));
+            updatedUser.setAvatar(base64Image != null ? base64Image : oldUser.getAvatar());
+            updatedUser.setUsername(username);
+            updatedUser.setFullName(fullName);
+            updatedUser.setGender(gender);
+            updatedUser.setEmail(email);
+            updatedUser.setPhone(phone);
+            updatedUser.setDob(Date.valueOf(LocalDate.parse(dobParam)));
+            updatedUser.setAddress(address);
+            updatedUser.setStatus(status);
+            updatedUser.setRole(oldUser.getRole());
+            updatedUser.setCreatedAt(oldUser.getCreatedAt());
+            updatedUser.setUpdatedAt(new Date(System.currentTimeMillis()));
 
             // Cập nhật thông tin nhân viên trong cơ sở dữ liệu
-            boolean updateSuccess = staffProcess.updateStaff(updatedStaff);
+            boolean updateSuccess = UserProcess.Instance.updateProfile(updatedUser);
             if (updateSuccess) {
-                request.setAttribute("staff", updatedStaff);
-                request.setAttribute("message", "Staff updated successfully!");
-                request.getRequestDispatcher("/page/admin/edit-staff.jsp").forward(request, response);
+                request.setAttribute("loggedInUser", updatedUser);
+                request.setAttribute("message", "Profile updated successfully!");
+                request.getRequestDispatcher("/page/auth/edit-profile.jsp").forward(request, response);
                 return;
             } else {
-                request.setAttribute("message", "Failed to update staff.");
-                forwardWithStaff(request, response, id, username, fullName, genderParam, email, phone,
-                        dobParam, address, statusParam, base64Image != null ? base64Image : oldStaff.getAvatar(),
-                        oldStaff.getCreatedAt(), oldStaff.getUpdatedAt());
+                request.setAttribute("message", "Failed to update profile.");
+                forwardWithUser(request, response, id, username, fullName, genderParam, email, phone,
+                        dobParam, address, statusParam, base64Image != null ? base64Image : oldUser.getAvatar(),
+                        oldUser.getCreatedAt(), oldUser.getUpdatedAt());
                 return;
             }
         } catch (Exception ex) {
-            logger.severe("Error in UpdateStaffController: " + ex.getMessage());
+            logger.severe("Error in UpdateProfileController: " + ex.getMessage());
             request.setAttribute("message", "An unexpected error occurred. Please try again.");
         }
-        request.getRequestDispatcher("/page/admin/edit-staff.jsp").forward(request, response);
+        request.getRequestDispatcher("/page/auth/edit-profile.jsp").forward(request, response);
     }
 
 
     private String validateStaffInfo(String username, String email, String phone, String dobParam,
-                                     String genderParam, String address, String statusParam, Part filePart, Staff oldStaff) {
+                                     String genderParam, String address, String statusParam, Part filePart, User oldUser) {
         // Kiểm tra các thông tin đầu vào
         if (username.isEmpty() || email.isEmpty() || phone.isEmpty() || dobParam.isEmpty() ||
                 genderParam.isEmpty() || address.isEmpty()) {
             return "All fields are required."; }
 // Kiểm tra tên đăng nhập, email và số điện thoại có bị trùng không nhưng bỏ qua nếu là của nhân viên hiện tại
-        if (!username.equals(oldStaff.getUsername()) && staffProcess.isUsernameTaken(username)) {
+        if (!username.equals(oldUser.getUsername()) && UserProcess.Instance.isUsernameTaken(username)) {
             return "Username already taken.";
         }
-        if (!email.equals(oldStaff.getEmail()) && staffProcess.isEmailTaken(email)) {
+        if (!email.equals(oldUser.getEmail()) && UserProcess.Instance.isEmailTaken(email)) {
             return "Email already in use.";
         }
-        if (!phone.equals(oldStaff.getPhone()) && staffProcess.isPhoneTaken(phone)) {
+        if (!phone.equals(oldUser.getPhone()) && UserProcess.Instance.isPhoneTaken(phone)) {
             return "Phone number already in use.";
         }
         if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
@@ -151,7 +150,7 @@ public class UpdateStaffController extends HttpServlet {
             birthDate = LocalDate.parse(dobParam);
             LocalDate today = LocalDate.now();
             if (Period.between(birthDate, today).getYears() < 0) {
-                return "Staff must be at least 0 years old.";}
+                return "User must be at least 0 years old.";}
         } catch (DateTimeParseException e) {
             return "Invalid date format.";}
 
@@ -191,25 +190,25 @@ public class UpdateStaffController extends HttpServlet {
         return "";
     }
 
-    private void forwardWithStaff(HttpServletRequest request, HttpServletResponse response, String id, String username,
+    private void forwardWithUser(HttpServletRequest request, HttpServletResponse response, String id, String username,
                                   String fullName, String gender, String email, String phone, String dob,
                                   String address, String status, String profilePic, Date createdAt, Date updatedAt) throws ServletException, IOException {
-        Staff staff = new Staff();
-        staff.setId(Integer.parseInt(id));
-        staff.setUsername(username);
-        staff.setFullName(fullName);
-        staff.setGender("Male".equalsIgnoreCase(gender));
-        staff.setEmail(email);
-        staff.setPhone(phone);
-        staff.setDob(Date.valueOf(LocalDate.parse(dob)));
-        staff.setAddress(address);
-        staff.setStatus("Active".equalsIgnoreCase(status) ? 1 : 0);
-        staff.setAvatar(profilePic); // Sử dụng ảnh hiện tại nếu có
-        staff.setCreatedAt(createdAt);
-        staff.setUpdatedAt(updatedAt);
+        User User = new User();
+        User.setId(Integer.parseInt(id));
+        User.setUsername(username);
+        User.setFullName(fullName);
+        User.setGender("Male".equalsIgnoreCase(gender));
+        User.setEmail(email);
+        User.setPhone(phone);
+        User.setDob(Date.valueOf(LocalDate.parse(dob)));
+        User.setAddress(address);
+        User.setStatus("Active".equalsIgnoreCase(status) ? 1 : 0);
+        User.setAvatar(profilePic); // Sử dụng ảnh hiện tại nếu có
+        User.setCreatedAt(createdAt);
+        User.setUpdatedAt(updatedAt);
 
 
-        request.setAttribute("staff", staff);  // Đưa staff vào request attribute
-        request.getRequestDispatcher("/page/admin/edit-staff.jsp").forward(request, response);
+        request.setAttribute("loggedInUser", User);  // Đưa staff vào request attribute
+        request.getRequestDispatcher("/page/auth/edit-profile.jsp").forward(request, response);
     }
 }

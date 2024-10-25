@@ -263,7 +263,7 @@ public class UserProcess extends DAO {
 
     public static void main(String[] args) {
         // Gọi hàm read để lấy danh sách nhân viên
-        User User = UserProcess.Instance.loadUser("admin", "12345");
+        User User = UserProcess.Instance.searchProfile("50");
 
         // In ra thông tin của từng nhân viên trong danh sách
         System.out.println("ID: " + User.getId());
@@ -344,6 +344,160 @@ public class UserProcess extends DAO {
         }
 
         return u;
+    }
+
+    public User searchProfile(String id) {
+        User user = null;
+        String sql = "SELECT * FROM shopcake.user WHERE id = ? ;";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            ps.setString(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setFullName(rs.getString("fName"));
+                user.setGender(rs.getBoolean("gender"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setDob(rs.getDate("dob"));
+                user.setAvatar(rs.getString("avatar"));
+                user.setAddress(rs.getString("address"));
+                user.setStatus(rs.getInt("status"));
+                user.setCreatedAt(rs.getDate("createdAt"));
+                user.setUpdatedAt(rs.getDate("updatedAt"));
+                user.setRole(rs.getInt("role"));
+            }
+        } catch (SQLException e) {
+            status = e.getMessage();
+        }
+        return user;
+    }
+
+    public User getUserById(String id) {
+        List<User> users = getUserByCondition("AND id = ?", id);
+        return users.isEmpty() ? null : users.get(0);
+    }
+
+    private List<User> getUserByCondition(String condition, Object... params) {
+        // Tạo danh sách để lưu trữ các nhân viên thỏa mãn điều kiện
+        List<User> userList = new ArrayList<>();
+
+        // Tạo câu lệnh SQL để lấy các nhân viên có vai trò là 2 (role = 2) và điều kiện bổ sung
+        String sql = "SELECT * FROM user WHERE " + condition + ";";
+
+        // Sử dụng try-with-resources để tự động đóng PreparedStatement và ResultSet sau khi sử dụng
+        try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
+            // Gán các giá trị tham số vào câu lệnh SQL, bắt đầu từ vị trí 1
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]); // i + 1 vì vị trí trong PreparedStatement bắt đầu từ 1
+            }
+
+            // Thực thi câu lệnh SQL và nhận kết quả dưới dạng ResultSet
+            try (ResultSet rs = ps.executeQuery()) {
+                // Duyệt qua từng bản ghi trong ResultSet và tạo đối tượng Staff tương ứng
+                while (rs.next()) {
+                    // Thêm đối tượng Staff được tạo vào danh sách
+                    userList.add(createUserFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            // Xử lý ngoại lệ nếu có lỗi xảy ra khi làm việc với cơ sở dữ liệu
+            e.printStackTrace();
+        }
+
+        // Trả về danh sách các nhân viên thỏa mãn điều kiện đã cho
+        return userList;
+    }
+
+    private User createUserFromResultSet(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        user.setFullName(rs.getString("fName"));
+        user.setGender(rs.getBoolean("gender"));
+        user.setEmail(rs.getString("email"));
+        user.setPhone(rs.getString("phone"));
+        user.setDob(rs.getDate("dob"));
+        user.setAvatar(rs.getString("avatar"));
+        user.setAddress(rs.getString("address"));
+        user.setStatus(rs.getInt("status"));
+        user.setCreatedAt(rs.getDate("createdAt"));
+        user.setUpdatedAt(rs.getDate("updatedAt"));
+        user.setRole(rs.getInt("role"));
+        return user;
+    }
+
+
+
+        public boolean updateProfile(User user) {
+        if (searchProfileById(String.valueOf(user.getId()))) {
+            String sql = "UPDATE user SET username = ?, password = ?, fName = ?, gender = ?, email = ?, " +
+                    "phone = ?, dob = ?, avatar = ?, address = ?, status = ?, updatedAt = ?, role = ? " +
+                    "WHERE id = ?";
+            try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
+                ps.setString(1, user.getUsername());
+                ps.setString(2, user.getPassword());
+                ps.setString(3, user.getFullName());
+                ps.setBoolean(4, user.isGender());
+                ps.setString(5, user.getEmail());
+                ps.setString(6, user.getPhone());
+                ps.setDate(7, user.getDob());
+                ps.setString(8, user.getAvatar());
+                ps.setString(9, user.getAddress());
+                ps.setInt(10, user.getStatus());
+                ps.setDate(11, new java.sql.Date(System.currentTimeMillis()));
+                ps.setInt(12, user.getRole());
+                ps.setInt(13, user.getId());
+
+                return ps.executeUpdate() > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+    public boolean searchProfileById(String id) {
+        return exists(" id = ?", id);
+    }
+    public boolean isActiveProfile(String id) {
+        return exists("id = ? AND status = 1", id);
+    }
+
+    public boolean isUsernameTaken(String username) {
+        return exists("username = ?", username);
+    }
+
+    public boolean isEmailTaken(String email) {
+        return exists("email = ?", email);
+    }
+
+    public boolean isPhoneTaken(String phone) {
+        return exists("phone = ?", phone);
+    }
+    private boolean exists(String condition, Object... params) {
+        // Tạo câu lệnh SQL với điều kiện WHERE được cung cấp
+        String sql = "SELECT 1 FROM user WHERE " + condition;
+        try (PreparedStatement ps = this.connection.prepareStatement(sql)) {
+            // Gán các giá trị tham số vào câu lệnh SQL, bắt đầu từ vị trí 1
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]); // i + 1 vì vị trí trong PreparedStatement bắt đầu từ 1
+            }
+
+            // Thực thi câu lệnh SQL và nhận kết quả dưới dạng ResultSet
+            try (ResultSet rs = ps.executeQuery()) {
+                // Nếu ResultSet có ít nhất một bản ghi, tức là tồn tại bản ghi thỏa mãn điều kiện
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            // Xử lý ngoại lệ nếu có lỗi xảy ra khi làm việc với cơ sở dữ liệu
+            e.printStackTrace();
+        }
+        // Trả về false nếu không có bản ghi nào thỏa mãn hoặc có lỗi xảy ra
+        return false;
     }
 
 }

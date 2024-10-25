@@ -73,7 +73,7 @@ public class LoginController extends HttpServlet {
             SessionRepo.setUser(request, response, user);
             switch (user.getRole()) {
                 case (2): // role staff
-                    response.sendRedirect(request.getContextPath() + "/getstaff");
+                    response.sendRedirect(request.getContextPath() + "/getcustomer");
                     break;
                 case (3): // role shipper
                     response.sendRedirect(request.getContextPath() + "/getstaff");
