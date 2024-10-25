@@ -168,7 +168,7 @@
                                 <!-- Check if staffs is empty -->
                                 <c:choose>
                                     <c:when test="${not empty requestScope.staffs}">
-                                        <table id="staffTable" class="table table-striped" style="width:100%">
+                                        <table id="userTable" class="table table-striped" style="width:100%">
                                             <thead>
                                             <tr>
                                                 <th>#</th>
@@ -179,10 +179,10 @@
                                                 <th>Action</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="staffBody">
+                                            <tbody id="customerBody">
                                             <c:forEach var="staff" items="${requestScope.staffs}" varStatus="loopStatus">
                                                 <tr class="staffRow">
-                                                    <td><img src="data:image/jpg;base64,${staff.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
+                                                    <td><img src="data:image/png;base64,${staff.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
                                                     <td>${staff.fullName}</td>
                                                     <td>${staff.dob}</td>
                                                     <td>${staff.phone}</td>
@@ -192,7 +192,7 @@
                                                 </span>
                                                     </td>
                                                     <td>
-                                                        <!-- Update Staff Form -->
+                                                        <!-- Update Customer Form -->
                                                         <form action="/editstaff" method="post" style="display: inline-block; margin-right: 8px;">
                                                             <input type="hidden" name="id" value="${staff.id}" />
                                                             <button type="submit" class="btn btn-link text-primary p-0" title="Edit" style="border: none;">
@@ -202,8 +202,8 @@
 
                                                         <!-- Change Status Form -->
                                                         <c:if test="${staff.status == 1}">
-                                                            <!-- Form to Deactivate Staff -->
-                                                            <form action="/changestaffstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to deactivate this staff member?');">
+                                                            <!-- Form to Deactivate Customer -->
+                                                            <form action="/changestaffstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to deactivate this staff?');">
                                                                 <input type="hidden" name="id" value="${staff.id}" />
                                                                 <input type="hidden" name="status" value="1" />
                                                                 <button type="submit" class="btn btn-link text-warning p-0" title="Deactivate" style="border: none;">
@@ -212,8 +212,8 @@
                                                             </form>
                                                         </c:if>
                                                         <c:if test="${staff.status == 0}">
-                                                            <!-- Form to Activate Staff -->
-                                                            <form action="/changestaffstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to activate this staff member?');">
+                                                            <!-- Form to Activate Customer -->
+                                                            <form action="/changestaffstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to activate this staff?');">
                                                                 <input type="hidden" name="id" value="${staff.id}" />
                                                                 <input type="hidden" name="status" value="0" />
                                                                 <button type="submit" class="btn btn-link text-success p-0" title="Activate" style="border: none;">
@@ -222,7 +222,6 @@
                                                             </form>
                                                         </c:if>
                                                     </td>
-
                                                 </tr>
                                             </c:forEach>
                                             </tbody>
@@ -240,7 +239,7 @@
                                     <c:otherwise>
                                         <!-- Message for empty staff list -->
                                         <div class="alert alert-info text-center">
-                                            No staff members found.
+                                            No customer members found.
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
@@ -249,7 +248,6 @@
                     </div>
                 </div>
             </div>
-
         </main>
 
 
@@ -259,7 +257,7 @@
 <script>
     // Function to show a confirmation delete
     function confirmDelete() {
-        return confirm("Are you sure you want to lock this customer?");
+        return confirm("Are you sure you want to lock this staff?");
     }
     function setStatus(status) {
         document.getElementById('currentStatus').value = status;
