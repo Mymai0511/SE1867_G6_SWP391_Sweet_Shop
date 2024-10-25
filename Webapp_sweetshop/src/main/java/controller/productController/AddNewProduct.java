@@ -5,6 +5,7 @@ import dal.media.MediaProcess;
 import dal.product.ProductProcess;
 import dal.productDetail.ProductDetailProcess;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static until.UploadFile.processFileParts;
 
+@MultipartConfig
 @WebServlet(name = "add_new_product", value = "/add_new_product")
 public class AddNewProduct extends HttpServlet {
 

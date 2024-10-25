@@ -1,66 +1,67 @@
 package until;
 
 import jakarta.servlet.http.Part;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
 import java.util.Collection;
 
-/**
- *
- * @author
- */
 public class UploadFile {
     private static final long serialVersionUID = 1L;
     private static final long MAX_TOTAL_SIZE = 10 * 1024 * 1024; // 10MB
 
     /**
-     * process all file after upload
+     * Processes all file parts after upload, skipping non-file parts.
      *
-     * @param fileParts file user upload from local
-     * @param imageFile name tag input
-     * @return String image after convert with format '...;...'
-     * @throws IOException exception error
+     * @param fileParts file parts uploaded by the user
+     * @param imageFile name of the file input tag
+     * @return String image in Base64 format with a delimiter (';') between images
+     * @throws IOException in case of an error
      */
     public static String processFileParts(Collection<Part> fileParts, String imageFile) throws IOException {
         long totalSize = 0;
         StringBuilder base64Images = new StringBuilder();
+
         for (Part filePart : fileParts) {
-            if (filePart.getName().equals(imageFile)) {
+            // Check if this part is a file upload (i.e., it has a valid file name)
+            if (filePart.getSubmittedFileName() != null && !filePart.getSubmittedFileName().isEmpty() && filePart.getName().equals(imageFile)) {
+                String dile = filePart.getSubmittedFileName();
+                System.out.println("File name: " + filePart.getSubmittedFileName());
                 String contentType = filePart.getContentType();
                 try (InputStream inputStream = filePart.getInputStream()) {
-                    // Gọi phương thức convertImageToBase64 với các tham số mới
+                    // Convert image to Base64 format
                     String base64Image = convertImageToBase64(inputStream, contentType, totalSize);
                     base64Images.append(base64Image).append(";");
-                    // Cập nhật tổng kích thước
                     totalSize += filePart.getSize();
                 }
             }
         }
+
         return base64Images.toString();
     }
 
     /**
-     * convert image to string using base64
+     * Converts an image input stream to a Base64-encoded string.
      *
-     * @param inputStream file image
-     * @param contentType type file input
-     * @param totalSize total size file get from local server
-     * @return String after convert from image
-     * @throws IOException
+     * @param inputStream the input stream of the image
+     * @param contentType the MIME type of the file
+     * @param totalSize the current total size of uploaded files
+     * @return String the Base64-encoded image
+     * @throws IOException if an error occurs or file size exceeds the limit
      */
-     public static String convertImageToBase64(InputStream inputStream, String contentType, long totalSize) throws IOException {
-        // Kiểm tra nếu contentType không phải là ảnh
+    public static String convertImageToBase64(InputStream inputStream, String contentType, long totalSize) throws IOException {
+        // Check if the content type is not an image
         if (contentType == null || !contentType.startsWith("image/")) {
             throw new IOException("File is not an image.");
         }
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
         int bytesRead;
         long currentSize = 0;
-        // Đọc dữ liệu từ inputStream và ghi vào outputStream
+
+        // Read the data from the inputStream and write it to the outputStream
         while ((bytesRead = inputStream.read(buffer)) != -1) {
             currentSize += bytesRead;
             if (currentSize + totalSize > MAX_TOTAL_SIZE) {
@@ -68,7 +69,8 @@ public class UploadFile {
             }
             outputStream.write(buffer, 0, bytesRead);
         }
-        // Chuyển đổi mảng byte thành chuỗi Base64
+
+        // Convert the byte array to a Base64-encoded string
         return Base64.getEncoder().encodeToString(outputStream.toByteArray());
     }
 }

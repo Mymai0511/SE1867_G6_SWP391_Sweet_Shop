@@ -44,7 +44,7 @@ public class DataEncryptionSHA256 {
     }
 
     public static void main(String[] args) {
-        String pass = DataEncryptionSHA256.hashPassword("123@123aAbb");
+        String pass = DataEncryptionSHA256.hashPassword("12345");
         System.out.println(pass);
     }
 }

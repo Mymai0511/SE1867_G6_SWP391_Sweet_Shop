@@ -162,10 +162,10 @@ INSERT INTO authority (code, name) VALUES
     (4, 'Admin');
 
 INSERT INTO user (username, password, fName, gender, email, phone, dob, avatar, address, status, createdAt, updatedAt, role) VALUES
-    ('customer', '12345', 'John Doe', 1, 'john@example.com', '0123456789', '1990-01-01', '01.jpg', '123 Main St', 1, '2024-09-01', '2024-09-10', 1),
-    ('staff', '12345', 'Jane Smith', 0, 'jane@example.com', '0123456798', '1992-02-02', '02.jpg', '456 Park Ave', 1, '2024-09-02', '2024-09-11', 2),
-    ('shipper', '12345', 'Alice Jones', 0, 'alice@example.com', '0123456797', '1993-03-03', '03.jpg', '789 Oak St', 1, '2024-09-03', '2024-09-12', 3),
-    ('admin', '12345', 'Bob Brown', 1, 'bob@example.com', '0123456796', '1994-04-04', '04.jpg', '321 Pine St', 1, '2024-09-04', '2024-09-13', 4),
+    ('customer', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', 'John Doe', 1, 'john@example.com', '0123456789', '1990-01-01', '01.jpg', '123 Main St', 1, '2024-09-01', '2024-09-10', 1),
+    ('staff', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', 'Jane Smith', 0, 'jane@example.com', '0123456798', '1992-02-02', '02.jpg', '456 Park Ave', 1, '2024-09-02', '2024-09-11', 2),
+    ('shipper', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', 'Alice Jones', 0, 'alice@example.com', '0123456797', '1993-03-03', '03.jpg', '789 Oak St', 1, '2024-09-03', '2024-09-12', 3),
+    ('admin', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', 'Bob Brown', 1, 'bob@example.com', '0123456796', '1994-04-04', '04.jpg', '321 Pine St', 1, '2024-09-04', '2024-09-13', 4),
     ('charlie_black', 'password654', 'Charlie Black', 1, 'charlie@example.com', '0123456795', '1995-05-05', '05.jpg', '654 Cedar St', 0, '2024-09-05', '2024-09-14', 1),
     ('david_green', 'password987', 'David Green', 1, 'david@example.com', '0123456794', '1996-06-06', '07.jpg', '987 Birch St', 0, '2024-09-06', '2024-09-15', 2),
     ('emily_white', 'password111', 'Emily White', 0, 'emily@example.com', '0123456793', '1997-07-07', '08.jpg', '111 Elm St', 0, '2024-09-07', '2024-09-16', 3),
@@ -384,6 +384,29 @@ BEGIN
 
     -- Trả về ID của sản phẩm vừa mới được insert
     SELECT LAST_INSERT_ID() AS newProductID;
+END$$
+DELIMITER ;
+
+USE shopcake;
+DELIMITER $$
+CREATE PROCEDURE updateProduct(
+    IN p_id INT,
+    IN p_name TEXT,
+    IN p_ingredient TEXT,
+    IN p_description TEXT,
+    IN p_status INT,
+    IN p_categoryID INT
+)
+BEGIN
+    -- Cập nhật dữ liệu trong bảng `product`
+    UPDATE product
+    SET name = p_name,
+        ingredient = p_ingredient,
+        description = p_description,
+        status = p_status,
+        updatedAt = now(),
+        categoryID = p_categoryID
+    WHERE id = p_id;
 END$$
 DELIMITER ;
 

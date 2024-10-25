@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -24,7 +25,24 @@
                 <a class="text-decoration-none" style="margin-right: 16px;" href="#"><i class="fa fa-user"></i> Account</a>
                 <a class="text-decoration-none" style="margin-right: 16px;" href="#"><i class="fa fa-star"></i> Wishlist</a>
                 <a class="text-decoration-none" style="margin-right: 16px;" href="/cartcontroller"><i class="fa fa-shopping-cart"></i> Cart</a>
-                <a class="text-decoration-none" style="margin-right: 16px;" href="/login"><i class="fa fa-lock"></i> Login</a>
+
+                <%-- Kiểm tra nếu session tồn tại trước --%>
+                <c:choose>
+                    <c:when test="${not empty sessionScope and not empty sessionScope.user}">
+                        <a class="text-decoration-none" style="margin-right: 16px;" href="/logout">
+                            <i class="fa fa-sign-out-alt"></i> Logout
+                        </a>
+                    </c:when>
+
+                    <c:otherwise>
+                        <a class="text-decoration-none" style="margin-right: 16px;" href="/login">
+                            <i class="fa fa-sign-in-alt"></i> Login
+                        </a>
+                        <a class="text-decoration-none" style="margin-right: 16px;" href="/login?action=register">
+                            <i class="fa fa-user-plus"></i> Register
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>

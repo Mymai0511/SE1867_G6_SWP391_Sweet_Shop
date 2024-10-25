@@ -137,4 +137,37 @@ public class ProductDetailProcess extends DAO {
             this.status = e.getMessage();
         }
     }
+
+    public void remove(String productDetailDelete) {
+        String sql = "DELETE FROM `productDetail` WHERE id = ?";
+        String[] productPrice = productDetailDelete.split("\\|");
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            for (String id : productPrice) {
+                ps.setString(1, id);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            ps.close();
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
+    }
+
+    public void update(String[] productPriceUpdate, String[] productSizeUpdate, String pdIdUpdate) {
+        String[] pdID = pdIdUpdate.split("\\|");
+        String sql = "update productDetail set price = ?, size = ? where id = ?";
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            for (int i = 0; i < productPriceUpdate.length; i++) {
+                ps.setString(1, productPriceUpdate[i]);
+                ps.setString(2, productSizeUpdate[i]);
+                ps.setString(3, pdID[i]);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
+    }
 }

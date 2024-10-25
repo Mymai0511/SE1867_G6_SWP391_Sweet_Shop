@@ -36,7 +36,21 @@ public class MediaProcess extends DAO {
     }
 
 
-    public void remove(Media media) {}
+    public void remove(String mID) {
+        String sql = "DELETE FROM media WHERE ID = ?";
+        String[] mIDArray = mID.split("\\|");
+        try {
+            PreparedStatement ps = this.connection.prepareStatement(sql);
+            for (String id : mIDArray) {
+                ps.setString(1, id);
+                ps.addBatch();
+            }
+            ps.executeBatch();
+            ps.close();
+        } catch (SQLException e) {
+            this.status = e.getMessage();
+        }
+    }
 
     /**
      * get all media from database
