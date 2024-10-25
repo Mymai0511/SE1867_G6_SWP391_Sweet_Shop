@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 
@@ -9,6 +10,7 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
+
 </head>
 
 <body>
@@ -24,7 +26,22 @@
                 <a class="text-decoration-none" style="margin-right: 16px;" href="#"><i class="fa fa-user"></i> Account</a>
                 <a class="text-decoration-none" style="margin-right: 16px;" href="#"><i class="fa fa-star"></i> Wishlist</a>
                 <a class="text-decoration-none" style="margin-right: 16px;" href="/cartcontroller"><i class="fa fa-shopping-cart"></i> Cart</a>
-                <a class="text-decoration-none" style="margin-right: 16px;" href="/login"><i class="fa fa-lock"></i> Login</a>
+                <c:choose>
+                    <c:when test="${not empty sessionScope and not empty sessionScope.user}">
+                        <a class="text-decoration-none" style="margin-right: 16px;" href="/logout">
+                            <i class="fa fa-sign-out-alt"></i> Logout
+                        </a>
+                    </c:when>
+
+                    <c:otherwise>
+                        <a class="text-decoration-none" style="margin-right: 16px;" href="/login">
+                            <i class="fa fa-sign-in-alt"></i> Login
+                        </a>
+                        <a class="text-decoration-none" style="margin-right: 16px;" href="/login?action=register">
+                            <i class="fa fa-user-plus"></i> Register
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
@@ -61,6 +78,16 @@
                     <button class="btn btn-outline-secondary" type="submit">Search</button>
                     <input type="hidden" value="${sort}" name="sort1">
                 </form>
+
+                <div class="left-side col-4 me-3">
+                    <div class="input-group input-group-navbar">
+                        <input type="text" name="search" class="form-control" placeholder="Search…" aria-label="Search"
+                               value="${search != null ? search : ''}">
+                        <button class="btn" type="submit">
+                            <i class="align-middle" data-feather="search"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

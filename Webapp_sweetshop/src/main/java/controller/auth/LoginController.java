@@ -68,12 +68,11 @@ public class LoginController extends HttpServlet {
         if (user != null) {
             // Lưu thông tin người dùng vào session
             HttpSession session = request.getSession();
-            session.setAttribute("loggedInUser", user); // Lưu đối tượng User vào session
-
+            session.setAttribute("loggedInUser", user);
             SessionRepo.setUser(request, response, user);
             switch (user.getRole()) {
                 case (2): // role staff
-                    response.sendRedirect(request.getContextPath() + "/getstaff");
+                    response.sendRedirect(request.getContextPath() + "/view_list_product");
                     break;
                 case (3): // role shipper
                     response.sendRedirect(request.getContextPath() + "/getstaff");

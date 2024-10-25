@@ -52,8 +52,8 @@
                     <i class="align-middle" data-feather="layout"></i> <span class="align-middle">Manager Products</span>
                 </a>
                 <ul id="icons" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Products</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Products</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/view_list_product">List Products</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/add_new_product">Add New Products</a></li>
                 </ul>
             </li>
 

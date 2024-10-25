@@ -1,64 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!--begin of sidebar-->
+<nav id="sidebar" class="sidebar js-sidebar">
+    <div class="sidebar-content js-simplebar">
+        <a class="sidebar-brand" href="index.html">
+					<span class="sidebar-brand-text align-middle">
+						Sweet Shop
+                    </span>
+            <svg class="sidebar-brand-icon align-middle" width="32px" height="32px" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5"
+                 stroke-linecap="square" stroke-linejoin="miter" color="#FFFFFF" style="margin-left: -3px">
+                <path d="M12 4L20 8.00004L12 12L4 8.00004L12 4Z"></path>
+                <path d="M20 12L12 16L4 12"></path>
+                <path d="M20 16L12 20L4 16"></path>
+            </svg>
+        </a>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-          integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <style>
-        /* Sidebar Styling */
-        section {
-            background-color: #EBA827;
-            height: 100%;
-            padding: 20px;
-        }
+        <div class="sidebar-user">
+            <div class="d-flex justify-content-center">
+                <div class="flex-shrink-0">
+                    <img src="../../assets/image/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" />
+                </div>
+                <div class="flex-grow-1 ps-2">
+                    <a class="sidebar-user-title dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                        Charles Hall
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-start">
+                        <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="pages-settings.html"><i class="align-middle me-1" data-feather="settings"></i> Settings &
+                            Privacy</a>
+                        <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Log out</a>
+                    </div>
 
-        /* Fix Home and Dashboard links */
-        .sticky-links {
-            position: sticky;
-            top: 0;
-            background-color: #EBA827;
-            z-index: 100;
-            padding-bottom: 10px;
-        }
+                    <div class="sidebar-user-subtitle">Designer</div>
+                </div>
+            </div>
+        </div>
 
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            color: #722211;
-            text-decoration: none;
-            margin-bottom: 12px;
-        }
+        <ul class="sidebar-nav">
+            <li class="sidebar-item pa">
+                <a class="sidebar-link" href="#">
+                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboards</span>
+                </a>
+            </li>
 
-        .sidebar a:hover {
-            background-color: #ddd;
-            border-radius: 10px;
-        }
-        section a.active {
-            background-color: #fff;
-            color: #722211;
-            font-weight: bold;
-            border-radius: 10px;
-        }
-    </style>
-</head>
+            <li class="sidebar-item pa">
+                <a data-bs-target="#icons" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="layout"></i> <span class="align-middle">Manager Products</span>
+                </a>
+                <ul id="icons" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Products</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Products</a></li>
+                </ul>
+            </li>
 
-<body>
-<section class="sidebar">
-    <!-- Sticky Section for Home and Dashboard -->
-    <div class="sticky-links">
-        <a href="/home" class="home-link active"><i class="fas fa-home"></i> Home</a>
-        <a href="/dashboard" class="dashboard-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-        <a href="/products" class=""><i class="fas fa-box"></i> Products</a>
-        <a href="/orders" class=""><i class="fas fa-shopping-cart"></i> Orders</a>
-        <a href="/customers" class=""><i class="fas fa-users"></i> Customers</a>
+            <li class="sidebar-item pa">
+                <a data-bs-target="#order" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="list"></i> <span class="align-middle">Manager Orders</span>
+                </a>
+                <ul id="order" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Orders</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Orders</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item pa">
+                <a data-bs-target="#form-plugins" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Manager Customers</span>
+                </a>
+                <ul id="form-plugins" class="sidebar-dropdown list-unstyled collapse  " data-bs-parent="#sidebar">
+                    <li class="sidebar-item "><a class="sidebar-link" href="/getcustomer">List Customers</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/addcustomer">Add New Customer</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item pa">
+                <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="users"></i> <span class="align-middle">Manager Product</span>
+                </a>
+                <ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="/view_list_product">List Product</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/add_new_product">Add New Product</a></li>
+                </ul>
+            </li>
+            <li class="sidebar-item pa">
+                <a data-bs-target="#shipper" data-bs-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Manager Shippers</span>
+                </a>
+                <ul id="shipper" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Shippers</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Shipper</a></li>
+                </ul>
+            </li>
+        </ul>
     </div>
-</section>
-</body>
-
-</html>
+</nav>
