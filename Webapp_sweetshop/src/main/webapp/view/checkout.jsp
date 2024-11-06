@@ -198,21 +198,21 @@
     function checkform(event) {
         let valid = true; // Khởi tạo valid là true
         // Kiểm tra tên
-        valid &= checkField("firstName", "Tên không được để trống!");
+        valid &= checkField("firstName", "Name cannot be blank!");
         // Kiểm tra họ
-        valid &= checkField("lastName", "Họ không được để trống!");
+        valid &= checkField("lastName", "They cannot be left blank!");
         // Kiểm tra số điện thoại
         valid &= checkPhoneField("phoneNumber");
         // Kiểm tra email
-        valid &= checkField("email", "Email không được để trống!");
+        valid &= checkField("email", "Email cannot be empty!");
         // Kiểm tra làng/xã
-        valid &= checkField("village", "Làng không được để trống!");
+        valid &= checkField("village", "The village cannot be left empty!");
         // Kiểm tra ghi chú
-        valid &= checkField("orderNotes", "Ghi chú không được để trống!");
+        valid &= checkField("orderNotes", "Notes cannot be left blank!");
         // Kiểm tra voucher (nếu cần)
         let voucher = validateInput(document.getElementById("voucher").value);
         if (voucher != "") {
-            valid &= checkValid(document.getElementById("voucher"), checkVoucher(voucher), "Voucher không tồn tại!");
+            valid &= checkValid(document.getElementById("voucher"), checkVoucher(voucher), "Voucher does not exist!");
         }
         if (!valid) {
             event.preventDefault();
