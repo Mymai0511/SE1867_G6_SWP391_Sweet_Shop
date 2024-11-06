@@ -45,24 +45,38 @@ public class ProductProcess extends DAO {
     /**
      * Lấy tổng số sản phẩm từ bảng product theo điều kiện tìm kiếm
      */
-    public int getTotalProducts(String searchName) {
-        StringBuilder sql = new StringBuilder("" +
-                "SELECT COUNT(DISTINCT p.id) AS total " +
-                "FROM product p " +
-                "JOIN productDetail pd ON p.id = pd.productID " +
-                "WHERE p.status = ? ");
-        // Nếu có điều kiện tìm kiếm
+    public int getTotalProducts(String searchName, String category) {
+        StringBuilder sql = new StringBuilder(
+                "SELECT COUNT(DISTINCT p.id) AS total FROM product p " +
+                        "JOIN productDetail pd ON p.id = pd.productID WHERE p.status = ?");
         if (searchName != null && !searchName.isEmpty()) {
-            sql.append("AND p.name LIKE ? or p.id = ? or p.description like ? ");
+            sql.append(" AND (p.name LIKE ? OR p.id = ? OR p.description LIKE ? OR pd.price LIKE ? )");
         }
-        try {
-            PreparedStatement ps = this.connection.prepareStatement(sql.toString());
+        if (category != null && !category.isEmpty() && !category.contains("all")) {
+            String[] categoryArray = category.split(",");
+            sql.append(" AND p.categoryID IN (");
+            for (int i = 0; i < categoryArray.length; i++) {
+                sql.append("?");
+                if (i < categoryArray.length - 1) {
+                    sql.append(",");
+                }
+            }
+            sql.append(")");
+        }
+        try (PreparedStatement ps = this.connection.prepareStatement(sql.toString())) {
             ps.setString(1, "1");
-            // Thiết lập tham số tìm kiếm
+            int paramIndex = 2;
             if (searchName != null && !searchName.isEmpty()) {
-                ps.setString(2, "%" + searchName + "%");
-                ps.setString(3, searchName);
-                ps.setString(4, "%" + searchName + "%");
+                ps.setString(paramIndex++, "%" + searchName + "%");
+                ps.setString(paramIndex++, searchName);
+                ps.setString(paramIndex++, "%" + searchName + "%");
+                ps.setString(paramIndex++, "%" + searchName + "%");
+            }
+            if (category != null && !category.isEmpty() && !category.contains("all")) {
+                String[] categoryArray = category.split(",");
+                for (String s : categoryArray) {
+                    ps.setString(paramIndex++, s);
+                }
             }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -77,44 +91,72 @@ public class ProductProcess extends DAO {
     /**
      * Lấy danh sách sản phẩm cho một trang cụ thể, sắp xếp theo giá trị min của giá và tìm kiếm theo tên
      */
-    public List<Product> getProductsByPage(String searchName, int limit, int offset, String sortByMinPriceAsc) {
+    public List<Product> getProductsByPage(String searchName, int limit, int offset, String sortByMinPriceAsc, String category) {
         List<Product> productList = new ArrayList<>();
-        StringBuilder query = new StringBuilder("SELECT p.*, MIN(pd.price) AS minPrice FROM product p "
-                + "JOIN productDetail pd ON p.id = pd.productID WHERE p.status = ? ");
-        // Nếu có tìm kiếm theo tên
+        StringBuilder query = new StringBuilder(
+                "SELECT p.*, MIN(pd.price) AS minPrice FROM product p " +
+                        "JOIN productDetail pd ON p.id = pd.productID WHERE p.status = ? ");
+
+        // Thêm điều kiện tìm kiếm theo tên
         if (searchName != null && !searchName.isEmpty()) {
-            query.append("and p.name LIKE ? or p.id = ? or p.description like ? ");
+            query.append(" AND (p.name LIKE ? OR p.id = ? OR p.description LIKE ? OR pd.price LIKE ?)");
         }
-        // Nhóm theo productID để lấy giá trị min
-        query.append("GROUP BY p.id ");
-        // Thêm điều kiện sắp xếp theo giá trị min
-        query.append("ORDER BY minPrice ");
-        query.append(sortByMinPriceAsc);
-        query.append(" LIMIT ? OFFSET ? ");
-        try {
-            PreparedStatement ps = this.connection.prepareStatement(query.toString());
+
+        // Thêm điều kiện tìm kiếm theo danh mục
+        if (category != null && !category.isEmpty() && !category.contains("all")) {
+            String[] categoryArray = category.split(",");
+            query.append(" AND p.categoryID IN (");
+            for (int i = 0; i < categoryArray.length; i++) {
+                query.append("?");
+                if (i < categoryArray.length - 1) {
+                    query.append(",");
+                }
+            }
+            query.append(")");
+        }
+
+        // Nhóm theo productID và sắp xếp theo giá trị min của giá
+        query.append(" GROUP BY p.id ORDER BY minPrice ");
+        query.append(sortByMinPriceAsc).append(" LIMIT ? OFFSET ?");
+
+        try (PreparedStatement ps = this.connection.prepareStatement(query.toString())) {
             ps.setString(1, "1");
             int paramIndex = 2;
-            // Thiết lập tham số tìm kiếm tên
+
+            // Thiết lập các tham số tìm kiếm tên
             if (searchName != null && !searchName.isEmpty()) {
                 ps.setString(paramIndex++, "%" + searchName + "%");
                 ps.setString(paramIndex++, searchName);
                 ps.setString(paramIndex++, "%" + searchName + "%");
+                ps.setString(paramIndex++, "%" + searchName + "%");
             }
+
+            // Thiết lập các tham số tìm kiếm danh mục
+            if (category != null && !category.isEmpty() && !category.contains("all")) {
+                String[] categoryArray = category.split(",");
+                for (String s : categoryArray) {
+                    ps.setString(paramIndex++, s);
+                }
+            }
+
+            // Thiết lập tham số limit và offset
             ps.setInt(paramIndex++, limit);
             ps.setInt(paramIndex, offset);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Product product = new Product();
-                product.setId(rs.getInt("id"));
-                product.setName(rs.getString("name"));
-                product.setIngredient(rs.getString("ingredient"));
-                product.setDescription(rs.getString("description"));
-                product.setStatus(rs.getInt("status"));
-                product.setCreatedAt(rs.getDate("createdAt"));
-                product.setUpdatedAt(rs.getDate("updatedAt"));
-                product.setCategoryID(rs.getInt("categoryID"));
-                productList.add(product);
+
+            // Thực thi truy vấn và xử lý kết quả
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Product product = new Product();
+                    product.setId(rs.getInt("id"));
+                    product.setName(rs.getString("name"));
+                    product.setIngredient(rs.getString("ingredient"));
+                    product.setDescription(rs.getString("description"));
+                    product.setStatus(rs.getInt("status"));
+                    product.setCreatedAt(rs.getDate("createdAt"));
+                    product.setUpdatedAt(rs.getDate("updatedAt"));
+                    product.setCategoryID(rs.getInt("categoryID"));
+                    productList.add(product);
+                }
             }
         } catch (SQLException e) {
             status = e.getMessage();
@@ -135,7 +177,7 @@ public class ProductProcess extends DAO {
         );
         // Nếu có điều kiện tìm kiếm
         if (searchName != null && !searchName.isEmpty()) {
-            sql.append("WHERE p.name LIKE ? or p.id = ? or p.description like ? ");
+            sql.append("WHERE p.name LIKE ? or p.id = ? or p.description like ? OR pd.price LIKE ?");
         }
         try {
             PreparedStatement ps = this.connection.prepareStatement(sql.toString());
@@ -144,6 +186,7 @@ public class ProductProcess extends DAO {
                 ps.setString(1, "%" + searchName + "%");
                 ps.setString(2, searchName);
                 ps.setString(3, "%" + searchName + "%");
+                ps.setString(4, "%" + searchName + "%");
             }
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -173,7 +216,7 @@ public class ProductProcess extends DAO {
         );
         // Nếu có tìm kiếm theo tên
         if (searchName != null && !searchName.isEmpty()) {
-            query.append("WHERE p.name LIKE ? or p.id = ? or p.description like ? ");
+            query.append("WHERE p.name LIKE ? or p.id = ? or p.description like ? OR pd.price LIKE ? ");
         }
         // Nhóm theo productID để lấy giá trị min
         query.append("GROUP BY p.id ");
@@ -189,6 +232,7 @@ public class ProductProcess extends DAO {
             if (searchName != null && !searchName.isEmpty()) {
                 ps.setString(paramIndex++, "%" + searchName + "%");
                 ps.setString(paramIndex++, searchName );
+                ps.setString(paramIndex++, "%" + searchName + "%");
                 ps.setString(paramIndex++, "%" + searchName + "%");
             }
             // Thiết lập limit và offset

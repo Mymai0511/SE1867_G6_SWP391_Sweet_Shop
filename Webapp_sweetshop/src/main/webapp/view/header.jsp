@@ -18,7 +18,9 @@
     <div class="first-header d-flex justify-content-between align-items-center"
          style="background-color: rgb(247, 247, 247);">
         <p class="site-name">
-            <a href="/home"><img src="../assets/image/home/logo.png" alt=""/></a>
+            <a href="/home" class="text-warning" style="text-decoration: none; font-size: 32px">
+                Shop Cake
+            </a>
         </p>
         <div class="d-flex align-items-center">
             <div class="login-or-logout d-flex justify-content-center align-items-center p-3">
