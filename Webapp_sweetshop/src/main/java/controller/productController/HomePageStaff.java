@@ -9,7 +9,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Product;
+import model.User;
 import session.SessionRepo;
 import validation.CheckInput;
 
@@ -23,6 +25,16 @@ public class HomePageStaff extends HttpServlet {
     private static final int LIMIT = 10;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        // Lấy thông tin người dùng từ session
+        HttpSession session = request.getSession();
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+        if (loggedInUser == null || loggedInUser.getRole() == 1 || loggedInUser.getRole() == 4) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
 //        String mess = request.getParameter("mess");
 //        String type = request.getParameter("type");
 //        request.setAttribute("mess", mess == null ? "" : mess);

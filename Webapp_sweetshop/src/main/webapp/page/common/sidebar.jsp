@@ -38,7 +38,7 @@
                                 Staff
                             </c:when>
                             <c:when test="${loggedInUser.role == 3}">
-                                Shipper
+                                Staff
                             </c:when>
                             <c:when test="${loggedInUser.role == 4}">
                                 Admin

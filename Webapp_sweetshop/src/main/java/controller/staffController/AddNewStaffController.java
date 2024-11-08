@@ -1,14 +1,12 @@
 package controller.staffController;
 
 import dal.staff.StaffProcess;
+import jakarta.servlet.http.*;
 import model.Staff;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
+import model.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -30,6 +28,7 @@ import java.util.logging.Logger;
 public class AddNewStaffController extends HttpServlet {
 
     private StaffProcess staffProcess;
+    private static final int ROLE_ADMIN = 4;
     private static final int ROLE_STAFF = 2;
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 10; // 10MB
     private static final Logger logger = Logger.getLogger(AddNewStaffController.class.getName());
@@ -44,7 +43,23 @@ public class AddNewStaffController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+        try {
+            // Lấy thông tin người dùng từ session
+            HttpSession session = request.getSession();
+            User loggedInUser = (User) session.getAttribute("loggedInUser");
+
+            if (loggedInUser == null || loggedInUser.getRole() != ROLE_ADMIN) {
+                response.sendRedirect(request.getContextPath() + "/login");
+                return;
+            }
+            request.getRequestDispatcher("/page/admin/add-new-staff.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            // Log the error and display an error message
+            e.printStackTrace();
+            request.setAttribute("mess", "An error. Please try again.");
+            request.getRequestDispatcher("view/login.jsp").forward(request, response);
+        }
     }
 
     @Override
