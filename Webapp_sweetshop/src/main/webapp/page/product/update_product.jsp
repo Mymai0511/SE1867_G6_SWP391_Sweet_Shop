@@ -93,12 +93,12 @@
 <%--<jsp:include page="header.jsp"/>--%>
 
 <div class="flex: 1; row">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <jsp:include page="../common/sidebar.jsp"/>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
         <jsp:include page="../common/navbar.jsp"/>
-        <div class="container">
+        <div class="">
             <%
                 String mess = request.getParameter("mess");
                 String type = request.getParameter("type");
@@ -421,7 +421,7 @@
                                             <div class="col-md mb-2">
                                                 <label class="form-label">Price <span style="color: red">*</span></label>
                                                 <div class="input-group">
-                                                    <input type="number" name="productPrice" value="${pd.price == null ? "" : pd.price}" step="0.01"
+                                                    <input type="number" name="productPrice" value="" step="0.01"
                                                            class="form-control" placeholder="Enter price">
                                                     <span class="input-group-text">vnd</span>
                                                 </div>
@@ -431,18 +431,18 @@
                                                 <label class="form-label">Size <span style="color: red">*</span></label>
                                                 <select id="size" name="productSize" class="form-select">
                                                     <option value="" disabled selected>Select a size</option>
-                                                    <option value="Small" ${pd.size != null && pd.size.equals("Small") ? "selected" : ""}>Small</option>
-                                                    <option value="Medium" ${pd.size != null && pd.size.equals("Medium") ? "selected" : ""}>Medium</option>
-                                                    <option value="Large" ${pd.size != null && pd.size.equals("Large") ? "selected" : ""}>Large</option>
-                                                    <option value="Extra Large" ${pd.size != null && pd.size.equals("Extra Large") ? "selected" : ""}>Extra Large</option>
+                                                    <option value="Small">Small</option>
+                                                    <option value="Medium"}>Medium</option>
+                                                    <option value="Large">Large</option>
+                                                    <option value="Extra Large">Extra Large</option>
                                                 </select>
                                                 <span class="error-message text-danger mt-1 d-block sizeError"></span>
                                             </div>
                                             <div class="col-md-1 d-flex justify-content-end align-items-end">
-                                                <button type="button" class="btn btn-secondary mt-2"">X</button>
+                                                <button type="button" class="btn btn-secondary mt-2">X</button>
                                             </div>
                                         </div>`;
-        document.getElementById("pd").innerHTML = document.getElementById("pd").innerHTML + detailSection;
+        document.getElementById("pd").insertAdjacentHTML("beforeend", detailSection);
     }
 </script>
 

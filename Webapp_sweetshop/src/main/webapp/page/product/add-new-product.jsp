@@ -54,18 +54,18 @@
 <%--<jsp:include page="header.jsp"/>--%>
 
 <div class="flex: 1; row">
-    <div class="col-md-3">
+    <div class="col-md-2">
         <jsp:include page="../common/sidebar.jsp"/>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-10">
         <jsp:include page="../common/navbar.jsp" />
-        <div class="container">
+        <div class="">
             <div class="row mt-3">
                 <div class="col-md-9"></div>
                 <c:if test="${mess != null && !mess.equals('')}">
-                    <div class="col-md-3 alert alert-${type.euquals("success") ? "success" : "danger"} alert-dismissible order-md-last">
+                    <div class="col-md-3 alert alert-${type.equals("success") ? "success" : "danger"} alert-dismissible order-md-last">
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        <strong>${type.euquals("success") ? "Success" : "Error"}!</strong> ${mess}
+                        <strong>${type.equals("success") ? "Success" : "Error"}!</strong> ${mess}
                     </div>
                 </c:if>
             </div>
@@ -268,30 +268,31 @@
 
     function addMoreProductDetail() {
         const detailSection = `<div class="p-2 row mb-3 d-flex justify-content-between align-items-center">
-                                        <div class="col-md-6 col-sm-12 mb-2 mb-md-0">
-                                            <label class="form-label">Price <span style="color: red">*</span></label>
-                                            <div class="input-group">
-                                                <input type="number" name="productPrice" value="${productSize != null && productPrice[i] != null && !productPrice[i].equals("") ? productPrice[i] : ""}" step="0.01" class="form-control" placeholder="Enter price">
-                                                <span class="input-group-text">vnd</span>
-                                            </div>
-                                            <span class="error-message priceError"></span>
-                                        </div>
+                                <div class="col-md-6 col-sm-12 mb-2 mb-md-0">
+                                    <label class="form-label">Price <span style="color: red">*</span></label>
+                                    <div class="input-group">
+                                        <input type="number" name="productPrice" value="" step="0.01" class="form-control" placeholder="Enter price">
+                                        <span class="input-group-text">vnd</span>
+                                    </div>
+                                    <span class="error-message priceError"></span>
+                                </div>
 
-                                        <div class="col-md-6 col-sm-12">
-                                            <label class="form-label">Size <span style="color: red">*</span></label>
-                                            <select name="productSize" class="form-select">
-                                                <option value="" disabled selected>Select a size</option>
-                                                <option value="Small" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Small") ? "selected" : ""}>Small</option>
-                                                <option value="Medium" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Medium") ? "selected" : ""}>Medium</option>
-                                                <option value="Large" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Large") ? "selected" : ""}>Large</option>
-                                                <option value="Extra Large" ${productSize != null && productSize[i] != null && !productSize[i].equals("") && productSize[i].equals("Extra Large") ? "selected" : ""}>Extra Large</option>
-                                            </select>
-                                            <span class="error-message sizeError"></span>
-                                        </div>
-                                        <c:set var="i" value="${i + 1}" />
-                                    </div>`;
-        document.getElementById("pd").innerHTML = document.getElementById("pd").innerHTML + detailSection;
+                                <div class="col-md-6 col-sm-12">
+                                    <label class="form-label">Size <span style="color: red">*</span></label>
+                                    <select name="productSize" class="form-select">
+                                        <option value="" disabled selected>Select a size</option>
+                                        <option value="Small">Small</option>
+                                        <option value="Medium">Medium</option>
+                                        <option value="Large">Large</option>
+                                        <option value="Extra Large">Extra Large</option>
+                                    </select>
+                                    <span class="error-message sizeError"></span>
+                                </div>
+                            </div>`;
+
+        document.getElementById("pd").insertAdjacentHTML("beforeend", detailSection);
     }
+
 </script>
 
 </body>

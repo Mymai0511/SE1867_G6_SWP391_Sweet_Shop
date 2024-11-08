@@ -26,14 +26,20 @@ import static until.UploadFile.processFileParts;
 @WebServlet(name = "update_product", value = "/update_product")
 public class UpdateProduct extends HttpServlet {
     String pid = null;
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try{
+        try {
             if (pid == null) {
                 pid = request.getParameter("id");
-                if(pid == null){
-                    throw new Exception();
+            } else {
+                if (!pid.equals(request.getParameter("id")) && request.getParameter("id") != null) {
+                    pid = request.getParameter("id");
                 }
+            }
+
+            if (pid == null) {
+                throw new Exception();
             }
             Product product = ProductProcess.INSTANCE.getProductById(pid);
             List<ProductDetail> productDetailList = ProductDetailProcess.INSTANCE.getProductDetailByProductID(pid);
@@ -53,7 +59,7 @@ public class UpdateProduct extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             // update product
-            if(pid == null){
+            if (pid == null) {
                 throw new Exception();
             }
             updateProduct(request, response);
@@ -68,7 +74,13 @@ public class UpdateProduct extends HttpServlet {
             // delete duct
             deleteProduct(request, response);
             // add more product detail
-            addProductDetail(request, response);
+            boolean addProductDetail = addProductDetail(request, response);
+            if (!addProductDetail) {
+                request.setAttribute("mess", "Add product detail failed");
+                request.setAttribute("type", "error");
+                doGet(request, response);
+                return;
+            }
             // delete media
             String imageDelete = request.getParameter("imageDelete");
             deleteMedia(request, response, imageDelete);
@@ -91,24 +103,25 @@ public class UpdateProduct extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/view_list_product?mess=Please choose a product&type=error");
         }
     }
+
     private void updateProduct(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String productNameUpdate = request.getParameter("productNameUpdate");
         String productCategoryUpdate = request.getParameter("productCategoryUpdate");
         String productIngredientUpdate = request.getParameter("productIngredientUpdate");
         String productDescriptionUpdate = request.getParameter("productDescriptionUpdate");
         String productStatusUpdate = request.getParameter("productStatusUpdate");
-        if(productNameUpdate != null && productCategoryUpdate != null && productIngredientUpdate != null && productDescriptionUpdate != null && productStatusUpdate != null &&
-            !productNameUpdate.isEmpty() && !productCategoryUpdate.isEmpty() && !productIngredientUpdate.isEmpty() && !productDescriptionUpdate.isEmpty() ){
+        if (productNameUpdate != null && productCategoryUpdate != null && productIngredientUpdate != null && productDescriptionUpdate != null && productStatusUpdate != null &&
+                !productNameUpdate.isEmpty() && !productCategoryUpdate.isEmpty() && !productIngredientUpdate.isEmpty() && !productDescriptionUpdate.isEmpty()) {
             ProductProcess.INSTANCE.update(pid, productNameUpdate, productIngredientUpdate, productDescriptionUpdate, productStatusUpdate, productCategoryUpdate);
         }
     }
 
     private boolean updateProductDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         boolean check = true;
-        String[] productPriceUpdate  = request.getParameterValues("productPriceUpdate");
+        String[] productPriceUpdate = request.getParameterValues("productPriceUpdate");
         String[] productSizeUpdate = request.getParameterValues("productSizeUpdate");
         String pdIdUpdate = request.getParameter("pdIdUpdate");
-        if (productPriceUpdate!= null && productSizeUpdate != null && productPriceUpdate.length > 0
+        if (productPriceUpdate != null && productSizeUpdate != null && productPriceUpdate.length > 0
                 && productSizeUpdate.length > 0 && pdIdUpdate != null && !pdIdUpdate.isEmpty()) {
             for (String s : productPriceUpdate) {
                 if (s.length() < 6 || (s.length() == 6 && s.compareTo("1000.0") < 0)) {
@@ -130,16 +143,33 @@ public class UpdateProduct extends HttpServlet {
         }
     }
 
-    private void addProductDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String[] productSize = request.getParameterValues("productSize");
-        String[] productPrice = request.getParameterValues("productPrice");
-        if (productSize != null && productPrice != null && productSize.length > 0 && productPrice.length > 0) {
-            ProductDetailProcess.INSTANCE.create(productPrice, productSize, pid);
+    private boolean addProductDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        boolean check = true;
+        try{
+            String[] productSize = request.getParameterValues("productSize");
+            String[] productPrice = request.getParameterValues("productPrice");
+            if (productSize != null && productPrice != null && productSize.length > 0 && productPrice.length > 0) {
+                for (String s : productPrice) {
+                    if (Integer.parseInt(s) < 1000){
+                        check = false;
+                        break;
+                    }
+                }
+                if (check) {
+                    ProductDetailProcess.INSTANCE.create(productPrice, productSize, pid);
+                }
+            }
+            if ( (productSize!=null && productPrice == null) ||(productSize == null && productPrice != null)) {
+                check = false;
+            }
+        }catch (Exception e){
+            check=false;
         }
+        return check;
     }
 
     private void deleteMedia(HttpServletRequest request, HttpServletResponse response, String mid) throws ServletException, IOException {
-        if(mid != null && !mid.isEmpty()){
+        if (mid != null && !mid.isEmpty()) {
             MediaProcess.INSTANCE.remove(mid);
         }
     }
