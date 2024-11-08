@@ -67,7 +67,7 @@
 
 <section class="checkout">
     <div class="container">
-        <form action="checkout" method="post" class="row" onsubmit="return checkform(event)">
+        <form action="/checkout" method="post" class="row" onsubmit="return checkform(event)">
             <div class="col-lg-8">
                 <div class="billing-details">
                     <h4>BILLING DETAILS</h4>

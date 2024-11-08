@@ -15,4 +15,16 @@ public class OrderDetail {
     private int quantity;
     private int orderID;
     private int productDetailID;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id:" + id +
+                ", price:" + price +
+                ", quantity:" + quantity +
+                ", orderID:" + orderID +
+                ", productDetailID:" + productDetailID
+                + "}";
+    }
+
 }
