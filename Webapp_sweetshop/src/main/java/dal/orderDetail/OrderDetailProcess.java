@@ -7,6 +7,8 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDetailProcess extends DAO {
     public static OrderDetailProcess INSTANCE = new OrderDetailProcess();
@@ -63,6 +65,29 @@ public class OrderDetailProcess extends DAO {
         }
         return id;
     }
+
+    public List<OrderDetail> getOrderDetailsByOrderId(int orderId) {
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        String sql = "SELECT * FROM orderDetail WHERE orderID = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, orderId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    OrderDetail orderDetail = new OrderDetail();
+                    orderDetail.setId(rs.getInt("id"));
+                    orderDetail.setPrice(rs.getFloat("price"));
+                    orderDetail.setQuantity(rs.getInt("quantity"));
+                    orderDetail.setOrderID(rs.getInt("orderID"));
+                    orderDetail.setProductDetailID(rs.getInt("productDetailID"));
+                    orderDetails.add(orderDetail);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orderDetails;
+    }
+
 
     public static void main(String[] args) {
         System.out.println(OrderDetailProcess.INSTANCE.createReturnID(12.2f, "1", "12", "4"));

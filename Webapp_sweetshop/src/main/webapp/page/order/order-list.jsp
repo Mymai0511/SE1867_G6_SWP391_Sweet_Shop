@@ -14,8 +14,8 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="shortcut icon" href="../../assets/image/icons/icon-48x48.png" />
-  <link rel="canonical" href="/customer-list.jsp" />
-  <title>Customer List</title>
+  <link rel="canonical" href="order-list.jsp" />
+  <title>Order List</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&amp;display=swap" rel="stylesheet">
   <link class="js-stylesheet" href="../../assets/css/light.css" rel="stylesheet">
 
@@ -118,7 +118,7 @@
               </c:if>
               <div class="card-header pb-0 d-flex align-items-center justify-content-between">
                 <!-- Combined form for search and status -->
-                <form class="d-flex align-items-center w-100" action="/getcustomer" method="post">
+                <form class="d-flex align-items-center w-100" action="/getorder" method="post">
                   <!-- Left side: Search input -->
 
                   <div class="left-side col-4 me-3">
@@ -136,12 +136,29 @@
                   <!-- Right side: Status buttons -->
                   <div class="right-side d-flex align-items-center ms-auto">
                     <div class="btn-group me-3" role="group" aria-label="Status buttons">
+                      <!-- 'All' Button -->
                       <button type="button" onclick="setStatus('all')"
                               class="btn ${status == null || status == 'all' ? 'btn-primary' : 'btn-outline-primary'}">All</button>
-                      <button type="button" onclick="setStatus('active')"
-                              class="btn ${status == 'active' ? 'btn-primary' : 'btn-outline-primary'}">Active</button>
-                      <button type="button" onclick="setStatus('disabled')"
-                              class="btn ${status == 'disabled' ? 'btn-primary' : 'btn-outline-primary'}">Disabled</button>
+
+                      <!-- 'Pending' Button (1) -->
+                      <button type="button" onclick="setStatus('1')"
+                              class="btn ${status == '1' ? 'btn-primary' : 'btn-outline-primary'}">Placed</button>
+
+                      <!-- 'In Progress' Button (2) -->
+                      <button type="button" onclick="setStatus('2')"
+                              class="btn ${status == '2' ? 'btn-primary' : 'btn-outline-primary'}">In Progress</button>
+
+                      <!-- 'Shipping' Button (3) -->
+                      <button type="button" onclick="setStatus('3')"
+                              class="btn ${status == '3' ? 'btn-primary' : 'btn-outline-primary'}">Shipping</button>
+
+                      <!-- 'Completed' Button (4) -->
+                      <button type="button" onclick="setStatus('4')"
+                              class="btn ${status == '4' ? 'btn-primary' : 'btn-outline-primary'}">Completed</button>
+
+                      <!-- 'Cancelled' Button (0) -->
+                      <button type="button" onclick="setStatus('0')"
+                              class="btn ${status == '0' ? 'btn-primary' : 'btn-outline-primary'}">Cancelled</button>
                     </div>
 
                     <div class="dropdown me-3">
@@ -149,17 +166,17 @@
                         Sort
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="sortDropdown">
-                        <li><a class="dropdown-item" href="#">Name Ascending</a></li>
-                        <li><a class="dropdown-item" href="#">Name Descending</a></li>
+                        <li><a class="dropdown-item" href="#">Consignee Name Ascending</a></li>
+                        <li><a class="dropdown-item" href="#">Consignee Name Descending</a></li>
                         <li><a class="dropdown-item" href="#">Phone Ascending</a></li>
                         <li><a class="dropdown-item" href="#">Phone Descending</a></li>
-                        <li><a class="dropdown-item" href="#">Date of Birth (Oldest First)</a></li>
-                        <li><a class="dropdown-item" href="#">Date of Birth (Youngest First)</a></li>
+                        <li><a class="dropdown-item" href="#">Delivery Date (Earliest)</a></li>
+                        <li><a class="dropdown-item" href="#">Date of Birthh (Latest)</a></li>
                       </ul>
                     </div>
 
                     <!-- Add New Staff Button -->
-                    <a class="btn btn-success me-3" href="/addcustomer">Add New Customer</a>
+                    <a class="btn btn-success me-3" href="/addorder">Add New Order</a>
                   </div>
                 </form>
               </div>
@@ -167,60 +184,84 @@
               <div class="card-body">
                 <!-- Check if staffs is empty -->
                 <c:choose>
-                  <c:when test="${not empty requestScope.customers}">
+                  <c:when test="${not empty requestScope.orders}">
                     <table id="userTable" class="table table-striped" style="width:100%">
                       <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>Date Of Birth</th>
+                        <th>ID</th>
+                        <th>Consignee</th>
+                        <th>Delivery Time</th>
                         <th>Phone</th>
                         <th>Status</th>
                         <th>Action</th>
                       </tr>
                       </thead>
-                      <tbody id="customerBody">
-                      <c:forEach var="customer" items="${requestScope.customers}" varStatus="loopStatus">
+                      <tbody id="staffBody">
+                      <c:forEach var="order" items="${requestScope.orders}" varStatus="loopStatus">
                         <tr class="staffRow">
-                          <td><img src="data:image/png;base64,${customer.avatar}" width="32" height="32" class="rounded-circle my-n1" alt="Avatar"></td>
-                          <td>${customer.fullName}</td>
-                          <td>${customer.dob}</td>
-                          <td>${customer.phone}</td>
+                          <td>${order.id}</td>
+                          <td>${order.consignee}</td>
+                          <td>${order.deliveryTime}</td>
+                          <td>${order.phone}</td>
                           <td>
-                                                <span class="badge ${customer.status == 1 ? 'bg-primary' : 'bg-danger'}">
-                                                    ${customer.status == 1 ? 'Active' : 'Disabled'}
-                                                </span>
+                            <!-- Badge cho trạng thái đơn hàng -->
+                            <span class="badge
+                              ${order.status == 1 ? 'bg-info' :
+                                order.status == 2 ? 'bg-warning' :
+                                order.status == 3 ? 'bg-primary' :
+                                order.status == 4 ? 'bg-success' :
+                                'bg-danger'}">
+                                ${order.status == 0 ? 'Cancelled' :
+                                        order.status == 1 ? 'Placed' :
+                                                order.status == 2 ? 'Processing' :
+                                                        order.status == 3 ? 'Shipping' :
+                                                                'Completed'}
+                            </span>
                           </td>
                           <td>
-                            <!-- Update Customer Form -->
-                            <form action="/editcustomer" method="post" style="display: inline-block; margin-right: 8px;">
-                              <input type="hidden" name="id" value="${customer.id}" />
+                            <!-- Form Update Order -->
+                            <form action="/editorder" method="post" style="display: inline-block; margin-right: 8px;">
+                              <input type="hidden" name="id" value="${order.id}" />
                               <button type="submit" class="btn btn-link text-primary p-0" title="Edit" style="border: none;">
                                 <i class="align-middle" data-feather="edit"></i>
                               </button>
                             </form>
+                            <!-- Nút thay đổi trạng thái đơn hàng -->
+                            <c:if test="${order.status != 4 && order.status != 0}">
+                              <form action="/changeorderstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to update this order status?');">
+                                <input type="hidden" name="id" value="${order.id}" />
+                                <input type="hidden" name="status" value="${order.status + 1}" /> <!-- Trạng thái tiếp theo -->
+                                <button type="submit" class="btn ${order.status == 1 ? 'btn-warning' : order.status == 2 ? 'btn-info' : 'btn-success'} p-0" title="Change Status" style="border: none;">
+                                  <!-- Hiển thị biểu tượng và tên trạng thái hiện tại -->
+                                  <c:choose>
+                                    <c:when test="${order.status == 1}">
+                                      <i class="align-middle" data-feather="clock"></i> Pending
+                                    </c:when>
+                                    <c:when test="${order.status == 2}">
+                                      <i class="align-middle" data-feather="tool"></i> Processing
+                                    </c:when>
+                                    <c:when test="${order.status == 3}">
+                                      <i class="align-middle" data-feather="truck"></i> Shipping
+                                    </c:when>
+                                    <c:otherwise>
+                                      <i class="align-middle" data-feather="check-circle"></i> Completed
+                                    </c:otherwise>
+                                  </c:choose>
+                                </button>
+                              </form>
+                            </c:if>
 
-                            <!-- Change Status Form -->
-                            <c:if test="${customer.status == 1}">
-                              <!-- Form to Deactivate Customer -->
-                              <form action="/changecustomerstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to deactivate this customer?');">
-                                <input type="hidden" name="id" value="${customer.id}" />
-                                <input type="hidden" name="status" value="1" />
-                                <button type="submit" class="btn btn-link text-warning p-0" title="Deactivate" style="border: none;">
-                                  <i class="align-middle" data-feather="user-x"></i>
+                            <!-- Nút hủy đơn hàng -->
+                            <c:if test="${order.status != 0 && order.status != 4}">
+                              <form action="/changeorderstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                                <input type="hidden" name="id" value="${order.id}" />
+                                <input type="hidden" name="status" value="0" /> <!-- Trạng thái 0 là hủy -->
+                                <button type="submit" class="btn btn-link text-danger p-0" title="Cancel" style="border: none;">
+                                  <i class="align-middle" data-feather="x-circle"></i>
                                 </button>
                               </form>
                             </c:if>
-                            <c:if test="${customer.status == 0}">
-                              <!-- Form to Activate Customer -->
-                              <form action="/changecustomerstatus" method="post" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to activate this customer?');">
-                                <input type="hidden" name="id" value="${customer.id}" />
-                                <input type="hidden" name="status" value="0" />
-                                <button type="submit" class="btn btn-link text-success p-0" title="Activate" style="border: none;">
-                                  <i class="align-middle" data-feather="user-check"></i>
-                                </button>
-                              </form>
-                            </c:if>
+
                           </td>
                         </tr>
                       </c:forEach>

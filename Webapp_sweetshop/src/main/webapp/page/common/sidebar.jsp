@@ -3,7 +3,7 @@
 <!--begin of sidebar-->
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
-        <a class="sidebar-brand" href="index.html">
+        <a class="sidebar-brand" href="#">
 					<span class="sidebar-brand-text align-middle">
 						Sweet Shop
                     </span>
@@ -74,7 +74,7 @@
                     <i class="align-middle" data-feather="list"></i> <span class="align-middle">Manager Orders</span>
                 </a>
                 <ul id="order" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Orders</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="/getorder">List Orders</a></li>
                     <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Orders</a></li>
                 </ul>
             </li>
@@ -98,15 +98,15 @@
                     <li class="sidebar-item"><a class="sidebar-link" href="/addstaff">Add New Staff</a></li>
                 </ul>
             </li>
-            <li class="sidebar-item pa">
-                <a data-bs-target="#shipper" data-bs-toggle="collapse" class="sidebar-link collapsed">
-                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Manager Shippers</span>
-                </a>
-                <ul id="shipper" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Shippers</a></li>
-                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Shipper</a></li>
-                </ul>
-            </li>
+<%--            <li class="sidebar-item pa">--%>
+<%--                <a data-bs-target="#shipper" data-bs-toggle="collapse" class="sidebar-link collapsed">--%>
+<%--                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Manager Shippers</span>--%>
+<%--                </a>--%>
+<%--                <ul id="shipper" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">--%>
+<%--                    <li class="sidebar-item"><a class="sidebar-link" href="#">List Shippers</a></li>--%>
+<%--                    <li class="sidebar-item"><a class="sidebar-link" href="#">Add New Shipper</a></li>--%>
+<%--                </ul>--%>
+<%--            </li>--%>
         </ul>
     </div>
 </nav>
